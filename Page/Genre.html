@@ -1,0 +1,18 @@
+<style>.gn-wrap{font-family:Nunito,sans-serif;margin-bottom:20px}.gn-header{text-align:center;font-size:16px;font-weight:700;color:var(--sl-tx2);padding:15px 0;border-bottom:1px solid var(--sl-bd);margin-bottom:20px}.gn-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}@media (min-width:768px){.gn-grid{grid-template-columns:repeat(3,1fr)}}@media (min-width:1024px){.gn-grid{grid-template-columns:repeat(4,1fr)}}.gn-item{display:flex;justify-content:space-between;align-items:center;background:var(--sl-pan);border:1px solid transparent;padding:14px 16px;border-radius:5px;text-decoration:none;transition:all .2s ease-in-out}.gn-item:hover{background:var(--sl-bir);border-color:var(--sl-bir)}.gn-name{color:var(--sl-tx2);font-weight:700;font-size:13px}.gn-count{color:var(--sl-tx);font-size:13px;font-weight:600}.gn-item:hover .gn-name,.gn-item:hover .gn-count{color:#fff}
+</style>
+
+<div class="gn-wrap">
+    <div class="gn-header">Genre</div>
+    
+    <!-- Wadah Grid Genre -->
+    <div id="genre-grid" class="gn-grid">
+        <!-- Kotak-kotak genre akan langsung diisi oleh JavaScript -->
+    </div>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+  document.addEventListener("DOMContentLoaded",function(){const e=document.getElementById("genre-grid");let n=["Action","Adventure","Comedy","Drama","Romance","Fantasy","Isekai","Horror","Mystery","Psychological","Thriller","Sci-Fi","Supernatural","Slice of Life","Sports","Mecha","Military","Historical","School","Martial Arts","Music","Idol","Harem","Ecchi","Seinen","Shounen","Shoujo","Josei","Survival","Time Travel"];n.sort((e,n)=>e.localeCompare(n));let t="";n.forEach((e,n)=>{let a="/search/label/"+encodeURIComponent(e);t+=`\n        <a href="${a}" class="gn-item" id="gn-item-${n}" title="Lihat anime ${e}">\n            <span class="gn-name">${e}</span>\n            <span class="gn-count" id="gn-count-${n}">...</span>\n        </a>`}),e.innerHTML=t,n.forEach((e,n)=>{let t=encodeURIComponent(e),a=document.getElementById(`gn-item-${n}`),o=document.getElementById(`gn-count-${n}`);fetch(`/feeds/posts/summary/-/${t}?alt=json&max-results=0`).then(e=>e.json()).then(e=>{let n=parseInt(e.feed.openSearch$totalResults.$t,10);n>0?o&&(o.innerText=n):a&&(a.style.display="none")}).catch(e=>{a&&(a.style.display="none")})})});
+
+  //]]>
+</script>
