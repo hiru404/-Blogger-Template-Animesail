@@ -1,0 +1,30 @@
+<style>
+  .da-wrap{background:var(--sl-bg);margin-bottom:20px;font-family:Nunito,sans-serif}.da-header{text-align:center;font-size:15px;font-weight:700;color:var(--sl-tx2);padding:15px 0;border-bottom:1px solid var(--sl-bd);margin-bottom:15px}.da-nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding:0 15px 25px}.da-nav a{background:var(--sl-kartu);color:var(--sl-tx);width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:4px;font-weight:700;font-size:13px;transition:0.2s;border:1px solid #fff0}.da-nav a:hover{background:var(--sl-pan);border-color:var(--sl-bir);color:var(--sl-tx2)}.da-section{border-top:1px solid var(--sl-bd);padding:20px 15px}.da-letter{font-size:16px;font-weight:700;color:var(--sl-tx2);margin-bottom:15px;display:block}.da-list{list-style-type:disc;padding-left:20px;margin:0}.da-list li{margin-bottom:12px;color:var(--sl-tx2);line-height:1.5}.da-list li:last-child{margin-bottom:0}.da-list li a{color:var(--sl-tx);font-size:13.5px;transition:color 0.2s}.da-list li a:hover{color:var(--sl-bir);text-decoration:underline}html{scroll-behavior:smooth}
+  
+</style>
+
+<div class="da-wrap">
+    <!-- Header -->
+    <div class="da-header">Daftar Anime</div>
+
+    <!-- Tombol Navigasi A-Z -->
+    <div class="da-nav">
+        <a href="#A">A</a><a href="#B">B</a><a href="#C">C</a><a href="#D">D</a><a href="#E">E</a>
+        <a href="#F">F</a><a href="#G">G</a><a href="#H">H</a><a href="#I">I</a><a href="#J">J</a><a href="#K">K</a>
+        <a href="#L">L</a><a href="#M">M</a><a href="#N">N</a><a href="#O">O</a><a href="#P">P</a><a href="#Q">Q</a>
+        <a href="#R">R</a><a href="#S">S</a><a href="#T">T</a><a href="#U">U</a><a href="#V">V</a><a href="#W">W</a>
+        <a href="#X">X</a><a href="#Y">Y</a><a href="#Z">Z</a>
+    </div>
+
+    <!-- Wadah Output Daftar -->
+    <div id="da-content">
+        <div style="text-align: center; padding: 30px; color: var(--sl-tx3); font-size: 13px;">Memuat daftar anime...</div>
+    </div>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+  
+  document.addEventListener("DOMContentLoaded",function(){const e=document.getElementById("da-content"),t="/feeds/posts/default/-/"+encodeURIComponent("Series")+"?alt=json&max-results=500";fetch(t).then(e=>e.json()).then(t=>{if(t.feed&&t.feed.entry){let l=t.feed.entry.map(e=>{let t=e.title.$t,l="";return e.link.forEach(e=>{"alternate"===e.rel&&(l=e.href)}),{title:t,url:l}});l.sort((e,t)=>e.title.localeCompare(t.title));let a={};l.forEach(e=>{let t=e.title.charAt(0).toUpperCase();a[t]||(a[t]=[]),a[t].push(e)});let n=Object.keys(a).sort((e,t)=>e.localeCompare(t)),r="";n.forEach(e=>{r+=`<div class="da-section">\n                            <a name="${e}" class="da-letter">${e}</a>\n                            <ul class="da-list">`,a[e].forEach(e=>{r+=`<li><a href="${e.url}" title="${e.title}">${e.title}</a></li>`}),r+="   </ul>\n                         </div>"}),e.innerHTML=r}else e.innerHTML="<div style='text-align:center; color:var(--sl-tx3); padding:30px;'>Belum ada anime berseri.</div>"}).catch(t=>{e.innerHTML="<div style='text-align:center; color:var(--sl-tx3); padding:30px;'>Gagal memuat data.</div>"})});
+//]]>
+</script>
