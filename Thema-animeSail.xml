@@ -1,0 +1,2331 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html b:version='2' class='v2' expr:dir='data:blog.languageDirection' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr' xmlns:skin='http://www.google.com/2002/gdata/namespace'>
+<head>
+  <!-- 1. PENGATURAN DASAR & RESPONSIVE -->
+  <b:include data='blog' name='all-head-content'/>
+  <meta charset='UTF-8'/>
+  <meta content='width=device-width, initial-scale=1' name='viewport'/>
+  
+  <!-- Warna Tema untuk Browser Mobile (Chrome Android) -->
+  <meta content='#111111' name='theme-color'/>
+  <meta content='#111111' name='msapplication-navbutton-color'/>
+  <meta content='#111111' name='apple-mobile-web-app-status-bar-style'/>
+
+  <!-- 2. OPTIMASI JUDUL DINAMIS (SEO) -->
+  <title>
+    <b:if cond='data:view.isError'>Halaman Tidak Ditemukan - <data:blog.title/>
+    <b:elseif cond='data:view.isSearch'/>Pencarian: &quot;<data:view.search.query.escaped/>&quot; - <data:blog.title/>
+    <b:elseif cond='data:view.isLabelSearch'/>Genre: <data:view.search.label.escaped/> - <data:blog.title/>
+    <b:elseif cond='data:view.isHomepage'/><data:blog.title/> - <data:blog.title/>
+    <b:else/><data:view.title.escaped/> - <data:blog.title/>
+    </b:if>
+  </title>
+
+  <!-- 3. DESKRIPSI & ROBOTS (SEO) -->
+  <b:if cond='data:view.description'>
+    <meta expr:content='data:view.description.escaped' name='description'/>
+  <b:else/>
+    <!-- Ganti teks ini dengan deskripsi global blog Anda -->
+    <meta expr:content='&quot;Nonton dan download anime subtitle Indonesia gratis di &quot; + data:blog.title.escaped' name='description'/>
+  </b:if>
+
+  <b:if cond='data:view.isError or data:view.isSearch'>
+    <meta content='noindex, nofollow' name='robots'/>
+  <b:else/>
+    <meta content='index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1' name='robots'/>
+  </b:if>
+
+  <!-- 4. LINK CANONICAL & FAVICON -->
+  <link expr:href='data:view.url.canonical' rel='canonical'/>
+  <link expr:href='data:blog.blogspotFaviconUrl' rel='icon' type='image/x-icon'/>
+
+  <!-- 5. META SOCIAL MEDIA (OPEN GRAPH UNTUK FB/WA & TWITTER CARDS) -->
+  <meta expr:content='data:blog.title.escaped' property='og:site_name'/>
+  <meta expr:content='data:view.url.canonical' property='og:url'/>
+  <meta expr:content='data:view.title.escaped' property='og:title'/>
+  <meta expr:content='data:view.title.escaped' name='twitter:title'/>
+  <meta content='summary_large_image' name='twitter:card'/>
+
+  <b:if cond='data:view.isMultipleItems'>
+    <meta content='website' property='og:type'/>
+  <b:else/>
+    <meta content='article' property='og:type'/>
+  </b:if>
+
+  <b:if cond='data:view.description'>
+    <meta expr:content='data:view.description.escaped' property='og:description'/>
+    <meta expr:content='data:view.description.escaped' name='twitter:description'/>
+  </b:if>
+
+  <!-- Logika Gambar Thumbnail untuk Sosmed -->
+  <b:if cond='data:view.featuredImage'>
+    <meta expr:content='resizeImage(data:view.featuredImage, 1200, &quot;1200:630&quot;)' property='og:image'/>
+    <meta expr:content='resizeImage(data:view.featuredImage, 1200, &quot;1200:630&quot;)' name='twitter:image'/>
+  <b:else/>
+    <!-- Ganti URL ini dengan link gambar logo default Anda (ukuran disarankan 1200x630px) -->
+    <meta content='https://placehold.co/1200x630/1e2230/8c93a8?text=AnimeSail' property='og:image'/>
+    <meta content='https://placehold.co/1200x630/1e2230/8c93a8?text=AnimeSail' name='twitter:image'/>
+  </b:if>
+
+  <!-- 6. SCHEMA.ORG (JSON-LD) UNTUK RICH SNIPPET GOOGLE -->
+  <script type='application/ld+json'>
+  {
+    &quot;@context&quot;: &quot;https://schema.org&quot;,
+    &quot;@type&quot;: &quot;<b:if cond='data:view.isPost'>BlogPosting<b:else/>WebSite</b:if>&quot;,
+    &quot;mainEntityOfPage&quot;: {
+      &quot;@type&quot;: &quot;WebPage&quot;,
+      &quot;@id&quot;: &quot;<data:view.url.canonical/>&quot;
+    },
+    &quot;headline&quot;: &quot;<data:view.title.escaped/>&quot;,
+    <b:if cond='data:view.description'>
+    &quot;description&quot;: &quot;<data:view.description.escaped/>&quot;,
+    </b:if>
+    &quot;url&quot;: &quot;<data:view.url.canonical/>&quot;,
+    <b:if cond='data:view.featuredImage'>
+    &quot;image&quot;: &quot;<data:view.featuredImage/>&quot;,
+    </b:if>
+    <b:if cond='data:view.isPost'>
+    &quot;datePublished&quot;: &quot;<data:post.date.iso8601/>&quot;,
+    &quot;dateModified&quot;: &quot;<data:post.lastModified.iso8601/>&quot;,
+    &quot;author&quot;: {
+      &quot;@type&quot;: &quot;Person&quot;,
+      &quot;name&quot;: &quot;Admin&quot;
+    },
+    </b:if>
+    &quot;publisher&quot;: {
+      &quot;@type&quot;: &quot;Organization&quot;,
+      &quot;name&quot;: &quot;<data:blog.title.escaped/>&quot;,
+      &quot;logo&quot;: {
+        &quot;@type&quot;: &quot;ImageObject&quot;,
+        &quot;url&quot;: &quot;https://placehold.co/600x60/1e2230/8c93a8?text=Logo+AnimeSail&quot; 
+      }
+    }
+  }
+  </script>
+
+<b:if cond='!data:view.isLayoutMode'>
+  <b:skin><![CDATA[
+
+    /* ===== AnimeSail ===== */
+    :root{ 
+      --sl-bg:#111; 
+      --sl-pan:#1f1f1f; 
+      --sl-kartu:#333; 
+      --sl-bd:#2e2e2e; 
+      --sl-bir:#209cee; 
+      --sl-bir2:#0378c5; 
+      --sl-tx:#ccc; 
+      --sl-tx2:#fff; 
+      --sl-tx3:#8f8f8f; 
+    } 
+    *{box-sizing:border-box} 
+    body{margin:0;background:var(--sl-bg);color:var(--sl-tx); font:14px/1.6 Nunito,-apple-system,"Segoe UI",Roboto,Arial,sans-serif; overflow-x: clip; overflow-y: visible;} 
+    a{color:inherit;text-decoration:none} 
+    img{max-width:100%;display:block} 
+  .sl-wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 0px;
+  padding-top: 4px; /* Jarak atas */
+}
+
+
+    /* bilah atas */ 
+    .sl-top{position:sticky;top:0;z-index:60;background:#0a0a0a;border-bottom:1px solid var(--sl-bd)} 
+    .sl-top-in{max-width:1120px;margin:0 auto;padding:9px 10px;display:flex;align-items:center;gap:9px} 
+    .sl-logo{display:flex;align-items:center;gap:7px;font-size:16px;font-weight:800;color:var(--sl-tx2);white-space:nowrap} 
+    .sl-logo svg{width:22px;height:22px;stroke:var(--sl-bir);fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round} 
+    .sl-cari-atas{flex:1;min-width:0} 
+    .sl-cari-atas input{width:100%;background:var(--sl-pan);border:1px solid var(--sl-bd);border-radius:4px; color:var(--sl-tx2);padding:8px 12px;font:inherit;font-size:13px;outline:none} 
+    .sl-cari-atas input:focus{border-color:var(--sl-bir)} 
+    .sl-burger{background:transparent;border:0;padding:6px;cursor:pointer} 
+    .sl-burger svg{width:22px;height:22px;stroke:var(--sl-tx2);fill:none;stroke-width:2;stroke-linecap:round} 
+    .sl-laci {
+      display: none;
+      flex-direction: column;
+      background: var(--sl-pan);
+      border-top: 1px solid var(--sl-bd);
+      border-bottom: 1px solid var(--sl-bd);
+      position: absolute;
+      top: 100%; 
+      left: 0;
+      width: 100%;
+      box-shadow: 0 10px 15px rgba(0,0,0,0.5); 
+    } 
+    .sl-laci.buka { display: flex; }
+    .sl-laci a{padding:11px 14px;border-bottom:1px solid var(--sl-bd);font-size:13.5px;color:var(--sl-tx2)} 
+    .sl-laci a:hover{background:var(--sl-bir2)} 
+        /* panel sambutan */ 
+    .sl-sambut{background:var(--sl-pan);border:1px solid var(--sl-bd);border-radius:5px;padding:13px 15px;margin:12px 10px} /* Ubah margin di sini */
+    .sl-sambut p{margin:0 0 6px;font-size:12.5px;line-height:1.75} 
+    .sl-sambut p:last-child{margin:0} 
+    .sl-sambut b{color:var(--sl-bir)} 
+    .sl-sambut-kecil{color:var(--sl-tx3);font-size:11.5px!important}
+
+    
+    /* kepala seksi + chip */ 
+        /* kepala seksi + chip */ 
+    .sl-kepala {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin: 18px 0 11px;
+      padding: 0 10px; /* Tambahan padding agar sejajar dengan kartu anime */
+    }
+.sl-kepala-j{margin:0;font-size:15.5px;font-weight:700;color:var(--sl-tx2)} 
+    .sl-chip{display:flex;gap:6px} 
+    .sl-chip span, .sl-chip a {font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:3px; background:var(--sl-pan);color:var(--sl-tx3);border:1px solid var(--sl-bd); cursor: pointer;} 
+    .sl-chip .on{background:var(--sl-bir2);border-color:var(--sl-bir2);color:#fff} 
+    
+    /* grid kartu 2 kolom */ 
+        /* grid kartu 2 kolom (Default) */ 
+    .sl-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 11px;
+      padding: 0 10px; /* Tambahan padding di kiri dan kanan */
+    } 
+
+.sl-kartu{display:block;background:var(--sl-pan);border:1px solid var(--sl-bd);border-radius:5px; overflow:hidden;padding-bottom:8px} 
+    .sl-kartu-gb{position:relative;background:var(--sl-kartu)} 
+    .sl-kartu-gb img{width:100%;aspect-ratio:3/4;object-fit:cover;height:auto} 
+    .sl-kartu:hover{border-color:var(--sl-bir)} 
+    .sl-b-eps{position:absolute;left:0;bottom:0;background:var(--sl-bir2);color:#fff; font:700 11px/1 Nunito,Arial;padding:5px 9px;border-radius:0 4px 0 0} 
+    .sl-kartu-j{margin:8px 9px 5px;font-size:13px;font-weight:700;color:var(--sl-tx2);line-height:1.35; display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden} 
+    .sl-meta{display:flex;flex-wrap:wrap;gap:8px;margin:0 9px;font-size:11px;color:var(--sl-tx3)} 
+    
+    /* daftar mendatar "Lagi Rame" */ 
+    .sl-daftar{display:grid;grid-template-columns:1fr;gap:9px} 
+    .sl-baris{display:grid;grid-template-columns:52px minmax(0,1fr);gap:11px;align-items:center; background:var(--sl-pan);border:1px solid var(--sl-bd);border-radius:5px;padding:9px} 
+    .sl-baris:hover{border-color:var(--sl-bir)} 
+    .sl-baris img{width:52px;aspect-ratio:3/4;object-fit:cover;border-radius:3px;height:auto} 
+    .sl-baris-j{margin:0 0 3px;font-size:12.5px;font-weight:700;color:var(--sl-tx2);line-height:1.35; display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden} 
+    .sl-baris-g,.sl-baris-n{margin:0;font-size:11px;color:var(--sl-tx3);line-height:1.55} 
+    
+    /* tombol berikutnya */ 
+    .sl-next{display:flex;gap:9px;justify-content:center;padding:16px 0 6px} 
+    .sl-next a, .sl-next button {background:var(--sl-bir2);border:none;color:#fff;font-weight:700;font-size:12.5px; padding:10px 22px;border-radius:4px;cursor:pointer;} 
+    .sl-next a:hover, .sl-next button:hover {filter:brightness(1.1)} 
+    /* halaman dalam (Sesuai Screenshot AnimeSail) */ 
+    .sl-judul{margin:14px 0 12px;font-size:17px;font-weight:700;color:var(--sl-tx2);line-height:1.4} 
+    .sl-sub{margin:20px 0 10px;font-size:14px;font-weight:700;color:var(--sl-tx2); border-left:3px solid var(--sl-bir);padding-left:9px} 
+    
+
+/* ==========================================
+   HALAMAN DALAM (SINGLE POST)
+   ========================================== */ 
+.sl-judul{margin:0 0 16px;font-size:18px;font-weight:700;color:var(--sl-tx2);line-height:1.4} 
+.sl-sub{margin:24px 0 12px;font-size:15px;font-weight:700;color:var(--sl-tx2); border-left:3px solid var(--sl-bir);padding-left:10px} 
+
+/* Kotak Info Utama */
+.sl-detail{display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px; background:var(--sl-pan);border:1px solid var(--sl-bd);border-radius:5px;padding:16px;margin:0 0 16px} 
+.sl-detail-po img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:4px;height:auto;margin:0!important;padding:0!important;border:none!important} 
+
+/* List Info Detail */
+.sl-detail-info{list-style:none!important;margin:0!important;padding:0!important;font-size:13px} 
+.sl-detail-info li{display:flex;gap:12px;padding:8px 0!important;margin:0!important;border-bottom:1px solid var(--sl-bd)} 
+.sl-detail-info li:last-child{border-bottom:0;padding-bottom:0!important} 
+.sl-detail-info li:first-child{padding-top:0!important}
+.sl-detail-info b{flex:0 0 70px;color:var(--sl-tx3);font-weight:400} 
+.sl-detail-info span{color:var(--sl-tx2);font-weight:700;word-break:break-word} 
+
+/* --- PEMBARUAN SINOPSIS --- */
+.sl-sinopsis {
+    margin: 0 0 14px;
+    padding: 13px 15px; /* Sedikit dilebarkan kiri-kanannya agar proporsional */
+    background: var(--sl-pan);
+    border: 1px solid var(--sl-bd); 
+    border-radius: 5px;
+    font-size: 13px;
+    line-height: 1.85; 
+    text-align: justify; 
+    color: var(--sl-tx); 
+    word-wrap: break-word; 
+}
+
+/* Mereset dorongan margin atas bawaan browser */
+.sl-sinopsis p {
+    margin-top: 0; /* Kunci untuk menghilangkan jarak jauh di bagian atas teks */
+    margin-bottom: 10px;
+}
+
+/* Menghilangkan margin pada paragraf terakhir agar jarak bawah pas */
+.sl-sinopsis p:last-child {
+    margin-bottom: 0;
+}
+
+/* Menghilangkan margin pada paragraf terakhir agar padding kotak tidak bocor */
+.sl-sinopsis p:last-child {
+    margin-bottom: 0;
+}
+
+/* Episode List */
+.sl-eplist{background:var(--sl-pan);border:1px solid var(--sl-bd);border-radius:5px; max-height:500px;overflow-y:auto;margin-bottom:16px} 
+.sl-ep{display:flex;align-items:center;justify-content:space-between;gap:10px; padding:12px 16px;border-bottom:1px solid var(--sl-bd);font-size:13px;font-weight:600;color:var(--sl-tx2);transition:background 0.2s} 
+.sl-ep:last-child{border-bottom:0} 
+.sl-ep:hover{background:#262626} 
+.sl-ep i{font-style:normal;background:var(--sl-bir2);color:#fff;padding:6px 14px; font-size:12px;font-weight:700;border-radius:4px;transition:filter 0.2s} 
+.sl-ep:hover i{filter:brightness(1.15)} 
+
+/* Tag & Genre */
+.sl-tag{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 16px} 
+.sl-tag a{background:var(--sl-pan);border:1px solid var(--sl-bd);color:var(--sl-tx); padding:7px 12px;font-size:12px;border-radius:4px} 
+.sl-tag a:hover,.sl-tag a.on{background:var(--sl-bir2);border-color:var(--sl-bir2);color:#fff} 
+
+/* Player Video Opsional */
+.sl-epnum a{min-width:40px;text-align:center;font-weight:700} 
+.sl-player{position:relative;width:100%;aspect-ratio:16/9;background:#000; border-radius:5px;overflow:hidden;margin:0 0 12px} 
+.sl-player iframe{position:absolute;inset:0;width:100%;height:100%;border:0} 
+.sl-navep{display:flex;gap:7px;margin:0 0 8px} 
+.sl-navep a{flex:1 1 0;min-width:0;text-align:center;background:var(--sl-pan);border:1px solid var(--sl-bd); color:var(--sl-tx2);padding:10px 7px;font-size:12px;font-weight:700;border-radius:4px; white-space:nowrap;overflow:hidden;text-overflow:ellipsis} 
+.sl-navep a.tengah{background:var(--sl-bir2);border-color:var(--sl-bir2);color:#fff} 
+.sl-kosong{padding:24px 10px;text-align:center;color:var(--sl-tx3);font-size:13px} 
+.sl-cari{display:flex;gap:8px;margin:14px 0} 
+.sl-cari input{flex:1;min-width:0;background:var(--sl-pan);border:1px solid var(--sl-bd); color:var(--sl-tx2);padding:10px 12px;font:inherit;font-size:13px;border-radius:4px;outline:none} 
+.sl-cari button{background:var(--sl-bir2);border:0;color:#fff;font-weight:700;padding:10px 18px; font-size:13px;border-radius:4px;cursor:pointer;font-family:inherit}
+
+
+    /* Wadah utama Detail */
+    .sl-detail{display:grid;grid-template-columns:110px minmax(0,1fr);gap:15px; background:var(--sl-pan);border:1px solid var(--sl-bd);border-radius:5px;padding:15px;margin:0 0 14px} 
+    .sl-detail-po img{width:100%;aspect-ratio:3/4;object-fit:cover;border-radius:4px;display:block;height:auto} 
+    
+    /* List Info (Tipe, Status, dll) */
+    .sl-detail-info{list-style:none;margin:0;padding:0;font-size:13px} 
+    .sl-detail-info li{display:flex;padding:7px 0;border-bottom:1px solid var(--sl-bd)} 
+    
+    /* Trik agar baris pertama mepet & sejajar persis dengan ujung atas foto */
+    .sl-detail-info li:first-child{padding-top:0} 
+    .sl-detail-info li:last-child{border-bottom:0;padding-bottom:0} 
+    
+    /* Lebar teks label (Tipe, Durasi) dibuat konsisten */
+    .sl-detail-info b{flex:0 0 85px;color:var(--sl-tx3);font-weight:400} 
+    .sl-detail-info span{flex:1;color:var(--sl-tx2);font-weight:600;word-break:break-word} 
+
+    /* kaki */ 
+    .sl-kaki{background:#0a0a0a;border-top:1px solid var(--sl-bd);margin-top:24px;padding:18px 12px;text-align:center} 
+    .sl-kaki-nav{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:0 0 11px} 
+    .sl-kaki-nav a{font-size:12.5px;color:var(--sl-tx)} 
+    .sl-kaki-nav a:hover{color:var(--sl-bir)} 
+    .sl-kaki-cp{margin:0 auto 6px;max-width:620px;font-size:11px;line-height:1.75;color:var(--sl-tx3)} 
+    
+    @media(min-width:760px){ 
+      .sl-grid{grid-template-columns:repeat(6,minmax(0,1fr))} 
+      .sl-daftar{grid-template-columns:repeat(2,minmax(0,1fr))} 
+      .sl-detail{grid-template-columns:180px minmax(0,1fr);gap:18px} 
+      .sl-detail-po img{width:180px} 
+      .sl-judul{font-size:22px} 
+    } 
+    /* ================== KOMENTAR ===================== */ 
+    .ai-comments{margin:16px 0} 
+    .ai-panel{background:rgba(127,127,127,.08);border:1px solid rgba(127,127,127,.22); border-radius:8px;padding:14px;margin:0 0 14px} 
+    .ai-head{font-size:16px;font-weight:800;margin:0 0 12px; padding:0 0 10px;border-bottom:1px solid rgba(127,127,127,.22)} 
+    .ai-head .dot{opacity:.55;margin:0 6px} 
+    .ai-clist{list-style:none;margin:0;padding:0} 
+    .ai-clist li{padding:12px 0;border-bottom:1px solid rgba(127,127,127,.18)} 
+    .ai-clist li:last-child{border-bottom:0} 
+    .ai-clist .comment-author,.ai-clist .fn{font-weight:700;font-size:14px} 
+    .ai-clist .comment-meta,.ai-clist time{display:block;font-size:12px;opacity:.65;margin:2px 0 6px} 
+    .ai-clist p{margin:0 0 8px;font-size:14px;line-height:1.6} 
+    .ai-clist .children{list-style:none;margin:10px 0 0 16px;padding:0 0 0 12px; border-left:2px solid rgba(127,127,127,.25)} 
+    .ai-creply a,.comment-reply-link{display:inline-block;font-size:12px;font-weight:600; padding:4px 10px;border:1px solid rgba(127,127,127,.35);border-radius:999px;opacity:.9} 
+    .ai-creply a:hover,.comment-reply-link:hover{opacity:1;border-color:currentColor} 
+    .ai-cnote{font-size:12px;opacity:.7;margin:0 0 10px} 
+    .comment-form{margin:0} 
+    .comment-form p{margin:0 0 10px} 
+    .comment-form label{display:block;font-size:12.5px;font-weight:600;margin:0 0 4px;opacity:.85} 
+    .comment-form input[type=text],.comment-form input[type=email], .comment-form input[type=url],.comment-form textarea{ width:100%;max-width:100%;box-sizing:border-box; background:rgba(127,127,127,.10);border:1px solid rgba(127,127,127,.28); border-radius:6px;padding:9px 11px;font:inherit;font-size:14px;color:inherit;outline:none} 
+    .comment-form input:focus,.comment-form textarea:focus{border-color:currentColor} 
+    .comment-form textarea{min-height:110px;resize:vertical} 
+    .comment-form .submit,.comment-form input[type=submit]{ background:currentColor;border:0;border-radius:6px;padding:10px 20px; font-weight:700;font-size:14px;cursor:pointer; color:transparent;text-shadow:0 0 0 rgba(0,0,0,.85)} 
+    .comment-form .submit:hover{filter:brightness(.92)} 
+    .ai-pagi{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin:12px 0 0} 
+    .ai-pagi a,.ai-pagi span{padding:6px 12px;border-radius:6px;font-size:13px; border:1px solid rgba(127,127,127,.3)} 
+    .ai-pagi .current{border-color:currentColor;font-weight:700} 
+    .ai-hp{position:absolute!important;left:-9999px!important;width:1px!important; height:1px!important;overflow:hidden!important} 
+    .ai-cbtn{display:inline-flex;align-items:center;justify-content:center; background:currentColor;border:0;border-radius:6px;padding:10px 20px; font-weight:700;font-size:14px;cursor:pointer; color:transparent;text-shadow:0 0 0 rgba(0,0,0,.85)} 
+    .ai-cbtn:hover{filter:brightness(.92)}
+    @media(max-width:520px){ .ai-panel{padding:12px} .ai-clist .children{margin-left:8px;padding-left:10px} } 
+.blog-pager{display:flex;gap:9px;justify-content:center;padding:16px 0 6px;clear:both}.blog-pager a{background:var(--sl-bir2);color:#fff;font-weight:700;font-size:12.5px;padding:10px 22px;border-radius:4px}.sl-top .section,.sl-top .widget,.sl-top .header-section{margin:0!important;padding:0!important}body#layout .sl-top{position:static!important;z-index:auto!important}.sl-logo img{max-height:40px;width:auto;object-fit:contain}@media (max-width:480px){.sl-grid{grid-template-columns:repeat(2,1fr)!important;gap:10px}}iframe#comment-editor{filter:invert(.85) hue-rotate(180deg) brightness(1.1);border:none!important}.comment-thread .comment-actions{display:flex!important;flex-direction:row!important;justify-content:flex-end!important;align-items:center!important;width:100%;margin-top:10px;gap:15px}.comment-thread .comment-actions a,.comment-thread .comment-actions span{display:inline-flex!important;align-items:center!important;margin:0!important;padding:0!important;line-height:normal!important}.comment-thread li .comment-block{border:1px solid #333!important;padding:15px!important;border-radius:8px!important;margin-bottom:0!important;background-color:#1a1a1a!important}.comment-thread .avatar-image-container{margin-right:15px!important;margin-top:0!important}.comment-thread .comment-header .comment-timestamp{font-size:11px!important;opacity:.8}.comment-thread .comment-header{align-items:baseline!important}.comment-thread li{padding-bottom:0!important;margin-bottom:12px!important}.comment-thread .comment-replies{margin-top:5px!important}.sl-player.video-player-container{position:relative;width:100%;aspect-ratio:16/9;background-color:#000;border-radius:6px;overflow:hidden}.sl-player.video-player-container iframe{width:100%;height:100%;border:none;display:block}.server-dropdown{position:absolute;top:15px;right:15px;z-index:10}.server-toggle-btn{background-color:rgb(30 30 30 / .3);color:#fff;padding:8px;display:flex;align-items:center;justify-content:center;border:1px solid rgb(255 255 255 / .1);border-radius:4px;cursor:pointer;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:all 0.3s ease;outline:none}.server-toggle-btn:hover,.server-dropdown.tampil .server-toggle-btn{background-color:rgb(50 50 50 / .6);border-color:rgb(255 255 255 / .3)}.server-list{display:none;position:absolute;top:100%;right:0;margin-top:8px;background-color:rgb(25 25 25 / .85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);min-width:130px;border-radius:6px;border:1px solid rgb(255 255 255 / .1);flex-direction:column;overflow:hidden;box-shadow:0 4px 12px rgb(0 0 0 / .5);z-index:11}.server-list.tampil{display:flex!important}.server-list a{color:#ddd;padding:10px 15px;text-decoration:none;font-size:13px;text-align:left;border-bottom:1px solid rgb(255 255 255 / .05);transition:background 0.2s ease,color 0.2s ease}.server-list a:hover{background-color:rgb(255 255 255 / .1);color:#fff}.server-list a:last-child{border-bottom:none}
+  ]]></b:skin>
+</b:if>
+  
+<b:if cond='data:view.isLayoutMode'>
+  <b:template-skin><![CDATA[
+    /* --- CSS For Layout: AnimeSail Clone --- */
+    body#layout,
+    body#layout div.section {
+      font-family: Nunito, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    
+    body#layout {
+      background-color: #f8f9fa;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      text-align: left;
+      max-width: 800px;
+      margin: 30px auto;
+      padding: 25px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    
+    /* Badge Identitas Dasbor */
+    body#layout:before {
+      content: "AnimeSail Clone — Tata Letak";
+      display: inline-block;
+      background: #209cee; /* Warna Biru Khas AnimeSail */
+      color: #ffffff;
+      border-radius: 5px;
+      font-size: 15px;
+      font-weight: 800;
+      margin: 0 0 25px;
+      padding: 10px 18px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    
+    /* Judul Setiap Section (Header, Main, Laci, dll) */
+    body#layout .section h4 {
+      font-size: 14px;
+      text-transform: uppercase;
+      margin: 0 0 10px 0;
+      color: #1f1f1f;
+      font-weight: 800;
+    }
+    
+    body#layout div.section {
+      background-color: transparent;
+      border: none;
+      max-width: 100%;
+      max-height: 100%;
+      padding: 0;
+      margin-bottom: 24px;
+    }
+    
+    /* Kotak Wadah Widget */
+    body#layout div.section > div {
+      border-radius: 6px;
+      overflow: hidden;
+      border: 2px dashed #cbd5e1;
+      background: #ffffff;
+      transition: all 0.2s ease;
+    }
+    
+    /* Efek saat area widget disorot */
+    body#layout div.section > div:hover {
+      border-color: #209cee;
+    }
+    
+    /* Tombol + Tambahkan Gadget */
+    body#layout .add_widget a {
+      color: #209cee;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 5px;
+    }
+    
+    body#layout .add_widget a:hover {
+      color: #0378c5; /* Biru gelap saat di-hover */
+    }
+    
+    body#layout ul,
+    body#layout ol {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+  ]]></b:template-skin>
+</b:if>
+
+  <script>
+  //<![CDATA[
+ 
+  class BloggerScript {
+    constructor(t = {}) { this._config = t; }
+    err(t) { return console.log(t), t; }
+
+    resizeImage(t, e = !1) {
+      if (!e) return t;
+      let r = /\/(s|w|h)\d{1,4}-((w|s|h)(\d{1,4})+-)?(c{1,2}|p-k-no-nu|rw)/gi,
+          s = /\=(s|w|h)\d{1,4}-((w|s|h)(\d{1,4})+-)?(c{1,2}|p-k-no-nu|rw)/gi,
+          n = /(\/(w|h|s)\d{1,4}\/)/gi,
+          i = /\=(w|h|s)\d{1,4}$/gi,
+          o = /\-(rw)$/.test(e);
+      return n.test(t) && (t = t.replace(n, "/s72-c/")), i.test(t) && (t = t.replace(i, "=s72-c")), o && (t = t.replace(/\.(gif|jpe?g|tiff?|png|bmp)$/, ".webp")), t.match(r) ? t.replace(r, `/${e}`) : t.match(s) ? t.replace(s, `=${e}`) : t;
+    }
+
+    getId(t) { return t.split("post-")[1]; }
+
+    getDefault(t) {
+      let e = ["published", "updated", "content", "summary", "title"], r = {};
+      return e.forEach(e => { e in t && (r[e] = t[e].$t); }), r;
+    }
+
+    getImage(t) {
+      let e = this._config.noImage ? this.resizeImage(this._config.noImage, this._config.sizeImage) : "";
+      if ("media$thumbnail" in t) return this.resizeImage(t.media$thumbnail.url, this._config.sizeImage);
+      if ("content" in t) {
+        let r = t.content.$t, s = r.indexOf("<img"), n = r.indexOf('src="', s), i = r.indexOf('"', n + 5), o = r.substr(n + 5, i - n - 5);
+        return -1 != s && -1 != n && -1 != i && "" != o ? o : e;
+      }
+      return e;
+    }
+
+    getFeed(t) {
+      let e = new Array();
+      if (t.feed && t.feed.entry) {
+        for (let r = 0; r < t.feed.entry.length; r++) {
+          const s = t.feed.entry[r];
+          let n = this.getDefault(s);
+          n.id = this.getId(s.id.$t);
+          n.link = s.link.find(t => "alternate" == t.rel).href;
+          n.image = this.getImage(s);
+          n.label = s.category ? s.category.map(t => t.term) : [];
+          e.push(n);
+        }
+      }
+      return e;
+    }
+
+    async fetchFeed(url, callback) {
+      try {
+        let response = await fetch(url);
+        let data = await response.json();
+        callback(data);
+      } catch (error) {
+        console.error("Gagal memuat feed:", error);
+        callback({});
+      }
+    }
+  }
+  //]]>
+  </script> 
+
+  </head>
+<body>
+  <!-- WRAPPER HEADER UTAMA -->
+  <header class='sl-top'>
+  
+    <b:section class='header-section' id='header-section' maxwidgets='1' showaddelement='no'>
+      <b:widget id='Header1' locked='true' title='AnimeSail (Header)' type='Header' version='2' visible='true'>
+        <b:widget-settings>
+          <b:widget-setting name='displayUrl'/>
+          <b:widget-setting name='displayHeight'>0</b:widget-setting>
+          <b:widget-setting name='sectionWidth'>150</b:widget-setting>
+          <b:widget-setting name='useImage'>false</b:widget-setting>
+          <b:widget-setting name='shrinkToFit'>false</b:widget-setting>
+          <b:widget-setting name='imagePlacement'>BEHIND</b:widget-setting>
+          <b:widget-setting name='displayWidth'>0</b:widget-setting>
+        </b:widget-settings>
+        <b:includable id='main'>
+          <!-- Bagian Atas / Logo & Pencarian -->
+          <div class='sl-top-in'>
+            <a class='sl-logo' expr:href='data:blog.homepageUrl'>
+             
+              <!-- Logika Pemanggilan Logo dari Tata Letak -->
+              <b:if cond='data:image'>
+                <!-- Menampilkan gambar logo jika diunggah di Tata Letak -->
+                <img expr:alt='data:title' expr:height='data:height' expr:src='data:image' expr:width='data:width' id='Header1_headerimg'/>
+              <b:else/>
+                <!-- Tampilan default (SVG & Teks) jika tidak ada gambar logo -->
+                <svg viewBox='0 0 24 24'><path d='M3 18h18l-2 3H5z'/><path d='M12 3v13'/><path d='M12 5l7 11H12z'/></svg>
+                <span><data:title/></span>
+              </b:if>
+
+            </a>
+
+            <!-- Form Pencarian -->
+            <form action='/search' class='sl-cari-atas' method='get'>
+              <input name='q' placeholder='Cari judul...' type='search'/>
+            </form>
+
+            <!-- Tombol Hamburger / Navigasi Mobile -->
+            <button aria-label='Buka Menu' class='sl-burger' id='sl-burger' type='button'>
+              <svg viewBox='0 0 24 24'>
+                <path d='M4 7h16M4 12h16M4 17h16'/>
+              </svg>
+            </button>
+        
+          </div>
+        </b:includable>
+        <b:includable id='behindImageStyle'>
+          <b:if cond='data:sourceUrl'>
+            <b:include cond='data:this.image' data='{ image: data:this.image, selector: &quot;.header-widget&quot; }' name='responsiveImageStyle'/>
+            <style type='text/css'>
+              .header-widget { background-position: <data:blog.locale.languageAlignment/>; background-repeat: no-repeat; background-size: cover; }
+            </style>
+          </b:if>
+        </b:includable>
+        <b:includable id='description'>
+          <div class='descriptionwrapper'>
+            <p class='description'><span><data:description/></span></p>
+          </div>
+        </b:includable>
+        <b:includable id='image'>
+          <a class='header-image-wrapper' expr:href='data:blog.homepageUrl'>
+            <b:include data='{ image: data:image, altText: data:blog.title.escaped, originalWidth: data:width, originalHeight: data:height }' name='responsiveImage'/>
+          </a>
+        </b:includable>
+        <b:includable id='title'>
+          <b:tag cond='data:blog.url != data:blog.homepageUrl' expr:href='data:blog.homepageUrl' name='a'>
+            <data:title/>
+          </b:tag>
+        </b:includable>
+      </b:widget>
+    </b:section>
+      <!-- WIDGET MENU LACI -->
+  <b:section class='laci-section' id='laci-section' maxwidgets='1' showaddelement='yes'>
+    <b:widget id='LinkList1' locked='false' title='Menu Laci' type='LinkList' version='2' visible='true'>
+      <b:widget-settings>
+        <b:widget-setting name='link-5'>/p/request.html</b:widget-setting>
+        <b:widget-setting name='link-3'>/p/genre.html</b:widget-setting>
+        <b:widget-setting name='link-4'>/p/jadwal.html</b:widget-setting>
+        <b:widget-setting name='text-1'>Daftar Anime</b:widget-setting>
+        <b:widget-setting name='text-0'>Beranda</b:widget-setting>
+        <b:widget-setting name='text-3'>Genre</b:widget-setting>
+        <b:widget-setting name='text-2'>Movie</b:widget-setting>
+        <b:widget-setting name='text-5'>Request</b:widget-setting>
+        <b:widget-setting name='text-4'>Jadwal</b:widget-setting>
+        <b:widget-setting name='sorting'>NONE</b:widget-setting>
+        <b:widget-setting name='link-1'>/p/daftar-anime.html</b:widget-setting>
+        <b:widget-setting name='link-2'>/p/movie.html</b:widget-setting>
+        <b:widget-setting name='link-0'>/</b:widget-setting>
+      </b:widget-settings>
+      <b:includable id='main'>
+        <nav class='sl-laci' id='sl-laci'>
+          <b:if cond='data:links'>
+            <b:loop values='data:links' var='link'>
+              <a expr:href='data:link.target'><data:link.name/></a>
+            </b:loop>
+          </b:if>
+        </nav>
+      </b:includable>
+      <b:includable id='content'>
+ <div class='widget-content'>
+   <ul>
+     <b:loop values='data:links' var='link'>
+       <li><a expr:href='data:link.target'><data:link.name/></a></li>
+     </b:loop>
+   </ul>
+ </div>
+</b:includable>
+    </b:widget>
+  </b:section>
+
+  </header>
+
+        
+        <!-- Main Section -->
+         
+    
+  <main class='sl-wrap'>  
+     <b:if cond='data:view.isHomepage'>
+      <section class='sl-sambut'>
+        <p>Selamat datang di <b>AnimeSail</b> &#8212; tempat nonton dan unduh anime subtitle Indonesia dengan koleksi lengkap dan pembaruan rutin.</p>
+        <p class='sl-sambut-kecil'>Simpan halaman ini agar tidak tertukar dengan situs tiruan.</p>
+      </section>
+
+      <div class='sl-kepala'>
+        <h1 class='sl-kepala-j'>Episode Terbaru</h1>
+        <div class='sl-chip'>
+          <a class='filter-tab on' data-label='Semua'>Semua</a>
+          <a class='filter-tab' data-label='Anime'>Anime</a>
+          <a class='filter-tab' data-label='Donghua'>Donghua</a>
+        </div>
+      </div>
+      
+      <div class='sl-grid' id='home-js-grid'>
+        <div class='sl-kosong'>Memuat data...</div>
+      </div>
+    </b:if>
+   
+    
+            <b:section class='main' id='main-content' showaddelement='no'>
+              <b:widget cond='!data:view.isHomepage' id='Blog1' locked='true' title='Postingan Blog' type='Blog' version='1'>
+                <b:widget-settings>
+                  <b:widget-setting name='commentLabel'>comments</b:widget-setting>
+                  <b:widget-setting name='showShareButtons'>true</b:widget-setting>
+                  <b:widget-setting name='authorLabel'>By</b:widget-setting>
+                  <b:widget-setting name='style.unittype'>TextAndImage</b:widget-setting>
+                  <b:widget-setting name='timestampLabel'>a la/s</b:widget-setting>
+                  <b:widget-setting name='reactionsLabel'/>
+                  <b:widget-setting name='showAuthorProfile'>false</b:widget-setting>
+                  <b:widget-setting name='style.layout'>1x1</b:widget-setting>
+                  <b:widget-setting name='showLocation'>false</b:widget-setting>
+                  <b:widget-setting name='showTimestamp'>true</b:widget-setting>
+                  <b:widget-setting name='postsPerAd'>3</b:widget-setting>
+                  <b:widget-setting name='style.bordercolor'>#ffffff</b:widget-setting>
+                  <b:widget-setting name='showDateHeader'>true</b:widget-setting>
+                  <b:widget-setting name='style.textcolor'>#ffffff</b:widget-setting>
+                  <b:widget-setting name='showCommentLink'>true</b:widget-setting>
+                  <b:widget-setting name='style.urlcolor'>#ffffff</b:widget-setting>
+                  <b:widget-setting name='postLocationLabel'>Location:</b:widget-setting>
+                  <b:widget-setting name='showAuthor'>false</b:widget-setting>
+                  <b:widget-setting name='style.linkcolor'>#ffffff</b:widget-setting>
+                  <b:widget-setting name='style.bgcolor'>#ffffff</b:widget-setting>
+                  <b:widget-setting name='showLabels'>true</b:widget-setting>
+                  <b:widget-setting name='postLabelsLabel'>Labels:</b:widget-setting>
+                  <b:widget-setting name='showBacklinks'>false</b:widget-setting>
+                  <b:widget-setting name='showInlineAds'>true</b:widget-setting>
+                  <b:widget-setting name='showReactions'>false</b:widget-setting>
+                </b:widget-settings>
+                <b:includable id='main'>
+  
+  <!-- ==============================================
+       1. TAMPILAN HALAMAN ERROR (404 NOT FOUND)
+       ============================================== -->
+  <b:if cond='data:view.isError'>
+    <div class='sl-error-wrap' style='margin-top: 10px; margin-bottom: 40px;'>
+      <h1 class='sl-judul'>Halaman Tidak Ditemukan</h1>
+      <div style='text-align: center; color: var(--sl-tx3); margin: 60px 0 30px; font-size: 13.5px; padding: 0 10px; line-height: 1.6;'>
+        Tautan yang kamu buka sudah berpindah atau tidak pernah ada.
+      </div>
+      <form action='/search' class='sl-cari' method='get'>
+        <input name='q' placeholder='Cari judul anime...' required='required' type='text'/>
+        <button aria-label='Cari' type='submit'>Cari</button>
+      </form>
+    </div>
+  </b:if>
+
+  <!-- ==============================================
+       2. TAMPILAN MULTIPLE ITEMS (BERANDA, PENCARIAN, LABEL)
+       ============================================== -->
+  <b:if cond='data:view.isMultipleItems'>
+    
+    <!-- Header Pencarian & Label -->
+    <b:if cond='data:view.isSearch'>
+      <div class='sl-header-search' style='margin-bottom: 20px; width: 100%;'>
+        <h2 style='font-size: 16px; color: var(--sl-tx2); border-left: 3px solid var(--sl-bir); padding-left: 10px; line-height: 1.5; margin:0;'>
+          <b:if cond='data:view.isLabelSearch'>
+            Label: <data:view.search.label/>
+          <b:else/>
+            Search &quot;<data:view.search.query/>&quot;
+          </b:if>
+        </h2>
+      </div>
+    </b:if>
+
+    <!-- Kondisi Jika Postingan Kosong -->
+    <b:if cond='data:posts.empty'>
+      <div style='text-align: center; padding: 50px 20px; background: var(--sl-pan); border-radius: 8px; border: 1px solid var(--sl-bd); margin-top: 20px;'>
+        <svg style='width:60px;height:60px;fill:var(--sl-tx3);margin-bottom:15px;' viewBox='0 0 24 24'>
+          <path d='M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'/>
+        </svg>
+        <h3 style='color: var(--sl-tx2); margin: 0 0 10px; font-size: 16px;'>Oops, Tidak Ditemukan!</h3>
+        <p style='color: var(--sl-tx3); font-size: 13.5px; margin: 0;'>Maaf, anime yang Anda cari tidak ada atau belum ditambahkan.</p>
+      </div>
+      
+    <!-- Menampilkan Daftar Postingan (Grid) -->
+    <b:else/>
+      <div id='search-result-grid'>
+        <div class='sl-grid'>
+          <b:loop values='data:posts' var='post'>
+            <a class='sl-kartu' expr:href='data:post.url'>
+              
+              <!-- Area Gambar Kartu (Thumbnail) -->
+              <div class='sl-kartu-gb'>
+                <b:if cond='data:post.featuredImage'>
+                  <img expr:alt='data:post.title' expr:src='resizeImage(data:post.featuredImage, 300, &quot;300:400&quot;)' loading='lazy'/>
+                <b:elseif cond='data:post.thumbnailUrl'/>
+                  <img expr:alt='data:post.title' expr:src='data:post.thumbnailUrl' loading='lazy'/>
+                <b:else/>
+                  <img expr:alt='data:post.title' loading='lazy' src='https://placehold.co/300x400/1e2230/8c93a8?text=No+Cover'/>
+                </b:if>
+                
+                <!-- Badge Episode -->
+                <b:loop values='data:post.labels' var='label'>
+                  <b:if cond='data:label.name contains &quot;Eps&quot; or data:label.name contains &quot;Episode&quot;'>
+                    <span class='sl-b-eps'><data:label.name/></span>
+                  </b:if>
+                </b:loop>
+              </div>
+              
+              <!-- Judul dan Meta Label -->
+              <h2 class='sl-kartu-j'><data:post.title/></h2>
+              <div class='sl-meta'>
+                <b:loop values='data:post.labels' var='label'>
+                  <b:if cond='data:label.name in {&quot;TV&quot;, &quot;Movie&quot;, &quot;OVA&quot;, &quot;ONA&quot;, &quot;Special&quot;, &quot;Donghua&quot;, &quot;Ongoing&quot;, &quot;Completed&quot;, &quot;Upcoming&quot;, &quot;Tamat&quot;, &quot;Selesai&quot;}'>
+                    <span><data:label.name/></span>
+                  </b:if>
+                </b:loop>
+              </div>
+              
+            </a>
+          </b:loop>
+        </div> 
+        <b:include name='nextprev'/>
+      </div>
+    </b:if>
+ 
+  <!-- ==============================================
+       3. TAMPILAN SINGLE ITEM (POSTINGAN / HALAMAN STATIS)
+       ============================================== -->
+  <b:else/>
+    <b:loop values='data:posts' var='post'>
+      
+      <!-- Judul Postingan -->
+      <b:if cond='data:view.isPost'>
+        <h1 class='sl-judul'><data:post.title/></h1>
+      </b:if>
+      
+      <!-- Konten Halaman Statis -->
+      <b:if cond='data:view.isPage'>
+        <div class='post-body'>
+          <data:post.body/>
+        </div>
+        
+      <!-- Konten Postingan Anime -->
+      <b:else/>
+        <article class='post-outer'>
+          
+          <!-- CSS Khusus Mode Detail & Streaming (Sudah Dirapikan) -->
+          <style id='jarvis-at-gaya'>
+            .sl-select-ep { width: 100%; padding: 9px 12px; background: var(--sl-pan); border: 1px solid var(--sl-bd); color: var(--sl-tx2); border-radius: 4px; margin-bottom: 14px; font: inherit; font-size: 13px; outline: none; font-weight: 700; cursor: pointer; }
+            .sl-select-ep:focus { border-color: var(--sl-bir); }
+            .sl-tag.sl-epnum a { justify-content: center; align-items: center; text-align: center; min-width: 36px; padding: 5px 8px; font-size: 11px; }
+            .jat-wrap { margin: 20px auto; clear: both; max-width: 1280px; padding: 0 10px; box-sizing: border-box; }
+            .jat-wrap &gt; h2 { font-size: 1.05rem; margin: 0 0 10px; line-height: 1.3; }
+            .jat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 10px; }
+            .jat-kartu { display: block; text-decoration: none; color: inherit; }
+            .jat-gbr { position: relative; display: block; width: 100%; aspect-ratio: 2/3; overflow: hidden; border-radius: 7px; background: rgba(128,128,128,.18); }
+            .jat-wrap .jat-gbr img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: 7px; }
+            .jat-eps { position: absolute; left: 5px; top: 5px; font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; background: rgba(0,0,0,.72); color: #fff; line-height: 1.5; }
+            .jat-jdl { display: block; margin-top: 6px; font-size: 12px; line-height: 1.35; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+            .jat-kartu:hover .jat-jdl { text-decoration: underline; }
+            @media (min-width: 900px) { .jat-grid { grid-template-columns: repeat(auto-fill, minmax(132px, 1fr)); } }
+          </style>
+
+          <!-- Detail Anime -->
+          <div id='mode-detail'>
+            <div class='sl-detail'>
+              <div class='sl-detail-po'>
+                <img decoding='async' expr:alt='data:post.title' fetchpriority='high' id='poster-image' src='https://placehold.co/300x400/1e2230/8c93a8?text=Memuat...'/>
+              </div>
+              <ul class='sl-detail-info' id='info-label-container'>
+                <li><b>Memuat Data...</b></li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Wadah Streaming -->
+          <div id='mode-streaming' style='display:none;'/>
+
+          <!-- Sinopsis -->
+          <h3 class='sl-sub'>Jalan Cerita</h3>
+          <p class='sl-sinopsis' id='sinopsis-container'>Memuat sinopsis...</p>
+
+          <!-- Daftar Episode -->
+          <div id='default-eplist-container'>
+            <h3 class='sl-sub'>Episode List</h3>
+            <div class='sl-eplist' id='eplist-container'>
+              <div class='sl-kosong'>Memuat episode...</div>
+            </div>
+          </div>
+
+          <!-- Rekomendasi / Anime Terkait -->
+          <section class='jat-wrap' id='related-anime-container' style='display:none;'>
+            <h2>Anime Terkait</h2>
+            <div class='jat-grid' id='related-anime-grid'/>
+          </section>
+
+          <!-- Tag Genre -->
+          <h3 class='sl-sub' id='genre-heading'>Genre</h3>
+          <div class='sl-tag' id='genre-container'>
+            <b:loop values='data:post.labels' var='label'>
+              <a class='genre-tag-item' expr:data-nama='data:label.name' expr:href='data:label.url'><data:label.name/></a>
+            </b:loop>
+          </div>
+
+          <!-- Konten Asli (Disembunyikan untuk diproses Script) -->
+          <div id='raw-post-content' style='display:none !important;'>
+            <data:post.body/>
+          </div>
+
+          <!-- Komentar -->
+          <b:include data='post' name='commentPicker'/>
+          
+        </article>
+      </b:if>
+    </b:loop>
+  </b:if>
+</b:includable>
+                <b:includable id='aboutPostAuthor'>
+  <div class='author-name'>
+    <a class='g-profile' expr:href='data:post.author.profileUrl' rel='author' title='author profile'>
+      <span>
+        <data:post.author.name/>
+      </span>
+    </a>
+  </div>
+  <div>
+    <span class='author-desc'>
+      <data:post.author.aboutMe/>
+    </span>
+  </div>
+</b:includable>
+                <b:includable id='addComments'>
+  <a expr:href='data:post.commentsUrl' expr:onclick='data:post.commentsUrlOnclick'>
+    <b:message name='messages.postAComment'/>
+  </a>
+</b:includable>
+                <b:includable id='backlinkDeleteIcon' var='backlink'/>
+                <b:includable id='backlinks' var='post'/>
+                <b:includable id='blogThisShare'>
+  <b:with value='&quot;window.open(this.href, \&quot;_blank\&quot;, \&quot;height=270,width=475\&quot;); return false;&quot;' var='onclick'>
+    <b:include name='platformShare'/>
+  </b:with>
+</b:includable>
+                <b:includable id='bylineByName' var='byline'>
+  <b:switch var='data:byline.name'>
+  <b:case value='share'/>
+    <b:include cond='data:post.shareUrl' name='postShareButtons'/>
+  <b:case value='comments'/>
+    <b:include cond='data:post.allowComments' name='postCommentsLink'/>
+  <b:case value='location'/>
+    <b:include cond='data:post.location' name='postLocation'/>
+  <b:case value='timestamp'/>
+    <b:include cond='not data:view.isPage' name='postTimestamp'/>
+  <b:case value='author'/>
+    <b:include name='postAuthor'/>
+  <b:case value='labels'/>
+    <b:include cond='data:post.labels' name='postLabels'/>
+  <b:case value='icons'/>
+    <b:include cond='data:post.emailPostUrl' name='emailPostIcon'/>
+  </b:switch>
+</b:includable>
+                <b:includable id='bylineRegion' var='regionItems'>
+  <b:loop values='data:regionItems' var='byline'>
+    <b:include data='byline' name='bylineByName'/>
+  </b:loop>
+</b:includable>
+                <b:includable id='comment-form' var='post'>
+  <div class='comment-form'>
+    <a name='comment-form'/>
+    <b:if cond='data:mobile'>
+      <h4 id='comment-post-message'>
+        <a expr:id='data:widget.instanceId + &quot;_comment-editor-toggle-link&quot;' href='javascript:void(0)'><data:postCommentMsg/></a></h4>
+      <p><data:blogCommentMessage/></p>
+      <data:blogTeamBlogMessage/>
+      <a expr:href='data:post.commentFormIframeSrc' id='comment-editor-src'/>
+      <iframe allowtransparency='true' class='blogger-iframe-colorize blogger-comment-from-post' expr:height='data:cmtIframeInitialHeight' frameborder='0' id='comment-editor' name='comment-editor' src='' style='display: none' width='100%'/>
+    <b:else/>
+      <h4 id='comment-post-message'><data:postCommentMsg/></h4>
+      <p><data:blogCommentMessage/></p>
+      <data:blogTeamBlogMessage/>
+      <a expr:href='data:post.commentFormIframeSrc' id='comment-editor-src'/>
+      <iframe allowtransparency='true' class='blogger-iframe-colorize blogger-comment-from-post' expr:height='data:cmtIframeInitialHeight' frameborder='0' id='comment-editor' name='comment-editor' src='' width='100%'/>
+    </b:if>
+    <data:post.cmtfpIframe/>
+    <script type='text/javascript'>
+      BLOG_CMT_createIframe(&#39;<data:post.appRpcRelayPath/>&#39;);
+    </script>
+  </div>
+</b:includable>
+                <b:includable id='commentAuthorAvatar'>
+  <div class='avatar-image-container'>
+    <img class='author-avatar' expr:src='data:comment.authorAvatarSrc' height='35' width='35'/>
+  </div>
+</b:includable>
+                <b:includable id='commentDeleteIcon' var='comment'>
+  <span expr:class='&quot;item-control &quot; + data:comment.adminClass'>
+    <b:if cond='data:showCmtPopup'>
+      <div class='goog-toggle-button'>
+        <div class='goog-inline-block comment-action-icon'/>
+      </div>
+    <b:else/>
+      <a class='comment-delete' expr:href='data:comment.deleteUrl' expr:title='data:top.deleteCommentMsg'>
+        <img src='https://resources.blogblog.com/img/icon_delete13.gif'/>
+      </a>
+    </b:if>
+  </span>
+</b:includable>
+                <b:includable id='commentForm' var='post'>
+  <div class='comment-form'>
+    <a name='comment-form'/>
+    <h4 id='comment-post-message'><data:messages.postAComment/></h4>
+    <b:if cond='data:this.messages.blogComment != &quot;&quot;'>
+      <p><data:this.messages.blogComment/></p>
+    </b:if>
+    <b:include data='post' name='commentFormIframeSrc'/>
+    <iframe allowtransparency='allowtransparency' class='blogger-iframe-colorize blogger-comment-from-post' expr:height='data:cmtIframeInitialHeight ?: &quot;90px&quot;' frameborder='0' id='comment-editor' name='comment-editor' src='' width='100%'/>
+    <data:post.cmtfpIframe/>
+    <script type='text/javascript'>
+      BLOG_CMT_createIframe(&#39;<data:post.appRpcRelayPath/>&#39;);
+    </script>
+  </div>
+</b:includable>
+                <b:includable id='commentFormIframeSrc' var='post'>
+  <a expr:href='data:post.commentFormIframeSrc' id='comment-editor-src'/>
+</b:includable>
+                <b:includable id='commentItem' var='comment'>
+  <div class='comment' expr:id='&quot;c&quot; + data:comment.id'>
+    <b:include cond='data:blog.enabledCommentProfileImages' name='commentAuthorAvatar'/>
+
+    <div class='comment-block'>
+      <div class='comment-author'>
+        <b:if cond='data:comment.authorUrl'>
+          <b:message name='messages.authorSaidWithLink'>
+            <b:param expr:value='data:comment.author' name='authorName'/>
+            <b:param expr:value='data:comment.authorUrl' name='authorUrl'/>
+          </b:message>
+        <b:else/>
+          <b:message name='messages.authorSaid'>
+            <b:param expr:value='data:comment.author' name='authorName'/>
+          </b:message>
+        </b:if>
+      </div>
+      <div expr:class='&quot;comment-body&quot; + (data:comment.isDeleted ? &quot; deleted&quot; : &quot;&quot;)'>
+        <data:comment.body/>
+      </div>
+      <div class='comment-footer'>
+        <span class='comment-timestamp'>
+          <a expr:href='data:comment.url' title='comment permalink'>
+            <data:comment.timestamp/>
+          </a>
+          <b:include data='comment' name='commentDeleteIcon'/>
+        </span>
+      </div>
+    </div>
+  </div>
+</b:includable>
+                <b:includable id='commentList' var='comments'>
+  <div id='comments-block'>
+    <b:loop values='data:comments' var='comment'>
+      <b:include data='comment' name='commentItem'/>
+    </b:loop>
+  </div>
+</b:includable>
+                <b:includable id='commentPicker' var='post'>
+  <b:if cond='data:post.showThreadedComments'>
+    <b:include data='post' name='threadedComments'/>
+  <b:else/>
+    <b:include data='post' name='comments'/>
+  </b:if>
+</b:includable>
+                <b:includable id='comment_count_picker' var='post'>
+  <a class='comment-link' expr:href='data:post.addCommentUrl' expr:onclick='data:post.addCommentOnclick'>
+    <data:post.commentLabelFull/>:
+  </a>
+</b:includable>
+                <b:includable id='comment_picker' var='post'>
+  <b:if cond='data:post.showThreadedComments'>
+    <b:include data='post' name='threaded_comments'/>
+  <b:else/>
+    <b:include data='post' name='comments'/>
+  </b:if>
+</b:includable>
+                <b:includable id='comments' var='post'>
+  <div class='comments' id='comments'>
+    <a name='comments'/>
+    <b:if cond='data:post.allowComments'>
+      <h4><data:post.commentLabelFull/>:</h4>
+
+      <b:if cond='data:post.commentPagingRequired'>
+        <span class='paging-control-container'>
+          <b:if cond='data:post.hasOlderLinks'>
+            <a expr:class='data:post.oldLinkClass' expr:href='data:post.oldestLinkUrl'><data:post.oldestLinkText/></a>
+              &#160;
+            <a expr:class='data:post.oldLinkClass' expr:href='data:post.olderLinkUrl'><data:post.olderLinkText/></a>
+              &#160;
+          </b:if>
+
+          <data:post.commentRangeText/>
+
+          <b:if cond='data:post.hasNewerLinks'>
+            &#160;
+            <a expr:class='data:post.newLinkClass' expr:href='data:post.newerLinkUrl'><data:post.newerLinkText/></a>
+            &#160;
+            <a expr:class='data:post.newLinkClass' expr:href='data:post.newestLinkUrl'><data:post.newestLinkText/></a>
+          </b:if>
+        </span>
+      </b:if>
+
+      <div expr:id='data:widget.instanceId + &quot;_comments-block-wrapper&quot;'>
+        <dl expr:class='data:post.avatarIndentClass' id='comments-block'>
+          <b:loop values='data:post.comments' var='comment'>
+            <dt expr:class='&quot;comment-author &quot; + data:comment.authorClass' expr:id='data:comment.anchorName'>
+              <b:if cond='data:comment.favicon'>
+                <img expr:src='data:comment.favicon' height='16px' style='margin-bottom:-2px;' width='16px'/>
+              </b:if>
+              <a expr:name='data:comment.anchorName'/>
+              <b:if cond='data:blog.enabledCommentProfileImages'>
+                <data:comment.authorAvatarImage/>
+              </b:if>
+              <b:if cond='data:comment.authorUrl'>
+                <a expr:href='data:comment.authorUrl' rel='nofollow'><data:comment.author/></a>
+              <b:else/>
+                <data:comment.author/>
+              </b:if>
+              <data:commentPostedByMsg/>
+            </dt>
+            <dd class='comment-body' expr:id='data:widget.instanceId + data:comment.cmtBodyIdPostfix'>
+              <b:if cond='data:comment.isDeleted'>
+                <span class='deleted-comment'><data:comment.body/></span>
+              <b:else/>
+                <p>
+                  <data:comment.body/>
+                </p>
+              </b:if>
+            </dd>
+            <dd class='comment-footer'>
+              <span class='comment-timestamp'>
+                <a expr:href='data:comment.url' title='comment permalink'>
+                  <data:comment.timestamp/>
+                </a>
+                <b:include data='comment' name='commentDeleteIcon'/>
+              </span>
+            </dd>
+          </b:loop>
+        </dl>
+      </div>
+
+      <b:if cond='data:post.commentPagingRequired'>
+        <span class='paging-control-container'>
+          <a expr:class='data:post.oldLinkClass' expr:href='data:post.oldestLinkUrl'>
+            <data:post.oldestLinkText/>
+          </a>
+          <a expr:class='data:post.oldLinkClass' expr:href='data:post.olderLinkUrl'>
+            <data:post.olderLinkText/>
+          </a>
+          &#160;
+          <data:post.commentRangeText/>
+          &#160;
+          <a expr:class='data:post.newLinkClass' expr:href='data:post.newerLinkUrl'>
+            <data:post.newerLinkText/>
+          </a>
+          <a expr:class='data:post.newLinkClass' expr:href='data:post.newestLinkUrl'>
+            <data:post.newestLinkText/>
+          </a>
+        </span>
+      </b:if>
+
+      <p class='comment-footer'>
+        <b:if cond='data:post.embedCommentForm'>
+          <b:if cond='data:post.allowNewComments'>
+            <b:include data='post' name='comment-form'/>
+          <b:else/>
+            <data:post.noNewCommentsText/>
+          </b:if>
+        <b:elseif cond='data:post.allowComments'/>
+          <a expr:href='data:post.addCommentUrl' expr:onclick='data:post.addCommentOnclick'><data:postCommentMsg/></a>
+        </b:if>
+      </p>
+    </b:if>
+    <b:if cond='data:showCmtPopup'>
+      <div id='comment-popup'>
+        <iframe allowtransparency='true' frameborder='0' id='comment-actions' name='comment-actions' scrolling='no'>
+        </iframe>
+      </div>
+    </b:if>
+
+  </div>
+</b:includable>
+                <b:includable id='commentsLink'>
+  <a class='comment-link' expr:href='data:post.commentsUrl' expr:onclick='data:post.commentsUrlOnclick'>
+    <b:if cond='data:post.numberOfComments &gt; 0'>
+      <b:message name='messages.numberOfComments'>
+        <b:param expr:value='data:post.numberOfComments' name='numComments'/>
+      </b:message>
+    <b:else/>
+      <data:messages.postAComment/>
+    </b:if>
+  </a>
+</b:includable>
+                <b:includable id='commentsLinkIframe'>
+  <!-- G+ comments, no longer available. The includable is retained for backwards-compatibility. -->
+</b:includable>
+                <b:includable id='commentsTitle'>
+  <h3 class='title'><data:messages.comments/></h3>
+</b:includable>
+                <b:includable id='defaultAdUnit'>
+  <ins class='adsbygoogle' data-ad-format='auto' expr:data-ad-client='data:adClientId ?: data:blog.adsenseClientId' expr:data-ad-host='data:blog.adsenseHostId' expr:style='data:style ?: &quot;display: block;&quot;'>
+    <b:attr cond='not data:blog.analytics4' expr:value='data:blog.analyticsAccountNumber' name='data-analytics-uacct'/>
+  </ins>
+  <script>
+   (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
+</b:includable>
+                <b:includable id='emailPostIcon'>
+  <span class='byline post-icons'>
+    <!-- email post links -->
+    <span class='item-action'>
+      <a expr:href='data:post.emailPostUrl' expr:title='data:messages.emailPost'>
+        <b:include data='{ iconClass: &quot;touch-icon sharing-icon&quot; }' name='emailIcon'/>
+      </a>
+    </span>
+  </span>
+</b:includable>
+                <b:includable id='facebookShare'>
+  <b:with value='&quot;window.open(this.href, \&quot;_blank\&quot;, \&quot;height=430,width=640\&quot;); return false;&quot;' var='onclick'>
+    <b:include name='platformShare'/>
+  </b:with>
+</b:includable>
+                <b:includable id='feedLinks'>
+  <b:if cond='data:blog.pageType != &quot;item&quot;'> <!-- Blog feed links -->
+    <b:if cond='data:feedLinks'>
+      <div class='blog-feeds'>
+        <b:include data='feedLinks' name='feedLinksBody'/>
+      </div>
+    </b:if>
+
+  <b:else/> <!--Post feed links -->
+    <div class='post-feeds'>
+      <b:loop values='data:posts' var='post'>
+        <b:include cond='data:post.allowComments and data:post.feedLinks' data='post.feedLinks' name='feedLinksBody'/>
+      </b:loop>
+    </div>
+  </b:if>
+</b:includable>
+                <b:includable id='feedLinksBody' var='links'>
+  <div class='feed-links'>
+  <data:feedLinksMsg/>
+  <b:loop values='data:links' var='f'>
+     <a class='feed-link' expr:href='data:f.url' expr:type='data:f.mimeType' target='_blank'><data:f.name/> (<data:f.feedType/>)</a>
+  </b:loop>
+  </div>
+</b:includable>
+                <b:includable id='footerBylines'>
+  <b:if cond='data:widgets.Blog.first.footerBylines'>
+    <b:loop index='i' values='data:widgets.Blog.first.footerBylines' var='region'>
+      <b:if cond='not data:region.items.empty'>
+        <div expr:class='&quot;post-footer-line post-footer-line-&quot; + (data:i + 1)'>
+          <b:with value='&quot;footer-&quot; + (data:i + 1)' var='regionName'>
+            <b:include data='region.items' name='bylineRegion'/>
+          </b:with>
+        </div>
+      </b:if>
+    </b:loop>
+  </b:if>
+</b:includable>
+                <b:includable id='googlePlusShare'>
+</b:includable>
+                <b:includable id='headerByline'>
+  <b:if cond='data:widgets.Blog.first.headerByline'>
+    <div class='post-header'>
+      <div class='post-header-line-1'>
+        <b:with value='&quot;header-1&quot;' var='regionName'>
+          <b:include data='data:widgets.Blog.first.headerByline.items' name='bylineRegion'/>
+        </b:with>
+      </div>
+    </div>
+  </b:if>
+</b:includable>
+                <b:includable id='homePageLink'>
+  <a class='home-link' expr:href='data:blog.homepageUrl'>
+    <data:messages.home/>
+  </a>
+</b:includable>
+                <b:includable id='iframeComments' var='post'>
+  <!-- G+ comments, no longer available. The includable is retained for backwards-compatibility. -->
+</b:includable>
+                <b:includable id='iframe_comments' var='post'>
+  <!-- G+ comments, no longer available. The includable is retained for backwards-compatibility. -->
+</b:includable>
+                <b:includable id='inlineAd' var='post'>
+  <b:if cond='!data:view.isPreview'>
+    <b:if cond='data:this.adCode or data:this.adClientId or data:blog.adsenseClientId'>
+      <!-- Ad -->
+      <div class='inline-ad'>
+        <b:if cond='data:this.adCode != &quot;&quot;'>
+          <data:this.adCode/>
+        <b:else/>
+          <b:include cond='data:this.adClientId or data:blog.adsenseClientId' name='defaultAdUnit'/>
+        </b:if>
+      </div>
+    </b:if>
+  <b:else/>
+    <div class='inline-ad'>
+      <div class='inline-ad-placeholder'>
+        <span><b:message name='messages.adsGoHere'/></span>
+      </div>
+    </div>
+  </b:if>
+</b:includable>
+                <b:includable id='linkShare'>
+  <b:with value='&quot;window.prompt(\&quot;Copy to clipboard: Ctrl+C, Enter\&quot;, \&quot;&quot; + data:originalUrl + &quot;\&quot;); return false;&quot;' var='onclick'>
+    <b:include name='platformShare'/>
+  </b:with>
+</b:includable>
+                <b:includable id='mobile-index-post' var='post'>
+  <div class='mobile-date-outer date-outer'>
+    <b:if cond='data:post.dateHeader'>
+      <div class='date-header'>
+        <span><data:post.dateHeader/></span>
+      </div>
+    </b:if>
+
+    <div class='mobile-post-outer'>
+      <a expr:href='data:post.url'>
+        <h3 class='mobile-index-title entry-title' itemprop='name'>
+          <data:post.title/>
+        </h3>
+
+        <div class='mobile-index-arrow'>&amp;rsaquo;</div>
+
+        <div class='mobile-index-contents'>
+          <b:if cond='data:post.thumbnailUrl'>
+            <div class='mobile-index-thumbnail'>
+              <div class='Image'>
+                <img expr:src='data:post.thumbnailUrl'/>
+              </div>
+            </div>
+          </b:if>
+
+          <div class='post-body'>
+            <b:if cond='data:post.snippet'><data:post.snippet/></b:if>
+          </div>
+        </div>
+
+        <div style='clear: both;'/>
+      </a>
+
+      <div class='mobile-index-comment'>
+        <b:include cond='data:blog.pageType != &quot;static_page&quot;                          and data:post.allowComments                          and data:post.numComments != 0' data='post' name='comment_count_picker'/>
+      </div>
+    </div>
+  </div>
+</b:includable>
+                <b:includable id='mobile-main' var='top'>
+    <!-- posts -->
+    <div class='blog-posts hfeed'>
+
+      <b:include data='top' name='status-message'/>
+
+      <b:if cond='data:blog.pageType == &quot;index&quot;'>
+        <b:loop values='data:posts' var='post'>
+          <b:include data='post' name='mobile-index-post'/>
+        </b:loop>
+      <b:else/>
+        <b:loop values='data:posts' var='post'>
+          <b:include data='post' name='mobile-post'/>
+        </b:loop>
+      </b:if>
+    </div>
+
+   <b:include name='mobile-nextprev'/>
+</b:includable>
+                <b:includable id='mobile-nextprev'>
+  <div class='blog-pager' id='blog-pager'>
+    <b:if cond='data:newerPageUrl'>
+      <div class='mobile-link-button' id='blog-pager-newer-link'>
+      <a class='blog-pager-newer-link' expr:href='data:newerPageUrl' expr:id='data:widget.instanceId + &quot;_blog-pager-newer-link&quot;' expr:title='data:newerPageTitle'>&amp;lsaquo;</a>
+      </div>
+    </b:if>
+
+    <b:if cond='data:olderPageUrl'>
+      <div class='mobile-link-button' id='blog-pager-older-link'>
+      <a class='blog-pager-older-link' expr:href='data:olderPageUrl' expr:id='data:widget.instanceId + &quot;_blog-pager-older-link&quot;' expr:title='data:olderPageTitle'>&amp;rsaquo;</a>
+      </div>
+    </b:if>
+
+    <div class='mobile-link-button' id='blog-pager-home-link'>
+    <a class='home-link' expr:href='data:blog.homepageUrl'><data:homeMsg/></a>
+    </div>
+
+    <div class='mobile-desktop-link'>
+      <a class='home-link' expr:href='data:desktopLinkUrl'><data:desktopLinkMsg/></a>
+    </div>
+
+  </div>
+  <div class='clear'/>
+</b:includable>
+                <b:includable id='mobile-post' var='post'>
+  <div class='date-outer'>
+    <b:if cond='data:post.dateHeader'>
+      <h2 class='date-header'><span><data:post.dateHeader/></span></h2>
+    </b:if>
+    <div class='date-posts'>
+      <div class='post-outer'>
+
+        <div class='post hentry uncustomized-post-template' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+          <b:if cond='data:post.thumbnailUrl'>
+            <meta expr:content='data:post.thumbnailUrl' itemprop='image_url'/>
+          </b:if>
+          <meta expr:content='data:blog.blogId' itemprop='blogId'/>
+          <meta expr:content='data:post.id' itemprop='postId'/>
+
+          <a expr:name='data:post.id'/>
+          <b:if cond='data:post.title'>
+            <h3 class='post-title entry-title' itemprop='name'>
+              <b:if cond='data:post.link'>
+                <a expr:href='data:post.link'><data:post.title/></a>
+              <b:elseif cond='data:post.url and data:blog.url != data:post.url'/>
+                <a expr:href='data:post.url'><data:post.title/></a>
+              <b:else/>
+                <data:post.title/>
+              </b:if>
+            </h3>
+          </b:if>
+
+          <div class='post-header'>
+            <div class='post-header-line-1'/>
+          </div>
+
+          <div class='post-body entry-content' expr:id='&quot;post-body-&quot; + data:post.id' itemprop='articleBody'>
+            <data:post.body/>
+            <div style='clear: both;'/> <!-- clear for photos floats -->
+          </div>
+
+          <div class='post-footer'>
+            <div class='post-footer-line post-footer-line-1'>
+              <span class='post-author vcard'>
+                <b:if cond='data:top.showAuthor'>
+                  <b:if cond='data:post.authorProfileUrl'>
+                    <span class='fn' itemprop='author' itemscope='itemscope' itemtype='http://schema.org/Person'>
+                      <meta expr:content='data:post.authorProfileUrl' itemprop='url'/>
+                      <a expr:href='data:post.authorProfileUrl' rel='author' title='author profile'>
+                        <span itemprop='name'><data:post.author/></span>
+                      </a>
+                    </span>
+                  <b:else/>
+                    <span class='fn' itemprop='author' itemscope='itemscope' itemtype='http://schema.org/Person'>
+                      <span itemprop='name'><data:post.author/></span>
+                    </span>
+                  </b:if>
+                </b:if>
+              </span>
+
+              <span class='post-timestamp'>
+                <b:if cond='data:top.showTimestamp'>
+                  <data:top.timestampLabel/>
+                  <b:if cond='data:post.url'>
+                    <meta expr:content='data:post.url.canonical' itemprop='url'/>
+                    <a class='timestamp-link' expr:href='data:post.url' rel='bookmark' title='permanent link'><abbr class='published' expr:title='data:post.timestampISO8601' itemprop='datePublished'><data:post.timestamp/></abbr></a>
+                  </b:if>
+                </b:if>
+              </span>
+
+              <span class='post-comment-link'>
+                <b:include cond='data:blog.pageType not in {&quot;item&quot;,&quot;static_page&quot;}                                  and data:post.allowComments' data='post' name='comment_count_picker'/>
+              </span>
+            </div>
+
+            <div class='post-footer-line post-footer-line-2'>
+              <b:if cond='data:top.showMobileShare'>
+                <div class='mobile-link-button goog-inline-block' id='mobile-share-button'>
+                  <a href='javascript:void(0);'><data:shareMsg/></a>
+                </div>
+              </b:if>
+            </div>
+
+          </div>
+        </div>
+
+        <b:include cond='data:blog.pageType in {&quot;static_page&quot;,&quot;item&quot;}' data='post' name='comment_picker'/>
+      </div>
+    </div>
+  </div>
+</b:includable>
+                <b:includable id='nextPageLink'>
+  <a class='blog-pager-older-link' expr:href='data:olderPageUrl' expr:id='data:widget.instanceId + &quot;_blog-pager-older-link&quot;' expr:title='data:messages.olderPosts'>
+    <data:messages.olderPosts/>
+  </a>
+</b:includable>
+                <b:includable id='nextprev'>
+  <div class='blog-pager' id='blog-pager'>
+    <b:if cond='data:newerPageUrl'>
+      <span id='blog-pager-newer-link'>
+      <a class='blog-pager-newer-link' expr:href='data:newerPageUrl' expr:id='data:widget.instanceId + &quot;_blog-pager-newer-link&quot;' expr:title='data:newerPageTitle'><data:newerPageTitle/></a>
+      </span>
+    </b:if>
+
+    <b:if cond='data:olderPageUrl'>
+      <span id='blog-pager-older-link'>
+      <a class='blog-pager-older-link' expr:href='data:olderPageUrl' expr:id='data:widget.instanceId + &quot;_blog-pager-older-link&quot;' expr:title='data:olderPageTitle'><data:olderPageTitle/></a>
+      </span>
+    </b:if>
+
+    <a class='home-link' expr:href='data:blog.homepageUrl'><data:homeMsg/></a>
+
+    <b:if cond='data:mobileLinkUrl'>
+      <div class='blog-mobile-link'>
+        <a expr:href='data:mobileLinkUrl'><data:mobileLinkMsg/></a>
+      </div>
+    </b:if>
+
+  </div>
+  <div class='clear'/>
+</b:includable>
+                <b:includable id='otherSharingButton'>
+  <span class='sharing-platform-button sharing-element-other' expr:aria-label='data:messages.shareToOtherApps.escaped' expr:data-url='data:originalUrl' expr:title='data:messages.shareToOtherApps.escaped' role='menuitem' tabindex='-1'>
+    <b:with value='{key: &quot;sharingOther&quot;}' var='platform'>
+      <b:include name='sharingPlatformIcon'/>
+    </b:with>
+    <span class='platform-sharing-text'><data:messages.shareOtherApps.escaped/></span>
+  </span>
+</b:includable>
+                <b:includable id='platformShare'>
+  <a expr:class='&quot;goog-inline-block sharing-&quot; + data:platform.key' expr:data-url='data:originalUrl' expr:href='data:shareUrl + &quot;&amp;target=&quot; + data:platform.target' expr:onclick='data:onclick ? data:onclick : &quot;&quot;' expr:title='data:platform.shareMessage' target='_blank'>
+    <span class='share-button-link-text'>
+      <data:platform.shareMessage/>
+    </span>
+  </a>
+</b:includable>
+                <b:includable id='post' var='post'>
+  <div class='post hentry uncustomized-post-template' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+    <b:if cond='data:post.firstImageUrl'>
+      <meta expr:content='data:post.firstImageUrl' itemprop='image_url'/>
+    </b:if>
+    <meta expr:content='data:blog.blogId' itemprop='blogId'/>
+    <meta expr:content='data:post.id' itemprop='postId'/>
+
+    <a expr:name='data:post.id'/>
+    <b:if cond='data:post.title'>
+      <h3 class='post-title entry-title' itemprop='name'>
+      <b:if cond='data:post.link or (data:post.url and data:blog.url != data:post.url)'>
+        <a expr:href='data:post.link ? data:post.link : data:post.url'><data:post.title/></a>
+      <b:else/>
+        <data:post.title/>
+      </b:if>
+      </h3>
+    </b:if>
+
+    <div class='post-header'>
+    <div class='post-header-line-1'/>
+    </div>
+
+    <!-- Then use the post body as the schema.org description, for good G+/FB snippeting. -->
+    <div class='post-body entry-content' expr:id='&quot;post-body-&quot; + data:post.id' expr:itemprop='(data:blog.metaDescription ? &quot;&quot; : &quot;description &quot;) + &quot;articleBody&quot;'>
+      <data:post.body/>
+      <div style='clear: both;'/> <!-- clear for photos floats -->
+    </div>
+
+    <b:if cond='data:post.hasJumpLink'>
+      <div class='jump-link'>
+        <a expr:href='data:post.url + &quot;#more&quot;' expr:title='data:post.title'><data:post.jumpText/></a>
+      </div>
+    </b:if>
+
+    <div class='post-footer'>
+    <div class='post-footer-line post-footer-line-1'>
+      <span class='post-author vcard'>
+        <b:if cond='data:top.showAuthor'>
+          <data:top.authorLabel/>
+            <b:if cond='data:post.authorProfileUrl'>
+              <span class='fn' itemprop='author' itemscope='itemscope' itemtype='http://schema.org/Person'>
+                <meta expr:content='data:post.authorProfileUrl' itemprop='url'/>
+                <a class='g-profile' expr:href='data:post.authorProfileUrl' rel='author' title='author profile'>
+                  <span itemprop='name'><data:post.author/></span>
+                </a>
+              </span>
+            <b:else/>
+              <span class='fn' itemprop='author' itemscope='itemscope' itemtype='http://schema.org/Person'>
+                <span itemprop='name'><data:post.author/></span>
+              </span>
+            </b:if>
+        </b:if>
+      </span>
+
+      <span class='post-timestamp'>
+        <b:if cond='data:top.showTimestamp'>
+          <data:top.timestampLabel/>
+          <b:if cond='data:post.url'>
+            <meta expr:content='data:post.url.canonical' itemprop='url'/>
+            <a class='timestamp-link' expr:href='data:post.url' rel='bookmark' title='permanent link'><abbr class='published' expr:title='data:post.timestampISO8601' itemprop='datePublished'><data:post.timestamp/></abbr></a>
+          </b:if>
+        </b:if>
+      </span>
+
+      <span class='post-comment-link'>
+        <b:include cond='data:blog.pageType not in {&quot;item&quot;,&quot;static_page&quot;}                          and data:post.allowComments' data='post' name='comment_count_picker'/>
+      </span>
+
+      <span class='post-icons'>
+        <!-- email post links -->
+        <b:if cond='data:post.emailPostUrl'>
+          <span class='item-action'>
+          <a expr:href='data:post.emailPostUrl' expr:title='data:top.emailPostMsg'>
+            <img alt='' class='icon-action' height='13' src='https://resources.blogblog.com/img/icon18_email.gif' width='18'/>
+          </a>
+          </span>
+        </b:if>
+
+        <!-- quickedit pencil -->
+        <b:include data='post' name='postQuickEdit'/>
+      </span>
+
+      <!-- share buttons -->
+      <div class='post-share-buttons goog-inline-block'>
+        <b:include cond='data:post.sharePostUrl' data='post' name='shareButtons'/>
+      </div>
+
+      </div>
+
+      <div class='post-footer-line post-footer-line-2'>
+      <span class='post-labels'>
+        <b:if cond='data:top.showPostLabels and data:post.labels'>
+          <data:postLabelsLabel/>
+          <b:loop values='data:post.labels' var='label'>
+            <a expr:href='data:label.url' rel='tag'><data:label.name/></a><b:if cond='not data:label.isLast'>,</b:if>
+          </b:loop>
+        </b:if>
+      </span>
+      </div>
+
+      <div class='post-footer-line post-footer-line-3'>
+      <span class='post-location'>
+        <b:if cond='data:top.showLocation and data:post.location'>
+          <data:postLocationLabel/>
+          <a expr:href='data:post.location.mapsUrl' target='_blank'><data:post.location.name/></a>
+        </b:if>
+      </span>
+      </div>
+      <b:if cond='data:post.authorAboutMe'>
+        <div class='author-profile' itemprop='author' itemscope='itemscope' itemtype='http://schema.org/Person'>
+          <b:if cond='data:post.authorPhoto.url'>
+            <img expr:src='data:post.authorPhoto.url' itemprop='image' width='50px'/>
+          </b:if>
+          <div>
+            <a class='g-profile' expr:href='data:post.authorProfileUrl' itemprop='url' rel='author' title='author profile'>
+              <span itemprop='name'><data:post.author/></span>
+            </a>
+          </div>
+          <span itemprop='description'><data:post.authorAboutMe/></span>
+        </div>
+      </b:if>
+    </div>
+  </div>
+</b:includable>
+                <b:includable id='postAuthor'>
+  <span class='byline post-author vcard'>
+    <span class='post-author-label'>
+      <data:byline.label/>
+    </span>
+    <span class='fn'>
+      <b:if cond='data:post.author.profileUrl'>
+        <meta expr:content='data:post.author.profileUrl'/>
+        <a class='g-profile' expr:href='data:post.author.profileUrl' rel='author' title='author profile'>
+          <span><data:post.author.name/></span>
+        </a>
+      <b:else/>
+        <span><data:post.author.name/></span>
+      </b:if>
+    </span>
+  </span>
+</b:includable>
+                <b:includable id='postBody' var='post'>
+  <!-- If metaDescription is empty, use the post body as the schema.org description too, for G+/FB snippeting. -->
+  <div class='post-body entry-content float-container' expr:id='&quot;post-body-&quot; + data:post.id'>
+    <data:post.body/>
+  </div>
+</b:includable>
+                <b:includable id='postBodySnippet' var='post'>
+  <b:include data='post' name='postBody'/>
+</b:includable>
+                <b:includable id='postCommentsAndAd' var='post'>
+  <article class='post-outer-container'>
+    <!-- Post title and body -->
+    <div class='post-outer'>
+      <b:include data='post' name='post'/>
+    </div>
+
+    <!-- Comments -->
+    <b:include cond='data:view.isSingleItem' data='post' name='commentPicker'/>
+
+    <!-- Show ad inside post container, after comments, if single item. -->
+    <b:include cond='data:view.isSingleItem and data:post.includeAd' data='post' name='inlineAd'/>
+  </article>
+
+  <!-- Show ad outside post container (between posts) for feed pages. -->
+  <b:include cond='data:view.isMultipleItems and data:post.includeAd' data='post' name='inlineAd'/>
+</b:includable>
+                <b:includable id='postCommentsLink'>
+  <b:if cond='data:view.isMultipleItems'>
+    <span class='byline post-comment-link container'>
+      <b:include cond='data:post.commentSource != 1' name='commentsLink'/>
+    </span>
+  </b:if>
+</b:includable>
+                <b:includable id='postFooter' var='post'>
+  <div class='post-footer'>
+    <b:include name='footerBylines'/>
+    <b:include data='post' name='postFooterAuthorProfile'/>
+  </div>
+</b:includable>
+                <b:includable id='postFooterAuthorProfile' var='post'>
+  <b:if cond='data:post.author.aboutMe and data:view.isPost'>
+    <div class='author-profile'>
+      <b:if cond='data:post.author.authorPhoto.url'>
+        <img class='author-image' expr:src='data:post.author.authorPhoto.url' width='50px'/>
+        <div class='author-about'>
+          <b:include data='post' name='aboutPostAuthor'/>
+        </div>
+      <b:else/>
+        <b:include data='post' name='aboutPostAuthor'/>
+      </b:if>
+    </div>
+  </b:if>
+</b:includable>
+                <b:includable id='postHeader' var='post'>
+  <b:include name='headerByline'/>
+</b:includable>
+                <b:includable id='postJumpLink' var='post'>
+  <div class='jump-link flat-button'>
+    <a expr:href='data:post.url fragment &quot;more&quot;' expr:title='data:post.title'>
+      <b:eval expr='data:blog.jumpLinkMessage'/>
+    </a>
+  </div>
+</b:includable>
+                <b:includable id='postLabels'>
+  <span class='byline post-labels'>
+    <span class='byline-label'><data:byline.label/></span>
+    <b:loop index='i' values='data:post.labels' var='label'>
+      <a expr:href='data:label.url' rel='tag'>
+        <data:label.name/>
+      </a>
+    </b:loop>
+  </span>
+</b:includable>
+                <b:includable id='postLocation'>
+  <span class='byline post-location'>
+    <data:byline.label/>
+    <a expr:href='data:post.location.mapsUrl' target='_blank'><data:post.location.name/></a>
+  </span>
+</b:includable>
+                <b:includable id='postMeta' var='post'>
+  <b:include data='post' name='postMetadataJSON'/>
+</b:includable>
+                <b:includable id='postMetadataJSONImage'>
+  &quot;image&quot;: {
+    &quot;@type&quot;: &quot;ImageObject&quot;,
+    <b:if cond='data:post.featuredImage.isResizable'>
+    &quot;url&quot;: &quot;<b:eval expr='resizeImage(data:post.featuredImage, 1200, &quot;1200:630&quot;)'/>&quot;,
+    &quot;height&quot;: 630,
+    &quot;width&quot;: 1200
+    <b:else/>
+    &quot;url&quot;: &quot;https://blogger.googleusercontent.com/img/b/U2hvZWJveA/AVvXsEgfMvYAhAbdHksiBA24JKmb2Tav6K0GviwztID3Cq4VpV96HaJfy0viIu8z1SSw_G9n5FQHZWSRao61M3e58ImahqBtr7LiOUS6m_w59IvDYwjmMcbq3fKW4JSbacqkbxTo8B90dWp0Cese92xfLMPe_tg11g/w1200/&quot;,
+    &quot;height&quot;: 348,
+    &quot;width&quot;: 1200
+    </b:if>
+  },
+</b:includable>
+                <b:includable id='postMetadataJSONPublisher'>
+ &quot;publisher&quot;: {
+    &quot;@type&quot;: &quot;Organization&quot;,
+    &quot;name&quot;: &quot;Blogger&quot;,
+    &quot;logo&quot;: {
+      &quot;@type&quot;: &quot;ImageObject&quot;,
+      &quot;url&quot;: &quot;https://blogger.googleusercontent.com/img/b/U2hvZWJveA/AVvXsEgfMvYAhAbdHksiBA24JKmb2Tav6K0GviwztID3Cq4VpV96HaJfy0viIu8z1SSw_G9n5FQHZWSRao61M3e58ImahqBtr7LiOUS6m_w59IvDYwjmMcbq3fKW4JSbacqkbxTo8B90dWp0Cese92xfLMPe_tg11g/h60/&quot;,
+      &quot;width&quot;: 206,
+      &quot;height&quot;: 60
+    }
+  },
+</b:includable>
+                <b:includable id='postPagination'>
+  <div class='blog-pager container' id='blog-pager'>
+    <b:include cond='data:newerPageUrl' name='previousPageLink'/>
+    <b:include cond='data:olderPageUrl' name='nextPageLink'/>
+    <b:include cond='data:view.url != data:blog.homepageUrl' name='homePageLink'/>
+  </div>
+</b:includable>
+                <b:includable id='postQuickEdit' var='post'>
+  <b:if cond='data:post.editUrl'>
+    <span expr:class='&quot;item-control &quot; + data:post.adminClass'>
+      <a expr:href='data:post.editUrl' expr:title='data:top.editPostMsg'>
+        <img alt='' class='icon-action' height='18' src='https://resources.blogblog.com/img/icon18_edit_allbkg.gif' width='18'/>
+      </a>
+    </span>
+  </b:if>
+</b:includable>
+                <b:includable id='postReactions'>
+  <!-- Reaction feature no longer available. The includable is retained for backwards-compatibility. -->
+</b:includable>
+                <b:includable id='postShareButtons'>
+  <div class='byline post-share-buttons goog-inline-block'>
+    <b:with value='data:sharingId ?: ((data:widget.instanceId ?: &quot;sharing&quot;) + &quot;-&quot; + (data:regionName ?: &quot;byline&quot;) + &quot;-&quot; + data:post.id)' var='sharingId'>
+      <!-- Note: 'sharingButtons' includable is from the default Sharing widget markup. -->
+      <b:include data='{                                                sharingId: data:sharingId,                                                originalUrl: data:post.url,                                                platforms: data:this.sharing.platforms,                                                shareUrl: data:post.shareUrl,                                                shareTitle: data:post.title,                                              }' name='sharingButtons'/>
+    </b:with>
+  </div>
+</b:includable>
+                <b:includable id='postTimestamp'>
+  <span class='byline post-timestamp'>
+    <data:byline.label/>
+    <b:if cond='data:post.url'>
+      <meta expr:content='data:post.url.canonical'/>
+      <a class='timestamp-link' expr:href='data:post.url' rel='bookmark' title='permanent link'>
+        <time class='published' expr:datetime='data:post.date.iso8601' expr:title='data:post.date.iso8601'>
+          <data:post.date/>
+        </time>
+      </a>
+    </b:if>
+  </span>
+</b:includable>
+                <b:includable id='postTitle' var='post'>
+  <a expr:name='data:post.id'/>
+  <b:if cond='data:post.title != &quot;&quot;'>
+    <h3 class='post-title entry-title'>
+      <b:if cond='data:post.link or (data:post.url and data:view.url != data:post.url)'>
+        <a expr:href='data:post.link ?: data:post.url'><data:post.title/></a>
+      <b:else/>
+        <data:post.title/>
+      </b:if>
+    </h3>
+  </b:if>
+</b:includable>
+                <b:includable id='previousPageLink'>
+  <a class='blog-pager-newer-link' expr:href='data:newerPageUrl' expr:id='data:widget.instanceId + &quot;_blog-pager-newer-link&quot;' expr:title='data:messages.newerPosts'>
+    <data:messages.newerPosts/>
+  </a>
+</b:includable>
+                <b:includable id='shareButtons' var='post'>
+  <b:if cond='data:top.showEmailButton'><a class='goog-inline-block share-button sb-email' expr:href='data:post.sharePostUrl + &quot;&amp;target=email&quot;' expr:title='data:top.emailThisMsg' target='_blank'><span class='share-button-link-text'><data:top.emailThisMsg/></span></a></b:if><b:if cond='data:top.showBlogThisButton'><a class='goog-inline-block share-button sb-blog' expr:href='data:post.sharePostUrl + &quot;&amp;target=blog&quot;' expr:onclick='&quot;window.open(this.href, \&quot;_blank\&quot;, \&quot;height=270,width=475\&quot;); return false;&quot;' expr:title='data:top.blogThisMsg' target='_blank'><span class='share-button-link-text'><data:top.blogThisMsg/></span></a></b:if><b:if cond='data:top.showTwitterButton'><a class='goog-inline-block share-button sb-twitter' expr:href='data:post.sharePostUrl + &quot;&amp;target=twitter&quot;' expr:title='data:top.shareToTwitterMsg' target='_blank'><span class='share-button-link-text'><data:top.shareToTwitterMsg/></span></a></b:if><b:if cond='data:top.showFacebookButton'><a class='goog-inline-block share-button sb-facebook' expr:href='data:post.sharePostUrl + &quot;&amp;target=facebook&quot;' expr:onclick='&quot;window.open(this.href, \&quot;_blank\&quot;, \&quot;height=430,width=640\&quot;); return false;&quot;' expr:title='data:top.shareToFacebookMsg' target='_blank'><span class='share-button-link-text'><data:top.shareToFacebookMsg/></span></a></b:if><b:if cond='data:top.showPinterestButton'><a class='goog-inline-block share-button sb-pinterest' expr:href='data:post.sharePostUrl + &quot;&amp;target=pinterest&quot;' expr:title='data:top.shareToPinterestMsg' target='_blank'><span class='share-button-link-text'><data:top.shareToPinterestMsg/></span></a></b:if>
+</b:includable>
+                <b:includable id='sharingButton'>
+  <span expr:aria-label='data:platform.shareMessage' expr:class='&quot;sharing-platform-button sharing-element-&quot; + data:platform.key' expr:data-href='data:shareUrl + &quot;&amp;target=&quot; + data:platform.target' expr:data-url='data:originalUrl' expr:title='data:platform.shareMessage' role='menuitem' tabindex='-1'>
+    <b:include name='sharingPlatformIcon'/>
+    <span class='platform-sharing-text'><data:platform.name/></span>
+  </span>
+</b:includable>
+                <b:includable id='sharingButtonContent'>
+  <div class='flat-icon-button ripple'>
+    <b:include name='shareIcon'/>
+  </div>
+</b:includable>
+                <b:includable id='sharingButtons'>
+  <div class='sharing' expr:aria-owns='&quot;sharing-popup-&quot; + data:sharingId' expr:data-title='data:shareTitle'>
+    <button class='sharing-button touch-icon-button' expr:aria-controls='&quot;sharing-popup-&quot; + data:sharingId' expr:aria-label='data:messages.share.escaped' expr:id='&quot;sharing-button-&quot; + data:sharingId' role='button'>
+      <b:include name='sharingButtonContent'/>
+    </button>
+    <b:include name='sharingButtonsMenu'/>
+  </div>
+</b:includable>
+                <b:includable id='sharingButtonsMenu'>
+  <div class='share-buttons-container'>
+    <ul aria-hidden='true' class='share-buttons hidden' expr:aria-label='data:messages.share.escaped' expr:id='&quot;sharing-popup-&quot; + data:sharingId' role='menu'>
+      <b:loop values='(data:platforms ?: data:blog.sharing.platforms) filter (p =&gt; p.key not in {&quot;blogThis&quot;})' var='platform'>
+        <li>
+          <b:include name='sharingButton'/>
+        </li>
+      </b:loop>
+      <li aria-hidden='true' class='hidden'>
+        <b:include name='otherSharingButton'/>
+      </li>
+    </ul>
+  </div>
+</b:includable>
+                <b:includable id='sharingPlatformIcon'>
+  <b:include data='{ iconClass: (&quot;touch-icon sharing-&quot; + data:platform.key) }' expr:name='data:platform.key + &quot;Icon&quot;'/>
+</b:includable>
+                <b:includable id='status-message'>
+  <b:if cond='data:navMessage'>
+  <div class='status-msg-wrap'>
+    <div class='status-msg-body'>
+      <data:navMessage/>
+    </div>
+    <div class='status-msg-border'>
+      <div class='status-msg-bg'>
+        <div class='status-msg-hidden'><data:navMessage/></div>
+      </div>
+    </div>
+  </div>
+  <div style='clear: both;'/>
+  </b:if>
+</b:includable>
+                <b:includable id='threaded-comment-form' var='post'>
+  <div class='comment-form'>
+    <a name='comment-form'/>
+    <b:if cond='data:mobile'>
+      <p><data:blogCommentMessage/></p>
+      <data:blogTeamBlogMessage/>
+      <a expr:href='data:post.commentFormIframeSrc' id='comment-editor-src'/>
+      <iframe allowtransparency='true' class='blogger-iframe-colorize blogger-comment-from-post' expr:height='data:cmtIframeInitialHeight' frameborder='0' id='comment-editor' name='comment-editor' src='' style='display: none' width='100%'/>
+    <b:else/>
+      <p><data:blogCommentMessage/></p>
+      <data:blogTeamBlogMessage/>
+      <a expr:href='data:post.commentFormIframeSrc' id='comment-editor-src'/>
+      <iframe allowtransparency='true' class='blogger-iframe-colorize blogger-comment-from-post' expr:height='data:cmtIframeInitialHeight' frameborder='0' id='comment-editor' name='comment-editor' src='' width='100%'/>
+    </b:if>
+    <data:post.cmtfpIframe/>
+    <script type='text/javascript'>
+      BLOG_CMT_createIframe(&#39;<data:post.appRpcRelayPath/>&#39;);
+    </script>
+  </div>
+</b:includable>
+                <b:includable id='threadedCommentForm' var='post'>
+  <div class='comment-form'>
+    <a name='comment-form'/>
+    <h4 id='comment-post-message'><data:messages.postAComment/></h4>
+    <b:if cond='data:this.messages.blogComment != &quot;&quot;'>
+      <p><data:this.messages.blogComment/></p>
+    </b:if>
+    <b:include data='post' name='commentFormIframeSrc'/>
+    <iframe allowtransparency='allowtransparency' class='blogger-iframe-colorize blogger-comment-from-post' expr:height='data:cmtIframeInitialHeight ?: &quot;90px&quot;' frameborder='0' id='comment-editor' name='comment-editor' src='' width='100%'/>
+    <data:post.cmtfpIframe/>
+    <script type='text/javascript'>
+      BLOG_CMT_createIframe(&#39;<data:post.appRpcRelayPath/>&#39;);
+    </script>
+  </div>
+</b:includable>
+                <b:includable id='threadedCommentJs' var='post'>
+  <script async='async' expr:src='data:post.commentSrc' type='text/javascript'/>
+  <b:template-script inline='true' name='threaded_comments'/>
+  <script type='text/javascript'>
+    blogger.widgets.blog.initThreadedComments(
+        <data:post.commentJso/>,
+        <data:post.commentMsgs/>,
+        <data:post.commentConfig/>);
+  </script>
+</b:includable>
+                <b:includable id='threadedComments' var='post'>
+  <section class='comments threaded' expr:data-embed='data:post.embedCommentForm' expr:data-num-comments='data:post.numberOfComments' id='comments'>
+    <a name='comments'/>
+
+    <b:include name='commentsTitle'/>
+
+    <div class='comments-content'>
+      <b:if cond='data:post.embedCommentForm'>
+        <b:include data='post' name='threadedCommentJs'/>
+      </b:if>
+      <div id='comment-holder'>
+         <data:post.commentHtml/>
+      </div>
+    </div>
+
+    <p class='comment-footer'>
+      <b:if cond='data:post.allowNewComments'>
+        <b:include data='post' name='threadedCommentForm'/>
+      <b:else/>
+        <data:post.noNewCommentsText/>
+      </b:if>
+      <b:if cond='data:post.showManageComments'>
+        <b:include data='post' name='manageComments'/>
+      </b:if>
+    </p>
+
+    <b:if cond='data:showCmtPopup'>
+      <div id='comment-popup'>
+        <iframe allowtransparency='allowtransparency' frameborder='0' id='comment-actions' name='comment-actions' scrolling='no'>
+        </iframe>
+      </div>
+    </b:if>
+  </section>
+</b:includable>
+                <b:includable id='threaded_comment_js' var='post'>
+  <script async='async' expr:src='data:post.commentSrc' type='text/javascript'/>
+
+  <script type='text/javascript'>
+    (function() {
+      var items = <data:post.commentJso/>;
+      var msgs = <data:post.commentMsgs/>;
+      var config = <data:post.commentConfig/>;
+
+// <![CDATA[
+      var cursor = null;
+      if (items && items.length > 0) {
+        cursor = parseInt(items[items.length - 1].timestamp) + 1;
+      }
+
+      var bodyFromEntry = function(entry) {
+        var text = (entry &&
+                    ((entry.content && entry.content.$t) ||
+                     (entry.summary && entry.summary.$t))) ||
+            '';
+        if (entry && entry.gd$extendedProperty) {
+          for (var k in entry.gd$extendedProperty) {
+            if (entry.gd$extendedProperty[k].name == 'blogger.contentRemoved') {
+              return '<span class="deleted-comment">' + text + '</span>';
+            }
+          }
+        }
+        return text;
+      }
+
+      var parse = function(data) {
+        cursor = null;
+        var comments = [];
+        if (data && data.feed && data.feed.entry) {
+          for (var i = 0, entry; entry = data.feed.entry[i]; i++) {
+            var comment = {};
+            // comment ID, parsed out of the original id format
+            var id = /blog-(\d+).post-(\d+)/.exec(entry.id.$t);
+            comment.id = id ? id[2] : null;
+            comment.body = bodyFromEntry(entry);
+            comment.timestamp = Date.parse(entry.published.$t) + '';
+            if (entry.author && entry.author.constructor === Array) {
+              var auth = entry.author[0];
+              if (auth) {
+                comment.author = {
+                  name: (auth.name ? auth.name.$t : undefined),
+                  profileUrl: (auth.uri ? auth.uri.$t : undefined),
+                  avatarUrl: (auth.gd$image ? auth.gd$image.src : undefined)
+                };
+              }
+            }
+            if (entry.link) {
+              if (entry.link[2]) {
+                comment.link = comment.permalink = entry.link[2].href;
+              }
+              if (entry.link[3]) {
+                var pid = /.*comments\/default\/(\d+)\?.*/.exec(entry.link[3].href);
+                if (pid && pid[1]) {
+                  comment.parentId = pid[1];
+                }
+              }
+            }
+            comment.deleteclass = 'item-control blog-admin';
+            if (entry.gd$extendedProperty) {
+              for (var k in entry.gd$extendedProperty) {
+                if (entry.gd$extendedProperty[k].name == 'blogger.itemClass') {
+                  comment.deleteclass += ' ' + entry.gd$extendedProperty[k].value;
+                } else if (entry.gd$extendedProperty[k].name == 'blogger.displayTime') {
+                  comment.displayTime = entry.gd$extendedProperty[k].value;
+                }
+              }
+            }
+            comments.push(comment);
+          }
+        }
+        return comments;
+      };
+
+      var paginator = function(callback) {
+        if (hasMore()) {
+          var url = config.feed + '?alt=json&v=2&orderby=published&reverse=false&max-results=50';
+          if (cursor) {
+            url += '&published-min=' + new Date(cursor).toISOString();
+          }
+          window.bloggercomments = function(data) {
+            var parsed = parse(data);
+            cursor = parsed.length < 50 ? null
+                : parseInt(parsed[parsed.length - 1].timestamp) + 1
+            callback(parsed);
+            window.bloggercomments = null;
+          }
+          url += '&callback=bloggercomments';
+          var script = document.createElement('script');
+          script.type = 'text/javascript';
+          script.src = url;
+          document.getElementsByTagName('head')[0].appendChild(script);
+        }
+      };
+      var hasMore = function() {
+        return !!cursor;
+      };
+      var getMeta = function(key, comment) {
+        if ('iswriter' == key) {
+          var matches = !!comment.author
+              && comment.author.name == config.authorName
+              && comment.author.profileUrl == config.authorUrl;
+          return matches ? 'true' : '';
+        } else if ('deletelink' == key) {
+          return config.baseUri + '/comment/delete/'
+               + config.blogId + '/' + comment.id;
+        } else if ('deleteclass' == key) {
+          return comment.deleteclass;
+        }
+        return '';
+      };
+
+      var replybox = null;
+      var replyUrlParts = null;
+      var replyParent = undefined;
+
+      var onReply = function(commentId, domId) {
+        if (replybox == null) {
+          // lazily cache replybox, and adjust to suit this style:
+          replybox = document.getElementById('comment-editor');
+          if (replybox != null) {
+            replybox.height = '250px';
+            replybox.style.display = 'block';
+            replyUrlParts = replybox.src.split('#');
+          }
+        }
+        if (replybox && (commentId !== replyParent)) {
+          replybox.src = '';
+          document.getElementById(domId).insertBefore(replybox, null);
+          replybox.src = replyUrlParts[0]
+              + (commentId ? '&parentID=' + commentId : '')
+              + '#' + replyUrlParts[1];
+          replyParent = commentId;
+        }
+      };
+
+      var hash = (window.location.hash || '#').substring(1);
+      var startThread, targetComment;
+      if (/^comment-form_/.test(hash)) {
+        startThread = hash.substring('comment-form_'.length);
+      } else if (/^c[0-9]+$/.test(hash)) {
+        targetComment = hash.substring(1);
+      }
+
+      // Configure commenting API:
+      var configJso = {
+        'maxDepth': config.maxThreadDepth
+      };
+      var provider = {
+        'id': config.postId,
+        'data': items,
+        'loadNext': paginator,
+        'hasMore': hasMore,
+        'getMeta': getMeta,
+        'onReply': onReply,
+        'rendered': true,
+        'initComment': targetComment,
+        'initReplyThread': startThread,
+        'config': configJso,
+        'messages': msgs
+      };
+
+      var render = function() {
+        if (window.goog && window.goog.comments) {
+          var holder = document.getElementById('comment-holder');
+          window.goog.comments.render(holder, provider);
+        }
+      };
+
+      // render now, or queue to render when library loads:
+      if (window.goog && window.goog.comments) {
+        render();
+      } else {
+        window.goog = window.goog || {};
+        window.goog.comments = window.goog.comments || {};
+        window.goog.comments.loadQueue = window.goog.comments.loadQueue || [];
+        window.goog.comments.loadQueue.push(render);
+      }
+    })();
+// ]]>
+  </script>
+</b:includable>
+                <b:includable id='threaded_comments' var='post'>
+  <div class='comments' id='comments'>
+    <a name='comments'/>
+    <h4><data:post.commentLabelFull/>:</h4>
+
+    <div class='comments-content'>
+      <b:include cond='data:post.embedCommentForm' data='post' name='threaded_comment_js'/>
+      <div id='comment-holder'>
+         <data:post.commentHtml/>
+      </div>
+    </div>
+
+    <p class='comment-footer'>
+      <b:if cond='data:post.allowNewComments'>
+        <b:include data='post' name='threaded-comment-form'/>
+      <b:else/>
+        <data:post.noNewCommentsText/>
+      </b:if>
+    </p>
+
+    <b:if cond='data:showCmtPopup'>
+      <div id='comment-popup'>
+        <iframe allowtransparency='true' frameborder='0' id='comment-actions' name='comment-actions' scrolling='no'>
+        </iframe>
+      </div>
+    </b:if>
+
+    <div id='backlinks-container'>
+    <div expr:id='data:widget.instanceId + &quot;_backlinks-container&quot;'>
+    </div>
+    </div>
+  </div>
+</b:includable>
+                <b:includable id='tooltipCss'>
+  <!-- LINT.IfChange -->
+  <style>
+    .post-body a.b-tooltip-container {
+      position: relative;
+      display: inline-block;
+    }
+
+    .post-body a.b-tooltip-container .b-tooltip {
+      display: block !important;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translate(-20%, 1px);
+      visibility: hidden;
+      opacity: 0;
+      z-index: 1;
+      transition: opacity 0.2s ease-in-out;
+    }
+
+    .post-body a.b-tooltip-container .b-tooltip iframe {
+      width: 200px;
+      height: 198px;
+      max-width: none;
+      border: none;
+      border-radius: 20px;
+      box-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.2);
+    }
+
+    @media (hover: hover) {
+      .post-body a.b-tooltip-container:hover .b-tooltip {
+        visibility: visible;
+        opacity: 1;
+      }
+    }
+  </style>
+  <!-- LINT.ThenChange(//depot/google3/java/com/google/blogger/b2/layouts/widgets/v2-style.css) -->
+</b:includable>
+              </b:widget>
+            </b:section>
+        </main>
+             
+               <aside class='sidebar-wrapp'>
+            <b:section class='sidebar' id='sidebar' showaddelement='yes'>
+              <b:widget cond='data:view.isHomepage' id='PopularPosts1' locked='false' title='Postingan Populer' type='PopularPosts' version='1'>
+                <b:widget-settings>
+                  <b:widget-setting name='numItemsToShow'>6</b:widget-setting>
+                  <b:widget-setting name='showThumbnails'>true</b:widget-setting>
+                  <b:widget-setting name='showSnippets'>true</b:widget-setting>
+                  <b:widget-setting name='timeRange'>LAST_YEAR</b:widget-setting>
+                </b:widget-settings>
+                <b:includable id='main'>
+  <!-- Bagian Kepala Widget -->
+  <b:if cond='data:title != &quot;&quot;'>
+    <div class='sl-kepala'>
+      <h3 class='sl-kepala-j'>Lagi Rame</h3>
+    </div>
+  </b:if>
+
+  <!-- Bagian Daftar Anime (Grid Rame) -->
+  <div class='sl-daftar'>
+    <b:loop values='data:posts' var='post'>
+      
+      <a class='sl-baris' expr:href='data:post.href'>
+        
+        <b:if cond='data:post.featuredImage.isResizable or data:post.thumbnail'>
+          <b:with value='data:post.featuredImage.isResizable ? resizeImage(data:post.featuredImage, 120, &quot;3:4&quot;) : data:post.thumbnail' var='image'>
+            <img decoding='async' expr:alt='data:post.title' expr:src='data:image' loading='lazy'/>
+          </b:with>
+        <b:else/>
+          <img alt='No Cover' decoding='async' loading='lazy' src='https://placehold.co/120x160/1e2230/8c93a8?text=No+Cover'/>
+        </b:if>
+
+        <div>
+          <h2 class='sl-baris-j'><data:post.title/></h2>
+          
+          <!-- Wadah Genre -->
+          <p class='sl-baris-g genre-populer' expr:data-url='data:post.href'>Memuat genre...</p>
+          
+          <!-- Wadah Episode (Ditambahkan class eps-populer) -->
+          <p class='sl-baris-n eps-populer'/>
+        </div>
+
+      </a>
+
+    </b:loop>
+  </div>
+
+  <!-- SCRIPT PENGAMBIL GENRE & EPISODE OTOMATIS -->
+  <script type='text/javascript'>
+  //<![CDATA[
+    document.addEventListener("DOMContentLoaded", function() {
+      // Mencari semua baris anime di widget populer
+      const popItems = document.querySelectorAll('.sl-baris');
+      
+      // 1. Label status/tipe yang disembunyikan
+      const abaikanLabel = ["TV", "Movie", "OVA", "ONA", "Special", "Ongoing", "Completed", "Tamat", "Daftar Anime", "Donghua", "Anime", "Streaming", "Series"];
+      
+      // 2. Pola Regex untuk mendeteksi label "Eps X", "Episode X", "Eps. X"
+      const regexEps = /^(eps|episode)\.?\s*(\d+)/i;
+      
+      popItems.forEach(item => {
+        let genreEl = item.querySelector('.genre-populer');
+        let epsEl = item.querySelector('.eps-populer');
+        let postUrl = genreEl ? genreEl.getAttribute('data-url') : null;
+        
+        if(postUrl) {
+          try {
+            let path = new URL(postUrl).pathname;
+            
+            fetch('/feeds/posts/summary?alt=json&path=' + path)
+              .then(res => res.json())
+              .then(data => {
+                if(data.feed && data.feed.entry && data.feed.entry[0].category) {
+                  let semuaLabel = data.feed.entry[0].category.map(c => c.term);
+                  
+                  let genreSaja = [];
+                  let jumlahEps = "?"; // Default jika tidak ada label Eps
+                  
+                  semuaLabel.forEach(label => {
+                    let l = label.toLowerCase();
+                    let cekEps = label.match(regexEps); // Mengecek apakah label cocok dengan pola Eps X
+                    
+                    if (cekEps) {
+                      // Jika cocok (misal: "Eps 100"), ambil angkanya saja yaitu "100"
+                      jumlahEps = cekEps[2];
+                    } else if (abaikanLabel.map(a => a.toLowerCase()).includes(l)) {
+                      // Abaikan jika masuk daftar blacklist (TV, Ongoing, dll)
+                    } else {
+                      // Sisanya dipastikan adalah Genre
+                      genreSaja.push(label);
+                    }
+                  });
+                  
+                  // Cetak Genre
+                  if(genreEl) genreEl.innerHTML = genreSaja.length > 0 ? "Genre: " + genreSaja.join(', ') : "Genre: -";
+                  // Cetak Episode
+                  if(epsEl && jumlahEps !== "?") {
+                     epsEl.innerHTML = jumlahEps + " episode tersedia";
+                  } else if(epsEl) {
+                     epsEl.innerHTML = "Status: Berjalan"; // Teks cadangan jika tidak ada label eps
+                  }
+                  
+                } else {
+                  if(genreEl) genreEl.innerHTML = "Genre: Tidak diketahui";
+                }
+              }).catch(e => { if(genreEl) genreEl.innerHTML = ""; });
+          } catch(e) { }
+        }
+      });
+    });
+  //]]>
+  </script>
+</b:includable>
+              </b:widget>
+              <b:widget cond='data:view.isHomepage' id='HTML1' locked='false' title='Movie Terbaru' type='HTML' version='1'>
+                <b:widget-settings>
+                  <b:widget-setting name='content'/>
+                </b:widget-settings>
+                <b:includable id='main'>
+    <!-- Bagian Kepala Widget -->
+    <b:if cond='data:title != &quot;&quot;'>
+      <div class='sl-kepala'>
+        <h3 class='sl-kepala-j'><data:title/></h3>
+      </div>
+    </b:if>
+
+    <!-- Wadah Grid untuk Kartu (Memakai ID Statis yang Aman) -->
+    <div class='sl-grid' id='movie-grid-terbaru'>
+      <div class='sl-kosong'>Memuat movie terbaru...</div>
+    </div>
+
+    <b:include name='quickedit'/>
+
+    <!-- SCRIPT PEMANGGIL POSTINGAN & LABEL OTOMATIS -->
+</b:includable>
+              </b:widget>
+            </b:section>
+        </aside>
+        <!-- Sidebar Section -->
+
+
+    <!-- Footer Section -->
+      <footer class='sl-kaki'>
+    <nav class='sl-kaki-nav'>
+      <a href='/p/anime-list.html'>Daftar Anime</a>
+      <a href='/p/genre.html'>Genre</a>
+      <a href='/p/jadwal.html'>Jadwal</a>
+    </nav>
+    <p class='sl-kaki-cp'><b>AnimeSail</b> &#8212; Anime dan donghua bersubtitle Indonesia. Seluruh video merupakan sematan dari layanan pihak ketiga; tidak ada berkas video yang disimpan di server ini.</p>
+    <p class='sl-kaki-cp'>&#169; 2026 AnimeSail. Theme by <a href='https://hiru404.blogspot.com/' id='hiru-credit' style='color: var(--primary-blue); font-weight: 600;'>hiru404</a>.</p>
+  </footer>
+
+  <!-- SCRIPT ANTI HAPUS CREDIT -->
+
+  <!--js awal-->
+
+  
+  <script type='text/javascript'>
+//<![CDATA[
+function _0x1f06(_0x4b6024,_0x37e744){_0x4b6024=_0x4b6024-(-0x2521+-0x206a+0x46f8);const _0x5d5b83=_0x22e3();let _0x363385=_0x5d5b83[_0x4b6024];return _0x363385;}const _0x5c9afe=_0x1f06;(function(_0xd3ba96,_0x2e9431){const _0x521ddc=_0x1f06,_0x2f46aa=_0xd3ba96();while(!![]){try{const _0x44a65b=-parseInt(_0x521ddc(0x3c1))/(-0xbf1+-0xeb8+-0x2*-0xd55)*(parseInt(_0x521ddc(0x494))/(-0x1*0x461+-0x1*-0xe95+-0x3*0x366))+parseInt(_0x521ddc(0x43a))/(0xec0+-0x1d*-0x129+-0x1*0x3062)*(-parseInt(_0x521ddc(0x40f))/(0x2*0x217+-0x9*-0x3b5+-0xd*0x2e3))+-parseInt(_0x521ddc(0x42f))/(-0x36e+-0x3*0x361+0xd96)+parseInt(_0x521ddc(0x1f6))/(-0x2486+-0x2*-0x109d+-0x19*-0x22)*(parseInt(_0x521ddc(0x250))/(0x1174*-0x1+-0x164e+0x27c9))+parseInt(_0x521ddc(0x36d))/(-0x151*0xd+-0x176e+0x2893)*(parseInt(_0x521ddc(0x25e))/(0x1131+0x5*0x755+-0x35d1))+parseInt(_0x521ddc(0x3c3))/(0x1720+0x1e4d+-0x3563)+parseInt(_0x521ddc(0x340))/(0x13f9+0x301*-0x1+-0x10ed)*(parseInt(_0x521ddc(0x49c))/(-0x5*0xef+-0x1*0x79d+0xc54));if(_0x44a65b===_0x2e9431)break;else _0x2f46aa['push'](_0x2f46aa['shift']());}catch(_0x59727c){_0x2f46aa['push'](_0x2f46aa['shift']());}}}(_0x22e3,0x10548e+0x1*-0x3851+-0x36c7b),(function(){const _0x36d308=_0x1f06,_0x45aa19={'DlBFh':_0x36d308(0x4db)+'t','dFosk':_0x36d308(0x282)+_0x36d308(0x23c)+_0x36d308(0x405),'qbkkh':function(_0x12f9b8,_0x3c73d0){return _0x12f9b8!==_0x3c73d0;},'ZrPfm':_0x36d308(0x260),'MmSRG':function(_0x47033d,_0x4ad336){return _0x47033d===_0x4ad336;},'zvtDK':_0x36d308(0x293),'CFdvx':_0x36d308(0x210),'Kjpmx':_0x36d308(0x303),'RJZwL':_0x36d308(0x40b)+_0x36d308(0x368),'jKhaG':function(_0x2a0ed0,_0x47ead8,_0x4e2335){return _0x2a0ed0(_0x47ead8,_0x4e2335);}};function _0x50965e(){const _0x3140a5=_0x36d308;var _0x16c55c=document[_0x3140a5(0x2ea)+_0x3140a5(0x28a)](_0x45aa19[_0x3140a5(0x30b)]),_0x42dbd4=_0x45aa19[_0x3140a5(0x33c)];(!_0x16c55c||_0x45aa19[_0x3140a5(0x271)](_0x16c55c[_0x3140a5(0x47c)+'te'](_0x45aa19[_0x3140a5(0x31b)]),_0x42dbd4)||_0x45aa19[_0x3140a5(0x1b6)](_0x16c55c[_0x3140a5(0x1dc)][_0x3140a5(0x1ea)+'e']()[_0x3140a5(0x441)](_0x45aa19[_0x3140a5(0x4fa)]),-(0x25*-0xd5+0x252f+-0x1*0x665))||_0x45aa19[_0x3140a5(0x1b6)](window[_0x3140a5(0x20d)+_0x3140a5(0x4ce)](_0x16c55c)[_0x3140a5(0x295)],_0x45aa19[_0x3140a5(0x351)])||_0x45aa19[_0x3140a5(0x1b6)](window[_0x3140a5(0x20d)+_0x3140a5(0x4ce)](_0x16c55c)[_0x3140a5(0x3fd)],_0x45aa19[_0x3140a5(0x47f)])||_0x45aa19[_0x3140a5(0x1b6)](window[_0x3140a5(0x20d)+_0x3140a5(0x4ce)](_0x16c55c)[_0x3140a5(0x374)],'0')||_0x45aa19[_0x3140a5(0x1b6)](_0x16c55c[_0x3140a5(0x1b1)+'ht'],-0xd*0xc1+-0xcfb+0xa2*0x24))&&(window[_0x3140a5(0x3f6)][_0x3140a5(0x260)]=_0x42dbd4);}document[_0x36d308(0x36f)+_0x36d308(0x2e4)](_0x45aa19[_0x36d308(0x1fe)],_0x50965e),_0x45aa19[_0x36d308(0x408)](setInterval,_0x50965e,0xc83+0xc5*-0x25+0x1bae);}()),window[_0x5c9afe(0x440)+_0x5c9afe(0x38f)]=function(_0x51b0a3){const _0x5328b1=_0x5c9afe,_0x4ab46e={'gCHlB':_0x5328b1(0x44a)+_0x5328b1(0x280)+'wn','xdHwD':_0x5328b1(0x2a7)+_0x5328b1(0x1d0)+'n','WGRKQ':_0x5328b1(0x1b8)};_0x51b0a3[_0x5328b1(0x371)+_0x5328b1(0x4bc)]();let _0x40ad2f=document[_0x5328b1(0x2ea)+_0x5328b1(0x28a)](_0x4ab46e[_0x5328b1(0x1b2)]),_0x12c8e7=document[_0x5328b1(0x2ea)+_0x5328b1(0x28a)](_0x4ab46e[_0x5328b1(0x46b)]);if(_0x40ad2f)_0x40ad2f[_0x5328b1(0x232)][_0x5328b1(0x3f7)](_0x4ab46e[_0x5328b1(0x39d)]);if(_0x12c8e7)_0x12c8e7[_0x5328b1(0x232)][_0x5328b1(0x3f7)](_0x4ab46e[_0x5328b1(0x39d)]);},window[_0x5c9afe(0x3d4)+_0x5c9afe(0x476)]=function(){const _0x17d3ab=_0x5c9afe,_0x31a8f7={'SJlSM':_0x17d3ab(0x44a)+_0x17d3ab(0x280)+'wn','kaLzp':_0x17d3ab(0x2a7)+_0x17d3ab(0x1d0)+'n','ExEvh':_0x17d3ab(0x1b8)};let _0x414387=document[_0x17d3ab(0x2ea)+_0x17d3ab(0x28a)](_0x31a8f7[_0x17d3ab(0x305)]),_0x5ebf5b=document[_0x17d3ab(0x2ea)+_0x17d3ab(0x28a)](_0x31a8f7[_0x17d3ab(0x2d5)]);if(_0x414387)_0x414387[_0x17d3ab(0x232)][_0x17d3ab(0x25a)](_0x31a8f7[_0x17d3ab(0x456)]);if(_0x5ebf5b)_0x5ebf5b[_0x17d3ab(0x232)][_0x17d3ab(0x25a)](_0x31a8f7[_0x17d3ab(0x456)]);},document[_0x5c9afe(0x36f)+_0x5c9afe(0x2e4)](_0x5c9afe(0x2ae),function(_0x3f5283){const _0x2e3c0a=_0x5c9afe,_0x141884={'PGveV':_0x2e3c0a(0x2a7)+_0x2e3c0a(0x1d0)+'n'};let _0x36ddad=document[_0x2e3c0a(0x2ea)+_0x2e3c0a(0x28a)](_0x141884[_0x2e3c0a(0x26b)]);_0x36ddad&&!_0x36ddad[_0x2e3c0a(0x406)](_0x3f5283[_0x2e3c0a(0x30c)])&&window[_0x2e3c0a(0x3d4)+_0x2e3c0a(0x476)]();}),document[_0x5c9afe(0x36f)+_0x5c9afe(0x2e4)](_0x5c9afe(0x40b)+_0x5c9afe(0x368),function(){const _0x16a904=_0x5c9afe,_0x4df7b1={'wHnHc':_0x16a904(0x1c5),'qvwJA':_0x16a904(0x33d),'xJMKh':_0x16a904(0x18d),'MxQsi':function(_0x2c8879,_0x590b8f){return _0x2c8879&&_0x590b8f;},'kfWmt':_0x16a904(0x2ae)},_0x3a7848=document[_0x16a904(0x2ea)+_0x16a904(0x28a)](_0x4df7b1[_0x16a904(0x24c)]),_0x1be3f8=document[_0x16a904(0x2ea)+_0x16a904(0x28a)](_0x4df7b1[_0x16a904(0x30d)]);_0x4df7b1[_0x16a904(0x439)](_0x3a7848,_0x1be3f8)&&(_0x3a7848[_0x16a904(0x36f)+_0x16a904(0x2e4)](_0x4df7b1[_0x16a904(0x27c)],function(_0x150602){const _0x560a95=_0x16a904;_0x1be3f8[_0x560a95(0x232)][_0x560a95(0x3f7)](_0x4df7b1[_0x560a95(0x1f5)]),_0x150602[_0x560a95(0x371)+_0x560a95(0x4bc)]();}),document[_0x16a904(0x36f)+_0x16a904(0x2e4)](_0x4df7b1[_0x16a904(0x27c)],function(_0x3d0663){const _0x1f6325=_0x16a904;!_0x3a7848[_0x1f6325(0x406)](_0x3d0663[_0x1f6325(0x30c)])&&!_0x1be3f8[_0x1f6325(0x406)](_0x3d0663[_0x1f6325(0x30c)])&&_0x1be3f8[_0x1f6325(0x232)][_0x1f6325(0x25a)](_0x4df7b1[_0x1f6325(0x1f5)]);}));}),document[_0x5c9afe(0x36f)+_0x5c9afe(0x2e4)](_0x5c9afe(0x40b)+_0x5c9afe(0x368),function(){const _0x14f1da=_0x5c9afe,_0x121a6c={'RCFpQ':_0x14f1da(0x4a9),'FVkzk':function(_0x2d3fdf,_0x3bfb73){return _0x2d3fdf+_0x3bfb73;},'aYQNX':_0x14f1da(0x39c),'vJnrM':function(_0x3f8c9e,_0x9f8f4e,_0x2b3465){return _0x3f8c9e(_0x9f8f4e,_0x2b3465);},'QMiXn':_0x14f1da(0x390),'WJTsw':_0x14f1da(0x3b3),'prVgU':_0x14f1da(0x2fa),'lKhzv':_0x14f1da(0x2d1),'vGySg':_0x14f1da(0x30a),'ldjBB':_0x14f1da(0x2e0),'cnaIx':_0x14f1da(0x30e),'Swjdj':_0x14f1da(0x357),'MidPz':_0x14f1da(0x485),'xAedX':_0x14f1da(0x2ae),'VPshx':function(_0x35cc83,_0x52e8c4,_0x382964){return _0x35cc83(_0x52e8c4,_0x382964);},'IhNBW':function(_0x375f17,_0x1bc454){return _0x375f17<_0x1bc454;},'oUUeg':function(_0x57f9cc,_0xfb3a0d){return _0x57f9cc-_0xfb3a0d;},'FvcAW':function(_0x37b678,_0x4436ac){return _0x37b678+_0x4436ac;},'WbhxA':_0x14f1da(0x392)+_0x14f1da(0x379),'kFeIe':_0x14f1da(0x25b)+_0x14f1da(0x1ba)+_0x14f1da(0x19f)+_0x14f1da(0x39b)+_0x14f1da(0x275)+_0x14f1da(0x404)+_0x14f1da(0x4de)+_0x14f1da(0x447),'WUfRh':function(_0x4069b6,_0x53c790){return _0x4069b6*_0x53c790;},'LFmKJ':_0x14f1da(0x25b)+_0x14f1da(0x1ba)+_0x14f1da(0x19f)+_0x14f1da(0x39b)+_0x14f1da(0x275)+_0x14f1da(0x32b)+_0x14f1da(0x49e)+'v>','FVZux':_0x14f1da(0x4d8)+_0x14f1da(0x487)+_0x14f1da(0x4c1),'mXIbt':function(_0x497956,_0x510f7a){return _0x497956(_0x510f7a);},'baYDz':_0x14f1da(0x1d7),'kFzUf':function(_0x1f6e13,_0x45831f){return _0x1f6e13!==_0x45831f;},'EywIc':_0x14f1da(0x2a1),'zIbGc':function(_0x12d1ab,_0x23b8ba){return _0x12d1ab(_0x23b8ba);},'WqajJ':function(_0x1cd171,_0x64af54){return _0x1cd171+_0x64af54;},'aNxMf':_0x14f1da(0x294)+_0x14f1da(0x483)+'s=','gAeDP':_0x14f1da(0x2c9)+_0x14f1da(0x2ef),'mXxid':_0x14f1da(0x308)+_0x14f1da(0x1e8),'lWPgu':_0x14f1da(0x4ba),'WjSAS':function(_0x4521ca,_0x51b94b){return _0x4521ca===_0x51b94b;},'IJDZw':function(_0x13aa36,_0x2b940e){return _0x13aa36===_0x2b940e;},'PJFWc':_0x14f1da(0x34c),'yUIVx':_0x14f1da(0x410)+_0x14f1da(0x268),'quUiv':_0x14f1da(0x1fa)+_0x14f1da(0x3bf),'ZCxBv':_0x14f1da(0x25b)+_0x14f1da(0x1ba)+_0x14f1da(0x3a1)+_0x14f1da(0x1ca)+_0x14f1da(0x45a)+_0x14f1da(0x231)+_0x14f1da(0x259),'MrgDt':_0x14f1da(0x3c4),'ptfko':_0x14f1da(0x1e4)+'c','pLSDR':_0x14f1da(0x35d)+_0x14f1da(0x425)+_0x14f1da(0x17f)+_0x14f1da(0x3ee)+_0x14f1da(0x4b5)+_0x14f1da(0x3a8),'dYfor':_0x14f1da(0x360)+'b','vPyCz':_0x14f1da(0x3b8)+'id','xcscc':function(_0x3f37d9,_0x3735cc){return _0x3f37d9>_0x3735cc;},'qxEhi':function(_0x52d74c,_0x1b0f44,_0x12d4b5){return _0x52d74c(_0x1b0f44,_0x12d4b5);},'wNKBg':_0x14f1da(0x3e9)+_0x14f1da(0x46e),'RqAGJ':_0x14f1da(0x38d),'KOvdZ':function(_0x44594a,_0x33e7e2){return _0x44594a+_0x33e7e2;},'fmstU':function(_0x32a878,_0x4af2a4){return _0x32a878+_0x4af2a4;}};if(_0x121a6c[_0x14f1da(0x2ac)](typeof BloggerScript,_0x121a6c[_0x14f1da(0x37a)]))return;const _0x243a4d=new BloggerScript({'sizeImage':_0x121a6c[_0x14f1da(0x369)],'noImage':_0x121a6c[_0x14f1da(0x262)]}),_0xfb17af=document[_0x14f1da(0x2b7)+_0x14f1da(0x367)](_0x121a6c[_0x14f1da(0x20f)]),_0x5c2e98=document[_0x14f1da(0x2ea)+_0x14f1da(0x28a)](_0x121a6c[_0x14f1da(0x4d7)]),_0x10c340=0x7*0x57d+-0x25df+-0x6e;let _0x3ce02f=_0x121a6c[_0x14f1da(0x202)],_0x508458=0x23ac+0x1*0x1843+-0x3bee;function _0x1df5d9(_0x7f87c9,_0xf7617c=-0x1217+-0x38e+0x15a6){const _0x562bfb=_0x14f1da,_0x5cd746={'ZNueP':_0x121a6c[_0x562bfb(0x395)],'YXGlF':function(_0x4d240c,_0xe9e7f0){const _0x4e73ff=_0x562bfb;return _0x121a6c[_0x4e73ff(0x285)](_0x4d240c,_0xe9e7f0);},'YSqOF':_0x121a6c[_0x562bfb(0x2c8)],'NIKxi':function(_0x3d1f36,_0x54a5ab,_0x3e6f38){const _0x3c0593=_0x562bfb;return _0x121a6c[_0x3c0593(0x1f4)](_0x3d1f36,_0x54a5ab,_0x3e6f38);},'mJOiy':_0x121a6c[_0x562bfb(0x3f1)],'iHvWw':_0x121a6c[_0x562bfb(0x27e)],'fkDgK':_0x121a6c[_0x562bfb(0x253)],'PSkjQ':_0x121a6c[_0x562bfb(0x415)],'zoTTP':_0x121a6c[_0x562bfb(0x1d1)],'CDGdh':function(_0x1d0e88,_0xafa80b,_0x15e7aa){const _0x2e1ae3=_0x562bfb;return _0x121a6c[_0x2e1ae3(0x1f4)](_0x1d0e88,_0xafa80b,_0x15e7aa);},'RWrrO':_0x121a6c[_0x562bfb(0x264)],'domBu':_0x121a6c[_0x562bfb(0x4eb)],'chtfE':_0x121a6c[_0x562bfb(0x2a8)],'qPPqQ':_0x121a6c[_0x562bfb(0x4bd)],'tRkfv':_0x121a6c[_0x562bfb(0x3c8)],'wlCYl':function(_0x4ec5f0,_0x9ad5b7,_0x2353b6){const _0x13707d=_0x562bfb;return _0x121a6c[_0x13707d(0x47b)](_0x4ec5f0,_0x9ad5b7,_0x2353b6);},'JBDLb':function(_0x5edfdd,_0x44fcab){const _0x3e87e2=_0x562bfb;return _0x121a6c[_0x3e87e2(0x3ad)](_0x5edfdd,_0x44fcab);},'HzeaC':function(_0x3618d8,_0x5a0187){const _0x2a1f4e=_0x562bfb;return _0x121a6c[_0x2a1f4e(0x272)](_0x3618d8,_0x5a0187);},'RYfNj':function(_0x1add46,_0x2b5388){const _0x8cb037=_0x562bfb;return _0x121a6c[_0x8cb037(0x18e)](_0x1add46,_0x2b5388);},'jvqel':_0x121a6c[_0x562bfb(0x288)],'QzviR':_0x121a6c[_0x562bfb(0x4c8)]};_0x3ce02f=_0x7f87c9,_0x508458=_0xf7617c;let _0x2b1e94=_0x121a6c[_0x562bfb(0x285)](_0x121a6c[_0x562bfb(0x460)](_0x121a6c[_0x562bfb(0x272)](_0xf7617c,0xd39*-0x1+0x1ad5+0x183*-0x9),_0x10c340),-0x1c73+-0x527*-0x5+0xd*0x35);if(_0x5c2e98)_0x5c2e98[_0x562bfb(0x1d5)]=_0x121a6c[_0x562bfb(0x2e6)];let _0x1f4ec1=_0x121a6c[_0x562bfb(0x18e)](_0x121a6c[_0x562bfb(0x2a3)],_0x121a6c[_0x562bfb(0x43b)](encodeURIComponent,_0x121a6c[_0x562bfb(0x228)]));if(_0x121a6c[_0x562bfb(0x2b3)](_0x7f87c9,_0x121a6c[_0x562bfb(0x202)]))_0x1f4ec1+=_0x121a6c[_0x562bfb(0x285)]('/',_0x121a6c[_0x562bfb(0x330)](encodeURIComponent,_0x7f87c9));_0x1f4ec1+=_0x121a6c[_0x562bfb(0x414)](_0x121a6c[_0x562bfb(0x285)](_0x121a6c[_0x562bfb(0x285)](_0x121a6c[_0x562bfb(0x414)](_0x121a6c[_0x562bfb(0x1ff)],_0x10c340),_0x121a6c[_0x562bfb(0x1f9)]),_0x2b1e94),_0x121a6c[_0x562bfb(0x361)]),_0x243a4d[_0x562bfb(0x3fb)](_0x1f4ec1,function(_0x30fd59){const _0x3b5b2d=_0x562bfb,_0x3d8f2c={'clRzS':function(_0x289bba,_0x157672,_0x2df20a){const _0x5b5bfa=_0x1f06;return _0x5cd746[_0x5b5bfa(0x186)](_0x289bba,_0x157672,_0x2df20a);},'PQoHC':function(_0x11ec4f,_0x5c61d3,_0x706b55){const _0x6e520d=_0x1f06;return _0x5cd746[_0x6e520d(0x46c)](_0x11ec4f,_0x5c61d3,_0x706b55);},'ygZfJ':_0x5cd746[_0x3b5b2d(0x3c2)],'IeKrq':_0x5cd746[_0x3b5b2d(0x464)],'nsjGA':_0x5cd746[_0x3b5b2d(0x411)],'mJfaR':_0x5cd746[_0x3b5b2d(0x19e)],'KMXHO':_0x5cd746[_0x3b5b2d(0x178)]};if(_0x30fd59&&_0x30fd59[_0x3b5b2d(0x2c6)]&&_0x30fd59[_0x3b5b2d(0x2c6)][_0x3b5b2d(0x246)]){let _0x552367='',_0x1f053b=_0x243a4d[_0x3b5b2d(0x3d8)](_0x30fd59),_0x555660=_0x5cd746[_0x3b5b2d(0x296)](parseInt,_0x30fd59[_0x3b5b2d(0x2c6)][_0x3b5b2d(0x3c7)+_0x3b5b2d(0x451)+_0x3b5b2d(0x2e3)]['$t'],-0x1dff+0x188f+0x57a);_0x1f053b[_0x3b5b2d(0x27b)](_0x5ca49c=>{const _0x6e52=_0x3b5b2d;let _0x14ff67=_0x5cd746[_0x6e52(0x312)],_0x4f1e43='TV',_0x24ad3f=_0x5ca49c[_0x6e52(0x500)];if(_0x5ca49c[_0x6e52(0x504)]&&Array[_0x6e52(0x290)](_0x5ca49c[_0x6e52(0x504)])){let _0x3e9ada=_0x5ca49c[_0x6e52(0x504)][_0x6e52(0x40a)](_0x52ec53=>/eps|episode/i[_0x6e52(0x4f8)](_0x52ec53));if(_0x3e9ada){_0x14ff67=_0x3e9ada;let _0x571940=_0x3e9ada[_0x6e52(0x3d3)](/\d+/);if(_0x571940)_0x24ad3f=_0x5cd746[_0x6e52(0x4cc)](_0x5cd746[_0x6e52(0x4cc)](_0x5ca49c[_0x6e52(0x500)],_0x5cd746[_0x6e52(0x34e)]),_0x5cd746[_0x6e52(0x46c)](parseInt,_0x571940[0x10ea+-0x9*0x409+0x1367],0xd96+0x117*-0x1e+0x2*0x993)[_0x6e52(0x287)]());}const _0x32fe56=['tv',_0x5cd746[_0x6e52(0x38e)],_0x5cd746[_0x6e52(0x4ea)],_0x5cd746[_0x6e52(0x216)],_0x5cd746[_0x6e52(0x4d1)],_0x5cd746[_0x6e52(0x1a3)]];let _0x1b8cbc=_0x5ca49c[_0x6e52(0x504)][_0x6e52(0x40a)](_0x38afdb=>_0x32fe56[_0x6e52(0x37d)](_0x38afdb[_0x6e52(0x1ea)+'e']()));if(_0x1b8cbc)_0x4f1e43=_0x1b8cbc;}_0x552367+=_0x6e52(0x492)+_0x6e52(0x43e)+_0x6e52(0x21f)+_0x6e52(0x300)+_0x24ad3f+(_0x6e52(0x478)+_0x6e52(0x309)+_0x6e52(0x342)+_0x6e52(0x4dd)+_0x6e52(0x1e3)+_0x6e52(0x3e7)+_0x6e52(0x2f7)+_0x6e52(0x488)+_0x6e52(0x18c)+_0x6e52(0x324)+_0x6e52(0x310))+_0x24ad3f+(_0x6e52(0x2cb)+_0x6e52(0x3df)+_0x6e52(0x2a2)+_0x6e52(0x17d)+_0x6e52(0x3b6)+_0x6e52(0x354)+_0x6e52(0x3a3))+_0x5ca49c[_0x6e52(0x2d4)]+_0x6e52(0x198)+_0x5ca49c[_0x6e52(0x20a)]+(_0x6e52(0x31e)+_0x6e52(0x29f)+_0x6e52(0x222)+_0x6e52(0x193)+_0x6e52(0x488)+_0x6e52(0x227)+_0x6e52(0x329)+_0x6e52(0x28e))+_0x14ff67+(_0x6e52(0x1cd)+_0x6e52(0x488)+_0x6e52(0x373)+_0x6e52(0x27f)+_0x6e52(0x445)+_0x6e52(0x2c0)+_0x6e52(0x380)+_0x6e52(0x182))+_0x5ca49c[_0x6e52(0x2d4)]+(_0x6e52(0x2d2)+_0x6e52(0x467)+_0x6e52(0x43c)+_0x6e52(0x3ea)+_0x6e52(0x4f6))+_0x4f1e43+(_0x6e52(0x47d)+_0x6e52(0x3bd)+_0x6e52(0x44b));});let _0x394769=_0x3b5b2d(0x25b)+_0x3b5b2d(0x278)+_0x3b5b2d(0x4c4)+_0x3b5b2d(0x39e)+_0x3b5b2d(0x4d4);_0x5cd746[_0x3b5b2d(0x181)](_0x5cd746[_0x3b5b2d(0x34b)](_0x5cd746[_0x3b5b2d(0x4cc)](_0x2b1e94,_0x10c340),0x3c2*0x1+-0x116f*0x1+0xdae),_0x555660)&&(_0x394769+=_0x3b5b2d(0x419)+_0x3b5b2d(0x3e6)+_0x3b5b2d(0x4cf)+_0x3b5b2d(0x27d)+_0x5cd746[_0x3b5b2d(0x4cc)](_0x508458,-0x1*-0x1159+-0x47e+-0xcda)+(_0x3b5b2d(0x1a7)+_0x3b5b2d(0x283)+'>'));_0x394769+=_0x3b5b2d(0x400);if(_0x5c2e98)_0x5c2e98[_0x3b5b2d(0x1d5)]=_0x5cd746[_0x3b5b2d(0x462)](_0x552367,_0x394769);let _0x10f7c8=_0x5c2e98[_0x3b5b2d(0x2b7)+_0x3b5b2d(0x367)](_0x5cd746[_0x3b5b2d(0x448)]);_0x10f7c8[_0x3b5b2d(0x27b)](_0x340ce9=>{const _0x33ebdb=_0x3b5b2d,_0x40be64={'iMCZf':function(_0x499199,_0xfb6d20,_0x2fe87f){const _0x3d3681=_0x1f06;return _0x3d8f2c[_0x3d3681(0x378)](_0x499199,_0xfb6d20,_0x2fe87f);},'gJnNk':function(_0x1e7409,_0x3a22e8,_0x564cb1){const _0x9b1bf2=_0x1f06;return _0x3d8f2c[_0x9b1bf2(0x2c1)](_0x1e7409,_0x3a22e8,_0x564cb1);},'lLtKZ':_0x3d8f2c[_0x33ebdb(0x472)],'zrUoL':_0x3d8f2c[_0x33ebdb(0x18a)],'JCfRK':_0x3d8f2c[_0x33ebdb(0x497)],'hRyiH':_0x3d8f2c[_0x33ebdb(0x21d)]};_0x340ce9[_0x33ebdb(0x36f)+_0x33ebdb(0x2e4)](_0x3d8f2c[_0x33ebdb(0x1ae)],function(){const _0x4cb8f1=_0x33ebdb;_0x40be64[_0x4cb8f1(0x336)](_0x1df5d9,_0x3ce02f,_0x40be64[_0x4cb8f1(0x381)](parseInt,this[_0x4cb8f1(0x47c)+'te'](_0x40be64[_0x4cb8f1(0x236)]),-0x119f+0x19c7*-0x1+-0x8b0*-0x5));let _0x1363e8=document[_0x4cb8f1(0x2b7)+_0x4cb8f1(0x36e)](_0x40be64[_0x4cb8f1(0x2eb)]);if(_0x1363e8)_0x1363e8[_0x4cb8f1(0x4ab)+_0x4cb8f1(0x23a)]({'behavior':_0x40be64[_0x4cb8f1(0x209)],'block':_0x40be64[_0x4cb8f1(0x385)]});});});}else{if(_0x5c2e98)_0x5c2e98[_0x3b5b2d(0x1d5)]=_0x5cd746[_0x3b5b2d(0x344)];}});}_0x121a6c[_0x14f1da(0x4ac)](_0xfb17af[_0x14f1da(0x503)],0x886*-0x1+-0x1*-0x1be+0x6c8)&&_0x5c2e98&&(_0xfb17af[_0x14f1da(0x27b)](_0x4fba27=>{const _0x5c508b=_0x14f1da,_0x1b39a0={'qwAVp':function(_0x256ba0,_0x32874f,_0x1d9692){const _0x3eab70=_0x1f06;return _0x121a6c[_0x3eab70(0x47b)](_0x256ba0,_0x32874f,_0x1d9692);},'krxRr':_0x121a6c[_0x5c508b(0x35f)]};_0x4fba27[_0x5c508b(0x36f)+_0x5c508b(0x2e4)](_0x121a6c[_0x5c508b(0x3c8)],function(_0x2fdbe7){const _0x20f482=_0x5c508b;_0x2fdbe7[_0x20f482(0x1a2)+_0x20f482(0x1b0)](),_0xfb17af[_0x20f482(0x27b)](_0x1a9b18=>_0x1a9b18[_0x20f482(0x232)][_0x20f482(0x25a)]('on')),this[_0x20f482(0x232)][_0x20f482(0x2de)]('on'),_0x1b39a0[_0x20f482(0x1ed)](_0x1df5d9,this[_0x20f482(0x47c)+'te'](_0x1b39a0[_0x20f482(0x438)]),-0xf82+0x2384+-0x239*0x9);});}),_0x121a6c[_0x14f1da(0x217)](_0x1df5d9,_0x121a6c[_0x14f1da(0x202)],0x1f7b+0x2b6*0x7+0x193a*-0x2));const _0x6fb467=document[_0x14f1da(0x2ea)+_0x14f1da(0x28a)](_0x121a6c[_0x14f1da(0x1cf)]);if(_0x6fb467){const _0x56bae8=_0x121a6c[_0x14f1da(0x18b)],_0xdfc1c6=0x6cf+-0x22f5+0x964*0x3,_0x5950e2=_0x121a6c[_0x14f1da(0x4c0)](_0x121a6c[_0x14f1da(0x285)](_0x121a6c[_0x14f1da(0x393)](_0x121a6c[_0x14f1da(0x2a3)],_0x121a6c[_0x14f1da(0x43b)](encodeURIComponent,_0x56bae8)),_0x121a6c[_0x14f1da(0x1ff)]),_0xdfc1c6);_0x243a4d[_0x14f1da(0x3fb)](_0x5950e2,function(_0x4e032b){const _0x5af3d1=_0x14f1da,_0x2d5c7b={'mXtWV':function(_0x1f274e,_0x1c27df){const _0x3f732d=_0x1f06;return _0x121a6c[_0x3f732d(0x2ac)](_0x1f274e,_0x1c27df);},'hJnRU':_0x121a6c[_0x5af3d1(0x3f1)],'BcDSY':function(_0x282597,_0x1ca160){const _0x569d1f=_0x5af3d1;return _0x121a6c[_0x569d1f(0x3cc)](_0x282597,_0x1ca160);},'DdQpM':_0x121a6c[_0x5af3d1(0x452)],'SFbkn':_0x121a6c[_0x5af3d1(0x184)],'AcRPQ':_0x121a6c[_0x5af3d1(0x328)],'IDzCV':function(_0x41d42f,_0xb2bb77){const _0x222023=_0x5af3d1;return _0x121a6c[_0x222023(0x3cc)](_0x41d42f,_0xb2bb77);}};if(_0x4e032b&&_0x4e032b[_0x5af3d1(0x2c6)]&&_0x4e032b[_0x5af3d1(0x2c6)][_0x5af3d1(0x246)]){let _0x6e751c='',_0x47d939=_0x243a4d[_0x5af3d1(0x3d8)](_0x4e032b);_0x47d939[_0x5af3d1(0x27b)](_0xb9cd97=>{const _0x35d11f=_0x5af3d1;let _0x4dce44='';if(_0xb9cd97[_0x35d11f(0x504)]&&Array[_0x35d11f(0x290)](_0xb9cd97[_0x35d11f(0x504)])){let _0x5c55d1=![],_0x1d691e=![];_0xb9cd97[_0x35d11f(0x504)][_0x35d11f(0x27b)](_0x11a38b=>{const _0x3d0c87=_0x35d11f;let _0x522552=_0x11a38b[_0x3d0c87(0x1ea)+'e']();if(_0x2d5c7b[_0x3d0c87(0x291)](_0x522552,_0x2d5c7b[_0x3d0c87(0x49d)]))_0x5c55d1=!![];if(_0x2d5c7b[_0x3d0c87(0x208)](_0x522552,_0x2d5c7b[_0x3d0c87(0x391)]))_0x1d691e=!![];});if(_0x5c55d1)_0x4dce44+=_0x2d5c7b[_0x35d11f(0x3da)];if(_0x1d691e)_0x4dce44+=_0x2d5c7b[_0x35d11f(0x474)];}if(_0x2d5c7b[_0x35d11f(0x2e1)](_0x4dce44,''))_0x4dce44=_0x35d11f(0x2ee)+_0x56bae8+_0x35d11f(0x188);_0x6e751c+=_0x35d11f(0x492)+_0x35d11f(0x43e)+_0x35d11f(0x21f)+_0x35d11f(0x300)+_0xb9cd97[_0x35d11f(0x500)]+(_0x35d11f(0x478)+_0x35d11f(0x309)+_0x35d11f(0x342)+_0x35d11f(0x4dd)+_0x35d11f(0x1e3)+_0x35d11f(0x346)+_0x35d11f(0x492)+_0x35d11f(0x365)+_0x35d11f(0x240)+_0x35d11f(0x489)+_0x35d11f(0x29e))+_0xb9cd97[_0x35d11f(0x500)]+(_0x35d11f(0x2cb)+_0x35d11f(0x3df)+_0x35d11f(0x2a2)+_0x35d11f(0x17d)+_0x35d11f(0x3b6)+_0x35d11f(0x354)+_0x35d11f(0x3a3))+_0xb9cd97[_0x35d11f(0x2d4)]+_0x35d11f(0x198)+_0xb9cd97[_0x35d11f(0x20a)]+(_0x35d11f(0x31e)+_0x35d11f(0x4df)+_0x35d11f(0x428)+_0x35d11f(0x4d0)+_0x35d11f(0x498)+_0x35d11f(0x421)+_0x35d11f(0x219)+_0x35d11f(0x3b6)+_0x35d11f(0x3a4)+_0x35d11f(0x22c)+_0x35d11f(0x3b9)+_0x35d11f(0x273)+_0x35d11f(0x2d7))+_0xb9cd97[_0x35d11f(0x2d4)]+(_0x35d11f(0x2d2)+_0x35d11f(0x467)+_0x35d11f(0x43c)+_0x35d11f(0x2f8))+_0x4dce44+(_0x35d11f(0x373)+_0x35d11f(0x2dc)+'>');}),_0x6fb467[_0x5af3d1(0x1d5)]=_0x6e751c;}else _0x6fb467[_0x5af3d1(0x1d5)]=_0x121a6c[_0x5af3d1(0x2ca)];});}}),document[_0x5c9afe(0x36f)+_0x5c9afe(0x2e4)](_0x5c9afe(0x40b)+_0x5c9afe(0x368),function(){const _0x3a7184=_0x5c9afe,_0xdab7de={'SDWKo':_0x3a7184(0x3cb),'HDaCN':_0x3a7184(0x210),'WLWLk':function(_0x191b71,_0x1d8c90){return _0x191b71(_0x1d8c90);},'XbUtM':function(_0x17d7e4,_0x2ee0e4){return _0x17d7e4===_0x2ee0e4;},'fRyxI':function(_0x20ee4b,_0x1ce68d){return _0x20ee4b*_0x1ce68d;},'iupyG':function(_0x52ccd9,_0x53e0ab){return _0x52ccd9/_0x53e0ab;},'HOKZG':function(_0x44ad23,_0x3b6f19){return _0x44ad23>=_0x3b6f19;},'EdmEp':function(_0x10f87a,_0x41e3c4){return _0x10f87a<_0x41e3c4;},'ggggT':function(_0x3bbda1,_0x337c7d){return _0x3bbda1+_0x337c7d;},'ruqGZ':_0x3a7184(0x3ce)+'x','VpeVd':_0x3a7184(0x44d),'jqQZb':function(_0x8e90b9,_0x4d9220){return _0x8e90b9>=_0x4d9220;},'dKWov':function(_0x805911,_0x3c74bd){return _0x805911<_0x3c74bd;},'isKTE':_0x3a7184(0x46f)+'tn','Tnteg':function(_0x1640b5,_0x1d6ba4){return _0x1640b5(_0x1d6ba4);},'otxjc':function(_0x21a965,_0x263889){return _0x21a965+_0x263889;},'QfYrX':_0x3a7184(0x2d9),'fngGY':_0x3a7184(0x35d)+_0x3a7184(0x425)+_0x3a7184(0x1e7)+_0x3a7184(0x3ee)+_0x3a7184(0x4b5)+_0x3a7184(0x3a8),'yuRoq':_0x3a7184(0x4f5)+_0x3a7184(0x205),'avbue':_0x3a7184(0x2a9),'SSGQr':_0x3a7184(0x191),'eXlSq':function(_0x36358b,_0x4f91ec){return _0x36358b>_0x4f91ec;},'suqEC':_0x3a7184(0x1a0),'tiCqc':_0x3a7184(0x41a)+_0x3a7184(0x362),'qMPHP':_0x3a7184(0x363)+'ge','AynFj':_0x3a7184(0x31f),'PxsgW':function(_0x11809a,_0x3f33f1){return _0x11809a&&_0x3f33f1;},'JGzgc':_0x3a7184(0x311)+_0x3a7184(0x2bb),'WrpTO':_0x3a7184(0x4fb),'VQmIA':function(_0x179608,_0x9fee36){return _0x179608&&_0x9fee36;},'NeivQ':_0x3a7184(0x1bf)+_0x3a7184(0x234)+_0x3a7184(0x26c),'VxSjX':_0x3a7184(0x4a7)+_0x3a7184(0x274),'QNIFq':_0x3a7184(0x38d),'YjByh':_0x3a7184(0x3bb),'yObYK':_0x3a7184(0x26f),'SlFXg':_0x3a7184(0x31d),'OUWay':_0x3a7184(0x434),'SvKfp':_0x3a7184(0x17e),'muxen':_0x3a7184(0x20c),'pkHRl':_0x3a7184(0x3e3),'EPuNB':_0x3a7184(0x23e),'nKJEa':_0x3a7184(0x350)+_0x3a7184(0x3d5),'UNjAt':_0x3a7184(0x326),'zXcXT':_0x3a7184(0x4f1),'AGbal':_0x3a7184(0x2c3),'NsFpH':_0x3a7184(0x3ed),'iuACl':_0x3a7184(0x323),'cvGHU':_0x3a7184(0x21e),'WUQsz':_0x3a7184(0x2e2),'LzbuF':_0x3a7184(0x29d),'meEYp':_0x3a7184(0x3ab),'hkCfR':_0x3a7184(0x36a)+_0x3a7184(0x24a),'OZXbn':_0x3a7184(0x22b),'dUwNu':_0x3a7184(0x3d9),'wvClV':_0x3a7184(0x345)+'al','bEzaZ':_0x3a7184(0x32f)+_0x3a7184(0x1cb),'IerIG':_0x3a7184(0x317),'LYZFE':_0x3a7184(0x289),'oRFYm':_0x3a7184(0x2cd),'GYpAU':_0x3a7184(0x21c),'OsQrx':_0x3a7184(0x38b),'kpjUP':_0x3a7184(0x4a6)+'ts','yoDqE':_0x3a7184(0x17a),'SNIUA':_0x3a7184(0x1c9),'qneSk':_0x3a7184(0x28d),'OxNOT':_0x3a7184(0x2c5),'RxvxO':_0x3a7184(0x37b),'ZaaFO':_0x3a7184(0x1e9),'QvOry':_0x3a7184(0x4c3),'OAeqs':_0x3a7184(0x4a3),'ZDoFB':_0x3a7184(0x3fc),'dCqUi':_0x3a7184(0x286)+'l','xIrlA':function(_0x2f287e,_0x3a86d7){return _0x2f287e!==_0x3a86d7;},'yoPpl':_0x3a7184(0x3c4),'JyxHG':_0x3a7184(0x3bc)+_0x3a7184(0x358),'CxCiW':_0x3a7184(0x4c2)+'l','kBfCj':_0x3a7184(0x3ba)+_0x3a7184(0x201),'QGQzv':_0x3a7184(0x3a5)+_0x3a7184(0x4f9)+_0x3a7184(0x2f5),'MagjH':_0x3a7184(0x490)+_0x3a7184(0x470),'kzXKk':_0x3a7184(0x187)+_0x3a7184(0x4b2),'farVI':_0x3a7184(0x2d8)+_0x3a7184(0x1be),'mQsrX':function(_0x442a78,_0x135998){return _0x442a78!==_0x135998;},'JWAHY':function(_0xca7288,_0x34c739){return _0xca7288>_0x34c739;},'sCCQX':function(_0x26d0fc,_0x4ed119){return _0x26d0fc&&_0x4ed119;},'TXXcB':function(_0x4ac10d,_0x45260e){return _0x4ac10d>_0x45260e;},'fZSie':function(_0x59cc0e,_0xa43410){return _0x59cc0e-_0xa43410;},'IKvqg':function(_0x28342d,_0x20355b){return _0x28342d<_0x20355b;},'rxGbh':function(_0x33169d,_0x5a37eb){return _0x33169d-_0x5a37eb;},'fQTpJ':function(_0x20dfd2,_0x36bd27){return _0x20dfd2(_0x36bd27);},'eXfDv':function(_0x4a03c2,_0xa40eb4){return _0x4a03c2+_0xa40eb4;},'wShmF':function(_0x48c271,_0xf78f3c){return _0x48c271>_0xf78f3c;},'CzbMg':function(_0x2a94a3,_0x3d1b75){return _0x2a94a3<_0x3d1b75;},'FcvJS':function(_0x50ece5,_0x5b00d9){return _0x50ece5(_0x5b00d9);},'mWdNP':function(_0x3bde52,_0x2b2eb3){return _0x3bde52(_0x2b2eb3);},'HdIZT':function(_0xdb98f8,_0x2298da){return _0xdb98f8-_0x2298da;},'XnNeg':function(_0x27f5b3,_0x4a6a4e){return _0x27f5b3<=_0x4a6a4e;},'oJDxF':function(_0xbc7116,_0x4f26ad){return _0xbc7116(_0x4f26ad);},'uBDkQ':_0x3a7184(0x261),'ojVIn':_0x3a7184(0x4a0)+_0x3a7184(0x359),'nHfml':_0x3a7184(0x34d),'FCNRu':_0x3a7184(0x4b6),'pgbpP':_0x3a7184(0x455),'pprPY':_0x3a7184(0x25b)+_0x3a7184(0x1ba)+_0x3a7184(0x48b)+_0x3a7184(0x19d)+_0x3a7184(0x2da)+'>','Gapin':_0x3a7184(0x307)+_0x3a7184(0x1d8)+_0x3a7184(0x377),'lDaHS':_0x3a7184(0x307)+_0x3a7184(0x22f),'nXuen':_0x3a7184(0x4d8)+_0x3a7184(0x487)+_0x3a7184(0x4c1),'Rybwm':function(_0x102223,_0x800100){return _0x102223(_0x800100);},'IRvjr':_0x3a7184(0x1d7),'ozqGU':_0x3a7184(0x294)+_0x3a7184(0x483)+_0x3a7184(0x1b7)},_0x5c30d9=document[_0x3a7184(0x2ea)+_0x3a7184(0x28a)](_0xdab7de[_0x3a7184(0x185)]);if(!_0x5c30d9)return;const _0x93cde6=_0x1c4d62=>parseInt(_0x1c4d62,0x1fe8+0x9*-0x41c+0xa*0x83)[_0x3a7184(0x287)](),_0x1a4ed9=document[_0x3a7184(0x2ea)+_0x3a7184(0x28a)](_0xdab7de[_0x3a7184(0x426)]),_0x1ad8ad=_0x5c30d9[_0x3a7184(0x2b7)+_0x3a7184(0x36e)](_0xdab7de[_0x3a7184(0x252)]);if(_0xdab7de[_0x3a7184(0x299)](_0x1ad8ad,_0x1a4ed9))_0x1a4ed9[_0x3a7184(0x376)]=_0x1ad8ad[_0x3a7184(0x376)];const _0x156d1d=document[_0x3a7184(0x2ea)+_0x3a7184(0x28a)](_0xdab7de[_0x3a7184(0x397)]),_0x22e950=_0x5c30d9[_0x3a7184(0x2b7)+_0x3a7184(0x36e)](_0xdab7de[_0x3a7184(0x22a)]);if(_0xdab7de[_0x3a7184(0x4e4)](_0x22e950,_0x156d1d))_0x156d1d[_0x3a7184(0x1d5)]=_0x22e950[_0x3a7184(0x1d5)][_0x3a7184(0x2d3)](/<p>SINOPSIS<\/p>/i,'')[_0x3a7184(0x333)]();else _0x156d1d&&(_0x156d1d[_0x3a7184(0x1d5)]=_0xdab7de[_0x3a7184(0x302)]);const _0x618b3c=document[_0x3a7184(0x2b7)+_0x3a7184(0x367)](_0xdab7de[_0x3a7184(0x22e)]);let _0x1dba9c='?',_0x5137cc='?',_0x566194='?',_0x144a61='?';const _0x58419a=['TV',_0xdab7de[_0x3a7184(0x4cb)],_0xdab7de[_0x3a7184(0x17c)],_0xdab7de[_0x3a7184(0x23b)],_0xdab7de[_0x3a7184(0x189)],_0xdab7de[_0x3a7184(0x173)]],_0x317f01=[_0xdab7de[_0x3a7184(0x206)],_0xdab7de[_0x3a7184(0x1bc)],_0xdab7de[_0x3a7184(0x230)],_0xdab7de[_0x3a7184(0x1c0)],_0xdab7de[_0x3a7184(0x450)]],_0x3d843d=/^(eps|episode)\.?\s*(\d+)/i,_0x4fae32=/^((Spring|Summer|Fall|Winter)\s+)?\d{4}$/i,_0x360542=[_0xdab7de[_0x3a7184(0x4aa)],_0xdab7de[_0x3a7184(0x417)],_0xdab7de[_0x3a7184(0x4e3)],_0xdab7de[_0x3a7184(0x170)],_0xdab7de[_0x3a7184(0x389)],_0xdab7de[_0x3a7184(0x3fe)],_0xdab7de[_0x3a7184(0x16e)],_0xdab7de[_0x3a7184(0x479)],_0xdab7de[_0x3a7184(0x177)],_0xdab7de[_0x3a7184(0x35c)],_0xdab7de[_0x3a7184(0x20b)],_0xdab7de[_0x3a7184(0x3dc)],_0xdab7de[_0x3a7184(0x41b)],_0xdab7de[_0x3a7184(0x3e2)],_0xdab7de[_0x3a7184(0x45e)],_0xdab7de[_0x3a7184(0x322)],_0xdab7de[_0x3a7184(0x1d6)],_0xdab7de[_0x3a7184(0x19a)],_0xdab7de[_0x3a7184(0x20e)],_0xdab7de[_0x3a7184(0x175)],_0xdab7de[_0x3a7184(0x1ef)],_0xdab7de[_0x3a7184(0x1f1)],_0xdab7de[_0x3a7184(0x471)],_0xdab7de[_0x3a7184(0x348)],_0xdab7de[_0x3a7184(0x3ca)],_0xdab7de[_0x3a7184(0x1c7)],_0xdab7de[_0x3a7184(0x1ec)],_0xdab7de[_0x3a7184(0x1df)],_0xdab7de[_0x3a7184(0x313)],_0xdab7de[_0x3a7184(0x480)]];_0x618b3c&&_0x618b3c[_0x3a7184(0x27b)](_0x2f60d8=>{const _0x70778d=_0x3a7184;let _0xf36bf1=_0x2f60d8[_0x70778d(0x47c)+'te'](_0xdab7de[_0x70778d(0x3ec)]);if(!_0xf36bf1)return;let _0x524e3e=_0xf36bf1[_0x70778d(0x1ea)+'e']();if(_0x58419a[_0x70778d(0x432)](_0x470427=>_0x470427[_0x70778d(0x1ea)+'e']())[_0x70778d(0x37d)](_0x524e3e))_0x1dba9c=_0xf36bf1;else{if(_0x317f01[_0x70778d(0x432)](_0xde46bf=>_0xde46bf[_0x70778d(0x1ea)+'e']())[_0x70778d(0x37d)](_0x524e3e))_0x566194=_0xf36bf1;else{if(_0xf36bf1[_0x70778d(0x3d3)](_0x3d843d))_0x5137cc=_0xf36bf1[_0x70778d(0x3d3)](_0x3d843d)[-0x5f5+0x1c5d+-0x2f*0x7a];else{if(_0xf36bf1[_0x70778d(0x3d3)](_0x4fae32))_0x144a61=_0xf36bf1;}}}if(!_0x360542[_0x70778d(0x37d)](_0x524e3e))_0x2f60d8[_0x70778d(0x2e5)][_0x70778d(0x295)]=_0xdab7de[_0x70778d(0x3b1)];});let _0x53b230='?',_0x474b82='?',_0x3463c8='?';try{if(_0xdab7de[_0x3a7184(0x4da)](typeof config,_0xdab7de[_0x3a7184(0x249)])&&config[_0x3a7184(0x3f8)]){if(config[_0x3a7184(0x3f8)][_0x3a7184(0x242)])_0x53b230=config[_0x3a7184(0x3f8)][_0x3a7184(0x242)];if(config[_0x3a7184(0x3f8)][_0x3a7184(0x461)])_0x474b82=config[_0x3a7184(0x3f8)][_0x3a7184(0x461)];if(config[_0x3a7184(0x3f8)][_0x3a7184(0x423)])_0x3463c8=config[_0x3a7184(0x3f8)][_0x3a7184(0x423)];}}catch(_0x4b4ae3){}const _0x581b1c=document[_0x3a7184(0x2ea)+_0x3a7184(0x28a)](_0xdab7de[_0x3a7184(0x1d9)]);_0x581b1c&&(_0x581b1c[_0x3a7184(0x1d5)]=_0x3a7184(0x29b)+_0x3a7184(0x388)+_0x3a7184(0x2ee)+_0x1dba9c+(_0x3a7184(0x386)+_0x3a7184(0x41e)+_0x3a7184(0x46d)+_0x3a7184(0x36c)+'>')+_0x5137cc+(_0x3a7184(0x386)+_0x3a7184(0x41e)+_0x3a7184(0x31a)+_0x3a7184(0x212))+_0x566194+(_0x3a7184(0x386)+_0x3a7184(0x41e)+_0x3a7184(0x4d2)+_0x3a7184(0x212))+_0x53b230+(_0x3a7184(0x386)+_0x3a7184(0x41e)+_0x3a7184(0x1c6)+_0x3a7184(0x2cf))+_0x144a61+(_0x3a7184(0x386)+_0x3a7184(0x41e)+_0x3a7184(0x192)+_0x3a7184(0x212))+_0x474b82+(_0x3a7184(0x386)+_0x3a7184(0x41e)+_0x3a7184(0x412)+_0x3a7184(0x4ae))+_0x3463c8+(_0x3a7184(0x386)+_0x3a7184(0x2b8)));const _0x56f33c=new URLSearchParams(window[_0x3a7184(0x3f6)][_0x3a7184(0x4c5)]),_0x3ce0c2=_0x56f33c[_0x3a7184(0x4c9)]('ep'),_0x3e6929=window[_0x3a7184(0x3f6)][_0x3a7184(0x260)][_0x3a7184(0x1e5)]('?')[0x25*0xa4+0x25*-0x79+-0x637*0x1][_0x3a7184(0x1e5)]('#')[-0x1*0x6c+-0x141c+0x1488],_0x3ca1f8=document[_0x3a7184(0x2ea)+_0x3a7184(0x28a)](_0xdab7de[_0x3a7184(0x318)]),_0x56e04c=document[_0x3a7184(0x2ea)+_0x3a7184(0x28a)](_0xdab7de[_0x3a7184(0x4ca)]),_0x3d4fc2=document[_0x3a7184(0x2ea)+_0x3a7184(0x28a)](_0xdab7de[_0x3a7184(0x40e)]),_0x409b8f=document[_0x3a7184(0x2ea)+_0x3a7184(0x28a)](_0xdab7de[_0x3a7184(0x338)]),_0x43bf60=document[_0x3a7184(0x2ea)+_0x3a7184(0x28a)](_0xdab7de[_0x3a7184(0x437)]),_0x272827=document[_0x3a7184(0x2ea)+_0x3a7184(0x28a)](_0xdab7de[_0x3a7184(0x3c5)]);if(_0xdab7de[_0x3a7184(0x25f)](typeof episodes,_0xdab7de[_0x3a7184(0x249)])&&Array[_0x3a7184(0x290)](episodes)&&_0xdab7de[_0x3a7184(0x49b)](episodes[_0x3a7184(0x503)],0x12e8+-0x1888*-0x1+0x2b7*-0x10)){let _0x3c995b=episodes[_0x3a7184(0x503)],_0x1feade=episodes[_0x3a7184(0x4dc)]()[_0x3a7184(0x200)]((_0x5a6cf8,_0x28e0ff)=>parseInt(_0x5a6cf8[_0x3a7184(0x3b5)])-parseInt(_0x28e0ff[_0x3a7184(0x3b5)]));if(_0xdab7de[_0x3a7184(0x4a1)](_0x3ce0c2,_0x56e04c)){if(_0x3ca1f8)_0x3ca1f8[_0x3a7184(0x2e5)][_0x3a7184(0x295)]=_0xdab7de[_0x3a7184(0x3b1)];if(_0x3d4fc2)_0x3d4fc2[_0x3a7184(0x2e5)][_0x3a7184(0x295)]=_0xdab7de[_0x3a7184(0x3b1)];_0x56e04c[_0x3a7184(0x2e5)][_0x3a7184(0x295)]=_0xdab7de[_0x3a7184(0x225)];if(_0x43bf60)_0x43bf60[_0x3a7184(0x2e5)][_0x3a7184(0x295)]=_0xdab7de[_0x3a7184(0x3b1)];if(_0x272827)_0x272827[_0x3a7184(0x2e5)][_0x3a7184(0x295)]=_0xdab7de[_0x3a7184(0x3b1)];let _0x558877=_0xdab7de[_0x3a7184(0x196)](_0x93cde6,_0x3ce0c2),_0x48d971=_0x1feade[_0x3a7184(0x45b)](_0x367aa6=>_0x93cde6(_0x367aa6[_0x3a7184(0x3b5)])===_0x558877);if(_0xdab7de[_0x3a7184(0x4da)](_0x48d971,-(-0x133*0x8+-0xadb+0x1474))){let _0x489a2f=_0x1feade[_0x48d971],_0x430f3d=_0x489a2f[_0x3a7184(0x1ad)]&&_0xdab7de[_0x3a7184(0x486)](_0x489a2f[_0x3a7184(0x1ad)][_0x3a7184(0x503)],-0xdc3+-0xff1+0x1db4*0x1)?_0x489a2f[_0x3a7184(0x1ad)][-0x17d*-0x12+-0x2*-0x3db+-0x60*0x5c][_0x3a7184(0x215)]:'',_0x43ae44=_0xdab7de[_0x3a7184(0x486)](_0x48d971,0x167*-0x1a+0x1448*0x1+-0x817*-0x2)?_0x3a7184(0x243)+_0x3e6929+_0x3a7184(0x39c)+_0xdab7de[_0x3a7184(0x196)](_0x93cde6,_0x1feade[_0xdab7de[_0x3a7184(0x2b5)](_0x48d971,0x7cd+0x3bb+-0xb87)][_0x3a7184(0x3b5)])+(_0x3a7184(0x298)+_0x3a7184(0x4f7)):'',_0x3cade7=_0xdab7de[_0x3a7184(0x218)](_0x48d971,_0xdab7de[_0x3a7184(0x23f)](_0x3c995b,0xf0c+0x1*-0x1f18+0x100d))?_0x3a7184(0x243)+_0x3e6929+_0x3a7184(0x39c)+_0xdab7de[_0x3a7184(0x2ed)](_0x93cde6,_0x1feade[_0xdab7de[_0x3a7184(0x4af)](_0x48d971,0x1141*-0x1+-0x129a*-0x2+0x8a*-0x25)][_0x3a7184(0x3b5)])+(_0x3a7184(0x1d3)+_0x3a7184(0x457)):'',_0xed19ee='';if(_0x489a2f[_0x3a7184(0x1ad)]&&_0xdab7de[_0x3a7184(0x214)](_0x489a2f[_0x3a7184(0x1ad)][_0x3a7184(0x503)],-0xcf6+-0x392*-0x6+-0x5*0x1b1)){let _0x4b100c='';_0x489a2f[_0x3a7184(0x1ad)][_0x3a7184(0x27b)](_0x727c3b=>{const _0x262878=_0x3a7184;let _0x49428c=_0x727c3b[_0x262878(0x215)][_0x262878(0x2d3)](/'/g,'\x5c\x27');_0x4b100c+=_0x262878(0x4e2)+_0x262878(0x28b)+_0x262878(0x3a6)+_0x262878(0x24b)+_0x262878(0x1c2)+_0x262878(0x505)+_0x262878(0x37f)+_0x262878(0x4fe)+_0x262878(0x42c)+_0x49428c+(_0x262878(0x37c)+_0x262878(0x3d4)+_0x262878(0x194))+_0x727c3b[_0x262878(0x339)]+_0x262878(0x256);}),_0xed19ee=_0x3a7184(0x492)+_0x3a7184(0x247)+_0x3a7184(0x23d)+_0x3a7184(0x2b6)+_0x3a7184(0x4d9)+_0x3a7184(0x42e)+_0x3a7184(0x2f3)+_0x3a7184(0x488)+_0x3a7184(0x1f8)+_0x3a7184(0x325)+_0x3a7184(0x3ac)+_0x3a7184(0x279)+_0x3a7184(0x221)+_0x3a7184(0x3c0)+_0x3a7184(0x1a5)+_0x3a7184(0x3a2)+_0x3a7184(0x424)+_0x3a7184(0x3ae)+_0x3a7184(0x48c)+_0x3a7184(0x488)+_0x3a7184(0x237)+_0x3a7184(0x34a)+_0x3a7184(0x501)+_0x3a7184(0x48a)+_0x3a7184(0x19c)+_0x3a7184(0x1af)+_0x3a7184(0x3dd)+_0x3a7184(0x352)+_0x3a7184(0x33a)+_0x3a7184(0x265)+_0x3a7184(0x238)+_0x3a7184(0x32d)+_0x3a7184(0x267)+_0x3a7184(0x4d3)+_0x3a7184(0x27a)+_0x3a7184(0x488)+_0x3a7184(0x2bf)+_0x3a7184(0x458)+_0x3a7184(0x1de)+_0x3a7184(0x4b3)+_0x3a7184(0x3d2)+_0x3a7184(0x1c3)+_0x3a7184(0x25d)+_0x3a7184(0x488)+_0x3a7184(0x2bf)+_0x3a7184(0x458)+_0x3a7184(0x2d0)+_0x3a7184(0x427)+_0x3a7184(0x49f)+_0x3a7184(0x2cc)+_0x3a7184(0x258)+_0x3a7184(0x488)+_0x3a7184(0x1b3)+_0x3a7184(0x2b2)+_0x3a7184(0x2a5)+_0x3a7184(0x366)+_0x3a7184(0x281)+_0x3a7184(0x4e7)+_0x3a7184(0x488)+_0x3a7184(0x353)+_0x3a7184(0x4ed)+_0x3a7184(0x491)+_0x3a7184(0x321)+_0x3a7184(0x2e8)+_0x3a7184(0x488)+_0x3a7184(0x2f0)+_0x3a7184(0x492)+_0x3a7184(0x33e)+_0x3a7184(0x43f)+_0x3a7184(0x27f)+_0x3a7184(0x48f)+_0x3a7184(0x2f2)+_0x3a7184(0x499)+_0x3a7184(0x45f)+_0x3a7184(0x2b6)+_0x3a7184(0x2e9)+_0x3a7184(0x45d)+_0x4b100c+(_0x3a7184(0x492)+_0x3a7184(0x219)+_0x3a7184(0x3b6)+_0x3a7184(0x465));}let _0x5b6418=_0x3a7184(0x375)+_0x3a7184(0x48f)+_0x3a7184(0x468)+_0x3a7184(0x251)+_0x3a7184(0x41f)+_0x3a7184(0x413)+_0x3a7184(0x257)+_0x3a7184(0x2fb)+_0x3a7184(0x48e)+_0x3a7184(0x2a0)+_0x430f3d+(_0x3a7184(0x4f3)+_0x3a7184(0x248)+_0x3a7184(0x3f3)+_0x3a7184(0x2a4)+_0x3a7184(0x2dd)+_0x3a7184(0x1e2)+_0x3a7184(0x21a)+_0x3a7184(0x270)+_0x3a7184(0x34f)+_0x3a7184(0x420)+_0x3a7184(0x1f7)+_0x3a7184(0x45d))+_0xed19ee+(_0x3a7184(0x375)+_0x3a7184(0x44c)+_0x3a7184(0x30f)+_0x3a7184(0x3a9)+_0x3a7184(0x1d4)+_0x3a7184(0x28c))+_0x43ae44+(_0x3a7184(0x375)+_0x3a7184(0x32e)+_0x3a7184(0x1b9)+_0x3a7184(0x199))+_0x3e6929+(_0x3a7184(0x446)+_0x3a7184(0x436)+_0x3a7184(0x16f))+_0x3cade7+(_0x3a7184(0x375)+_0x3a7184(0x44c)+_0x3a7184(0x3db)+_0x3a7184(0x292)+_0x3a7184(0x3f4)+_0x3a7184(0x33b)+_0x3a7184(0x387));if(_0xdab7de[_0x3a7184(0x214)](_0x3c995b,-0x1f*-0xb5+-0x1eb7+0x930)){_0x5b6418+=_0x3a7184(0x335)+_0x3a7184(0x235)+_0x3a7184(0x1ab)+_0x3a7184(0x2db)+_0x3a7184(0x174)+_0x3a7184(0x424)+_0x3a7184(0x297)+_0x3a7184(0x496)+_0x3a7184(0x29a);for(let _0x5a7491=0x397*0x7+0x1*-0x64d+-0xf1*0x14;_0xdab7de[_0x3a7184(0x2c4)](_0x5a7491,_0x3c995b);_0x5a7491+=0x12d0+-0xa30+0x20f*-0x4){let _0x16c165=_0x1feade[_0x3a7184(0x4dc)](_0x5a7491,_0xdab7de[_0x3a7184(0x2f9)](_0x5a7491,-0x1414+0x685+-0xdf3*-0x1)),_0x180e91=_0xdab7de[_0x3a7184(0x469)](_0x93cde6,_0x16c165[0xf4d*-0x1+-0x1*-0xb8f+0x3be*0x1][_0x3a7184(0x3b5)]),_0x4ffde5=_0xdab7de[_0x3a7184(0x4fd)](_0x93cde6,_0x16c165[_0xdab7de[_0x3a7184(0x31c)](_0x16c165[_0x3a7184(0x503)],0x6*0xbf+-0x25b6+-0x1*-0x213d)][_0x3a7184(0x3b5)]),_0x534170=_0xdab7de[_0x3a7184(0x370)](_0x558877,_0xdab7de[_0x3a7184(0x24f)](parseInt,_0x180e91))&&_0xdab7de[_0x3a7184(0x4a5)](_0x558877,_0xdab7de[_0x3a7184(0x466)](parseInt,_0x4ffde5))?_0xdab7de[_0x3a7184(0x422)]:'';_0x5b6418+=_0x3a7184(0x4e8)+_0x3a7184(0x2c2)+_0x5a7491+'\x22\x20'+_0x534170+_0x3a7184(0x49a)+_0x180e91+_0x3a7184(0x355)+_0x4ffde5+'\x20('+_0x16c165[_0x3a7184(0x503)]+_0x3a7184(0x430);}_0x5b6418+=_0x3a7184(0x4a4);}_0x5b6418+=_0x3a7184(0x25b)+_0x3a7184(0x481)+_0x3a7184(0x314),_0x1feade[_0x3a7184(0x27b)]((_0x58f430,_0x14f149)=>{const _0x40c6a9=_0x3a7184;let _0x221c4f=_0xdab7de[_0x40c6a9(0x196)](_0x93cde6,_0x58f430[_0x40c6a9(0x3b5)]),_0x53b85e=_0xdab7de[_0x40c6a9(0x195)](_0x221c4f,_0x558877)?'on':'',_0x4f663e=_0xdab7de[_0x40c6a9(0x4b7)](Math[_0x40c6a9(0x1fc)](_0xdab7de[_0x40c6a9(0x3b0)](_0x48d971,0x505+-0xe80+0x1*0x9df)),-0x38b+0xd66*-0x2+0x1ebb),_0x483767=_0xdab7de[_0x40c6a9(0x4e0)](_0x14f149,_0x4f663e)&&_0xdab7de[_0x40c6a9(0x38c)](_0x14f149,_0xdab7de[_0x40c6a9(0x2f9)](_0x4f663e,-0x7d7+0xd51*-0x2+-0x19*-0x165))?_0xdab7de[_0x40c6a9(0x226)]:_0xdab7de[_0x40c6a9(0x3b1)];_0x5b6418+=_0x40c6a9(0x2b4)+_0x53b85e+(_0x40c6a9(0x4ee)+_0x40c6a9(0x4f2)+_0x40c6a9(0x2be))+_0x14f149+(_0x40c6a9(0x4b0)+_0x40c6a9(0x245))+_0x483767+_0x40c6a9(0x477)+_0x3e6929+_0x40c6a9(0x39c)+_0x221c4f+'\x22>'+_0x221c4f+_0x40c6a9(0x256);}),_0x5b6418+=_0x3a7184(0x400),_0x56e04c[_0x3a7184(0x1d5)]=_0x5b6418;if(_0xdab7de[_0x3a7184(0x486)](_0x3c995b,0x1*0xb4d+-0xf88+0x5b*0xd)){let _0x2b61e1=document[_0x3a7184(0x2ea)+_0x3a7184(0x28a)](_0xdab7de[_0x3a7184(0x254)]);_0x2b61e1&&_0x2b61e1[_0x3a7184(0x36f)+_0x3a7184(0x2e4)](_0xdab7de[_0x3a7184(0x1e0)],function(){const _0x548409=_0x3a7184;let _0x2c82e8=_0xdab7de[_0x548409(0x196)](parseInt,this[_0x548409(0x215)]);document[_0x548409(0x2b7)+_0x548409(0x367)](_0xdab7de[_0x548409(0x1fd)])[_0x548409(0x27b)](_0x220774=>{const _0x10a814=_0x548409;let _0x37ef82=_0xdab7de[_0x10a814(0x196)](parseInt,_0x220774[_0x10a814(0x47c)+'te'](_0xdab7de[_0x10a814(0x449)]));_0x220774[_0x10a814(0x2e5)][_0x10a814(0x295)]=_0xdab7de[_0x10a814(0x370)](_0x37ef82,_0x2c82e8)&&_0xdab7de[_0x10a814(0x3e0)](_0x37ef82,_0xdab7de[_0x10a814(0x2f9)](_0x2c82e8,-0x5*-0x332+-0x20d9+0x1143))?_0xdab7de[_0x10a814(0x226)]:_0xdab7de[_0x10a814(0x3b1)];});});}const _0x14cf5e=document[_0x3a7184(0x2b7)+_0x3a7184(0x36e)](_0xdab7de[_0x3a7184(0x1cc)]);if(_0x14cf5e)_0x14cf5e[_0x3a7184(0x1d5)]+=_0x3a7184(0x22d)+_0x558877;}else _0x56e04c[_0x3a7184(0x1d5)]=_0x3a7184(0x25b)+_0x3a7184(0x1ba)+_0x3a7184(0x48b)+'\x20'+_0x558877+(_0x3a7184(0x19d)+_0x3a7184(0x241)+'v>');}else{if(_0x43bf60)_0x43bf60[_0x3a7184(0x2e5)][_0x3a7184(0x295)]=_0xdab7de[_0x3a7184(0x225)];if(_0x272827)_0x272827[_0x3a7184(0x2e5)][_0x3a7184(0x295)]=_0xdab7de[_0x3a7184(0x3d1)];let _0x276398='',_0x295e24=_0x1feade[_0x3a7184(0x4dc)]()[_0x3a7184(0x24e)]();_0x295e24[_0x3a7184(0x27b)](_0xbce810=>{const _0x324bb4=_0x3a7184;let _0x540e63=_0xdab7de[_0x324bb4(0x24f)](_0x93cde6,_0xbce810[_0x324bb4(0x3b5)]);_0x276398+=_0x324bb4(0x2b4)+_0x324bb4(0x306)+_0x324bb4(0x399)+_0x324bb4(0x383)+_0x324bb4(0x223)+_0x324bb4(0x1bb)+_0x3e6929+_0x324bb4(0x39c)+_0x540e63+(_0x324bb4(0x4e1)+_0x324bb4(0x255)+_0x324bb4(0x4f4)+_0x324bb4(0x4a2)+_0x324bb4(0x3f2)+_0x324bb4(0x1f3))+_0xbce810[_0x324bb4(0x3b5)]+(_0x324bb4(0x2f4)+_0x324bb4(0x1a4)+_0x324bb4(0x256));});if(_0x409b8f)_0x409b8f[_0x3a7184(0x1d5)]=_0x276398;}}else{if(_0x409b8f)_0x409b8f[_0x3a7184(0x1d5)]=_0xdab7de[_0x3a7184(0x401)];}const _0x60e107=document[_0x3a7184(0x2ea)+_0x3a7184(0x28a)](_0xdab7de[_0x3a7184(0x4bf)]),_0x1be92e=document[_0x3a7184(0x2ea)+_0x3a7184(0x28a)](_0xdab7de[_0x3a7184(0x1a6)]);_0xdab7de[_0x3a7184(0x4a1)](_0x1be92e,_0x60e107)&&_0xdab7de[_0x3a7184(0x466)](fetch,_0xdab7de[_0x3a7184(0x2f9)](_0xdab7de[_0x3a7184(0x3ff)](_0xdab7de[_0x3a7184(0x42d)],_0xdab7de[_0x3a7184(0x46a)](encodeURIComponent,_0xdab7de[_0x3a7184(0x301)])),_0xdab7de[_0x3a7184(0x3de)]))[_0x3a7184(0x1db)](_0x559cb6=>_0x559cb6[_0x3a7184(0x47a)]())[_0x3a7184(0x1db)](_0x5d41c3=>{const _0x3529d3=_0x3a7184,_0x20aae1={'wCiTr':function(_0x273441,_0x189ae9){const _0x3b90c2=_0x1f06;return _0xdab7de[_0x3b90c2(0x195)](_0x273441,_0x189ae9);},'VsCSF':function(_0x3d69dd,_0x4a0704){const _0x2a9571=_0x1f06;return _0xdab7de[_0x2a9571(0x195)](_0x3d69dd,_0x4a0704);},'OLOGR':_0xdab7de[_0x3529d3(0x269)]};if(_0x5d41c3[_0x3529d3(0x2c6)]&&_0x5d41c3[_0x3529d3(0x2c6)][_0x3529d3(0x246)]){let _0x32bc32=_0x5d41c3[_0x3529d3(0x2c6)][_0x3529d3(0x246)][_0x3529d3(0x382)](_0x55bc5b=>{const _0x4a5bf1=_0x3529d3;let _0x38f6c1=![];return _0x55bc5b[_0x4a5bf1(0x500)][_0x4a5bf1(0x27b)](_0x3c82db=>{const _0x30f12c=_0x4a5bf1;if(_0x20aae1[_0x30f12c(0x1a9)](_0x3c82db[_0x30f12c(0x260)],_0x3e6929))_0x38f6c1=!![];}),!_0x38f6c1;});_0x32bc32=_0x32bc32[_0x3529d3(0x200)](()=>-0x1e0f+0x1*-0x213b+0x3f4a+0.5-Math[_0x3529d3(0x4e9)]())[_0x3529d3(0x4dc)](0x35+0x21b9+-0x2b*0xca,-0x4db*0x1+0x1a21*-0x1+0x52c*0x6);if(_0xdab7de[_0x3529d3(0x35e)](_0x32bc32[_0x3529d3(0x503)],-0x237c+0x24c8+-0x14c)){let _0x4f92ac='';_0x32bc32[_0x3529d3(0x27b)](_0x4db301=>{const _0xd27b8b=_0x3529d3,_0x2dc1eb={'FLAdE':function(_0x3db79f,_0x21cb77){const _0xeabce=_0x1f06;return _0xdab7de[_0xeabce(0x3ff)](_0x3db79f,_0x21cb77);},'PVzOY':_0xdab7de[_0xd27b8b(0x3eb)]};let _0x35b717='';_0x4db301[_0xd27b8b(0x500)][_0xd27b8b(0x27b)](_0x9f73b8=>{const _0x4c6b25=_0xd27b8b;if(_0x20aae1[_0x4c6b25(0x337)](_0x9f73b8[_0x4c6b25(0x25c)],_0x20aae1[_0x4c6b25(0x3a0)]))_0x35b717=_0x9f73b8[_0x4c6b25(0x260)];});let _0x2277cb=_0x4db301[_0xd27b8b(0x2d4)]['$t'],_0x3b9e65=_0xdab7de[_0xd27b8b(0x29c)];if(_0x4db301[_0xd27b8b(0x172)+_0xd27b8b(0x32c)])_0x3b9e65=_0x4db301[_0xd27b8b(0x172)+_0xd27b8b(0x32c)][_0xd27b8b(0x2b0)][_0xd27b8b(0x2d3)](/\/s72\-c\//,_0xdab7de[_0xd27b8b(0x233)]);else{if(_0x4db301[_0xd27b8b(0x3b2)]&&_0x4db301[_0xd27b8b(0x3b2)]['$t']){let _0x25a1b1=_0x4db301[_0xd27b8b(0x3b2)]['$t'][_0xd27b8b(0x3d3)](/<img[^>]+src="([^">]+)"/i);if(_0x25a1b1&&_0x25a1b1[-0xa7d*-0x1+0x9*0x18d+0x1*-0x1871])_0x3b9e65=_0x25a1b1[0x1*0x1ea9+-0x247+-0x1c61];}}let _0x315fb3=_0xdab7de[_0xd27b8b(0x4bb)];_0x4db301[_0xd27b8b(0x190)]&&_0x4db301[_0xd27b8b(0x190)][_0xd27b8b(0x27b)](_0x154f66=>{const _0x25dc24=_0xd27b8b;let _0x4ba960=_0x154f66[_0x25dc24(0x2ec)][_0x25dc24(0x3d3)](/^(eps|episode)\.?\s*(\d+)/i);if(_0x4ba960)_0x315fb3=_0x2dc1eb[_0x25dc24(0x207)](_0x4ba960[0x126*0x1f+0x75e*-0x1+-0x1c3a],_0x2dc1eb[_0x25dc24(0x4b9)]);}),_0x4f92ac+=_0xd27b8b(0x492)+_0xd27b8b(0x396)+_0xd27b8b(0x1a1)+_0xd27b8b(0x4b4)+_0x35b717+(_0xd27b8b(0x3f5)+_0xd27b8b(0x2ab)+_0xd27b8b(0x1da)+_0xd27b8b(0x4f0)+_0xd27b8b(0x1e3)+_0xd27b8b(0x3e7)+_0xd27b8b(0x4d5)+_0xd27b8b(0x488)+_0xd27b8b(0x18c)+_0xd27b8b(0x2ba)+_0xd27b8b(0x316))+_0x35b717+(_0xd27b8b(0x304)+_0xd27b8b(0x4f4)+_0xd27b8b(0x1fb)+_0xd27b8b(0x3b4)+_0xd27b8b(0x488)+_0xd27b8b(0x431)+'\x22')+_0x3b9e65+_0xd27b8b(0x2fe)+_0x2277cb+(_0xd27b8b(0x3c6)+_0xd27b8b(0x244)+_0xd27b8b(0x17b)+_0xd27b8b(0x4ec)+_0xd27b8b(0x1d2)+_0xd27b8b(0x40c)+_0xd27b8b(0x3f9)+_0xd27b8b(0x2fd)+_0xd27b8b(0x27f)+_0xd27b8b(0x502)+_0xd27b8b(0x44e)+'>')+_0x315fb3+(_0xd27b8b(0x1cd)+_0xd27b8b(0x488)+_0xd27b8b(0x1cd)+_0xd27b8b(0x488)+_0xd27b8b(0x227)+_0xd27b8b(0x3b7)+_0xd27b8b(0x4e1)+_0xd27b8b(0x475))+_0x2277cb+(_0xd27b8b(0x1cd)+_0xd27b8b(0x488)+_0xd27b8b(0x256));}),_0x1be92e[_0x3529d3(0x1d5)]=_0x4f92ac;if(_0x3ce0c2)_0x60e107[_0x3529d3(0x2e5)][_0x3529d3(0x295)]=_0xdab7de[_0x3529d3(0x225)];}}})[_0x3a7184(0x18f)](_0x37135f=>{});}),(function(){const _0x3c7035=_0x5c9afe,_0x1b7584={'rJcWm':_0x3c7035(0x2f1)+_0x3c7035(0x204),'XLVWO':function(_0x488bd5,_0x2f352a){return _0x488bd5<=_0x2f352a;},'dtbPo':function(_0x1e7120,_0x41aaec){return _0x1e7120(_0x41aaec);},'YPfSJ':_0x3c7035(0x282)+_0x3c7035(0x23c)+_0x3c7035(0x405),'Haaal':function(_0x502b58,_0x56d0d1){return _0x502b58===_0x56d0d1;},'rTjQB':_0x3c7035(0x493),'OjEgc':_0x3c7035(0x28f)+_0x3c7035(0x38a),'bBryz':_0x3c7035(0x2e5),'fsGwr':function(_0x1d3d1e,_0x6dc808,_0x20de06){return _0x1d3d1e(_0x6dc808,_0x20de06);},'uPdnt':_0x3c7035(0x1c4),'MmxEv':function(_0x37475e,_0x18a5e9){return _0x37475e+_0x18a5e9;},'lUasK':_0x3c7035(0x24d)+_0x3c7035(0x4ef)+_0x3c7035(0x4be)+_0x3c7035(0x1f2)+_0x3c7035(0x2b9)+_0x3c7035(0x409)+_0x3c7035(0x3a7)+_0x3c7035(0x1aa)+_0x3c7035(0x2aa)+_0x3c7035(0x442)+_0x3c7035(0x26e)+_0x3c7035(0x3d0)+_0x3c7035(0x2ad)+_0x3c7035(0x384),'aFPGM':_0x3c7035(0x347)+_0x3c7035(0x1e1)+_0x3c7035(0x1ce)+_0x3c7035(0x459)+_0x3c7035(0x3aa)+_0x3c7035(0x418)+_0x3c7035(0x4a8)+_0x3c7035(0x2af)+_0x3c7035(0x1b5)+_0x3c7035(0x482)+_0x3c7035(0x32a)+_0x3c7035(0x3d6)+_0x3c7035(0x47e)+_0x3c7035(0x2ce)+_0x3c7035(0x26d)+_0x3c7035(0x37e),'KxZFy':_0x3c7035(0x347)+_0x3c7035(0x3e5)+_0x3c7035(0x277)+_0x3c7035(0x2a6)+_0x3c7035(0x180),'EwnrT':_0x3c7035(0x347)+_0x3c7035(0x3fa)+_0x3c7035(0x463)+_0x3c7035(0x2bc)+_0x3c7035(0x327),'CsRFf':function(_0x33dacd,_0xd1b0d3){return _0x33dacd+_0xd1b0d3;},'JzRhJ':function(_0x9c908f,_0xf5b08){return _0x9c908f+_0xf5b08;},'pfsSO':_0x3c7035(0x433)+_0x3c7035(0x179)+_0x3c7035(0x454),'SQAbP':_0x3c7035(0x25b)+_0x3c7035(0x372)+_0x3c7035(0x33f),'vnVaW':_0x3c7035(0x398)+_0x3c7035(0x42b),'ROwQa':_0x3c7035(0x320)+_0x3c7035(0x2b1)+_0x3c7035(0x453)+_0x3c7035(0x2e7)+'>','xNAnl':_0x3c7035(0x341)+_0x3c7035(0x1b4)+_0x3c7035(0x484)+_0x3c7035(0x19b)+_0x3c7035(0x443),'ZTIku':_0x3c7035(0x176)+_0x3c7035(0x3d7)+_0x3c7035(0x41c)+_0x3c7035(0x349)+_0x3c7035(0x444)+_0x3c7035(0x3ef),'BSfVN':_0x3c7035(0x400),'lNpYE':_0x3c7035(0x334)+_0x3c7035(0x435)+_0x3c7035(0x276)+_0x3c7035(0x1bd),'RCfxK':_0x3c7035(0x1a8)+_0x3c7035(0x356)+_0x3c7035(0x213)+_0x3c7035(0x4e5)+_0x3c7035(0x42a)+_0x3c7035(0x473)+_0x3c7035(0x220)+_0x3c7035(0x4b8)+_0x3c7035(0x429)+_0x3c7035(0x4e6)+_0x3c7035(0x1e6)+_0x3c7035(0x3f0),'mqdaF':function(_0x43b753,_0x2028fa){return _0x43b753+_0x2028fa;},'bguZu':function(_0x48ff85,_0x37a76b){return _0x48ff85+_0x37a76b;},'ayMyA':_0x3c7035(0x224)+'=','dMXhV':function(_0x357501,_0x2a03f8){return _0x357501(_0x2a03f8);}};var _0x168ce6=window[_0x3c7035(0x3f6)][_0x3c7035(0x343)][_0x3c7035(0x1ea)+'e'](),_0x2c5389=_0x1b7584[_0x3c7035(0x45c)],_0x5cfb51=_0x1b7584[_0x3c7035(0x39a)](_0x1b7584[_0x3c7035(0x331)](_0x2c5389,_0x1b7584[_0x3c7035(0x3be)]),_0x1b7584[_0x3c7035(0x4c7)](encodeURIComponent,_0x168ce6));_0x1b7584[_0x3c7035(0x44f)](fetch,_0x5cfb51)[_0x3c7035(0x1db)](function(_0xd162a7){const _0x36bd3c=_0x3c7035;return _0xd162a7[_0x36bd3c(0x47a)]();})[_0x3c7035(0x1db)](function(_0x4492e2){const _0x2b5415=_0x3c7035;var _0x595679=_0x4492e2[_0x2b5415(0x36b)]&&_0x1b7584[_0x2b5415(0x1c1)](_0x4492e2[_0x2b5415(0x36b)][_0x2b5415(0x1ea)+'e'](),_0x1b7584[_0x2b5415(0x332)]);if(!_0x595679){const _0xebe3ab=_0x1b7584[_0x2b5415(0x1f0)][_0x2b5415(0x1e5)]('|');let _0x4da2ce=0x215f*0x1+0x94d*-0x1+0x27*-0x9e;while(!![]){switch(_0xebe3ab[_0x4da2ce++]){case'0':document[_0x2b5415(0x1ac)][_0x2b5415(0x495)+'d'](_0xe479b3);continue;case'1':document[_0x2b5415(0x203)][_0x2b5415(0x495)+'d'](_0x1986c7);continue;case'2':var _0x1986c7=document[_0x2b5415(0x3cf)+_0x2b5415(0x2d6)](_0x1b7584[_0x2b5415(0x319)]);continue;case'3':var _0x4cac62=_0x1b7584[_0x2b5415(0x403)](setInterval,function(){const _0x5ac7c0=_0x2b5415;_0x155fc0--;var _0x5181c3=document[_0x5ac7c0(0x2ea)+_0x5ac7c0(0x28a)](_0x1b7584[_0x5ac7c0(0x41d)]);_0x5181c3&&(_0x5181c3[_0x5ac7c0(0x1d5)]=_0x155fc0),_0x1b7584[_0x5ac7c0(0x2fc)](_0x155fc0,0x1*-0x5d7+-0x1*-0x1f0f+0xc*-0x21a)&&(_0x1b7584[_0x5ac7c0(0x44f)](clearInterval,_0x4cac62),window[_0x5ac7c0(0x3f6)][_0x5ac7c0(0x260)]=_0x1b7584[_0x5ac7c0(0x239)]);},-0x1*-0x4ef+0x1*-0x1511+0xa*0x201);continue;case'4':var _0xe479b3=document[_0x2b5415(0x3cf)+_0x2b5415(0x2d6)](_0x1b7584[_0x2b5415(0x35a)]);continue;case'5':_0x1986c7[_0x2b5415(0x1d5)]=_0x1b7584[_0x2b5415(0x2c7)](_0x1b7584[_0x2b5415(0x2c7)](_0x1b7584[_0x2b5415(0x2c7)](_0x1b7584[_0x2b5415(0x284)],_0x1b7584[_0x2b5415(0x266)]),_0x1b7584[_0x2b5415(0x171)]),_0x1b7584[_0x2b5415(0x197)]);continue;case'6':_0xe479b3[_0x2b5415(0x1d5)]=_0x1b7584[_0x2b5415(0x2c7)](_0x1b7584[_0x2b5415(0x2c7)](_0x1b7584[_0x2b5415(0x402)](_0x1b7584[_0x2b5415(0x2c7)](_0x1b7584[_0x2b5415(0x402)](_0x1b7584[_0x2b5415(0x2c7)](_0x1b7584[_0x2b5415(0x211)](_0x1b7584[_0x2b5415(0x4ff)],_0x1b7584[_0x2b5415(0x1ee)]),_0x1b7584[_0x2b5415(0x3e4)]),_0x1b7584[_0x2b5415(0x2f6)]),_0x1b7584[_0x2b5415(0x2ff)]),_0x1b7584[_0x2b5415(0x2bd)]),_0x1b7584[_0x2b5415(0x1dd)]),_0x1b7584[_0x2b5415(0x1dd)]);continue;case'7':var _0x155fc0=0x1b6c+-0x51*-0x52+0x1*-0x3559;continue;}break;}}})[_0x3c7035(0x18f)](function(_0x7fb98d){const _0x5e4a80=_0x3c7035;console[_0x5e4a80(0x3af)](_0x1b7584[_0x5e4a80(0x4b1)],_0x7fb98d);});}()),console[_0x5c9afe(0x3af)](_0x5c9afe(0x4cd)+_0x5c9afe(0x315)+_0x5c9afe(0x229)+_0x5c9afe(0x4c6)+_0x5c9afe(0x21b)+_0x5c9afe(0x407)+_0x5c9afe(0x48d),_0x5c9afe(0x263)+_0x5c9afe(0x4fc)+_0x5c9afe(0x2df)+_0x5c9afe(0x3e8)+_0x5c9afe(0x416)+_0x5c9afe(0x40d)+_0x5c9afe(0x39f)+_0x5c9afe(0x1c8)+_0x5c9afe(0x3e1)+_0x5c9afe(0x394),_0x5c9afe(0x4d6)+_0x5c9afe(0x3cd)+_0x5c9afe(0x16d),_0x5c9afe(0x263)+_0x5c9afe(0x364)+_0x5c9afe(0x26a)+_0x5c9afe(0x4ad)+_0x5c9afe(0x43d)+_0x5c9afe(0x3c9)+_0x5c9afe(0x1eb)+_0x5c9afe(0x35b)+_0x5c9afe(0x183)));function _0x22e3(){const _0xdbdcd9=['g\x27>Episode','ver\x22>\x0a\x20\x20\x20\x20','ccessfully','rame-playe','div\x20class=','eplist-con','\x22\x20x2=\x226.01','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20','active','2198MDCusX','appendChil','tang\x20episo','nsjGA','op=\x27image\x27','st\x22\x20id=\x22da','>Episode\x20','JWAHY','5613756cKwWvV','hJnRU','ata...</di','ght=\x228\x22\x20rx','ep-select-','sCCQX','n\x20itemprop','josei','</select>','XnNeg','martial\x20ar','.genre-tag','rder-radiu','Eps\x20?','UNjAt','scrollInto','xcscc','f9;padding','b><span>','eXfDv','\x22\x20style=\x22d','lNpYE','ing','=\x2220\x22\x20heig','tu\x22\x20href=\x22','a8?text=No','.sl-judul','fRyxI','-oF7F_mc3u','PVzOY','data-label','avbue','ation','MidPz','on:fixed;i','Gapin','KOvdZ','/-/','mode-detai','shoujo','\x20style=\x27gr','search','━━━━\x0a%cTem','dMXhV','kFeIe','get','kBfCj','QNIFq','YXGlF','%c💙\x20Hiru40','dStyle','av-home\x27\x20d','nc\x27\x20itempr','PSkjQ','><b>Durasi','-linejoin=','\x201\x20/\x20-1;\x27>','eWork\x22>\x0a\x20\x20','color:#219','vPyCz','/feeds/pos','\x22\x20id=\x22wada','xIrlA','hiru-credi','slice','pe=\x27https:','ak\x20ditemuk','\x27lazy\x27\x20dec','HOKZG','\x22\x20itemprop','<a\x20href=\x22j','AGbal','VQmIA','os/s/AKfyc','WYTWY6m3ft','e>\x0a\x20\x20\x20\x20\x20\x20\x20','<option\x20va','random','iHvWw','cnaIx','nc\x22\x20width=','\x226\x22\x20y1=\x2218','\x20ep-grid-b','nse{positi','pe=\x22https:','adventure','tn\x22\x20data-i','\x22\x20allow=\x22a','\x20\x20\x20\x20\x20\x20<spa','/w200-h300','span>','mnya</a>','test','list-conta','zvtDK','.synopsis',':#2196f3;c','mWdNP','player\x27).s','pfsSO','link','24\x2024\x22\x20wid','span\x20class','length','label','ElementByI','ize:12px;','WUQsz','\x20\x20\x20\x20\x20\x20\x20\x20','NsFpH','KxZFy','media$thum','OUWay','lect-ep\x22\x20a','kpjUP','<p>Dialihk','meEYp','tRkfv','iru-licens','music','oding=\x22asy','YjByh','-kartu-gb\x27','Ongoing','/300x400/1','n-top:0}','JBDLb','=\x27name\x27>','adius:6px;','yUIVx','tiCqc','CDGdh','genre-head','</span>','SlFXg','IeKrq','RqAGJ','<meta\x20item','sl-laci','FvcAW','catch','category','alternate','><b>Studio','ge\x27/>\x0a\x20\x20\x20\x20','rMenu();\x22>','XbUtM','WLWLk','EwnrT','\x27\x20src=\x27','f=\x22','GYpAU','smi\x20Hiru40','ight=\x2220\x22\x20','\x20belum\x20ter','qPPqQ','g\x27\x20style=\x27','block','s=\x22jat-kar','preventDef','zoTTP','Tonton</i>','ServerMenu','lDaHS','\x27>Berikutn','https://sc','wCiTr','y:flex;ali','t-grid\x22\x20cl','body','servers','KMXHO','fill=\x22none','ault','offsetHeig','gCHlB','\x20\x20\x20\x20\x20\x20\x20\x20<l','\x20gunakan\x20t','t-align:ce','MmSRG','s=24','tampil','engah\x22\x20hre','=\x27sl-koson','href=\x22','muxen','ilable','ainer','Sinopsis\x20b','EPuNB','Haaal','cument.get','\x222\x22\x20ry=\x222\x22','div','buka','><b>Rilis<','ZaaFO','ght:bold;b','idol','da\x20film\x20ya','ife','FCNRu','</span>\x0a\x20\x20','ckground:#','wNKBg','er-dropdow','vGySg','\x22200\x22\x20heig','\x22>Selanjut','avep\x22>\x0a\x20\x20\x20','innerHTML','oRFYm','Series','ime-contai','JyxHG','pe\x22\x20itemty','then','innerText','BSfVN','=\x222\x22\x20width','OAeqs','nHfml','nse-box{ba','ue\x22\x20frameb','//schema.o','w300-h400-','split','5x7-5Yx3Q/','/200x300/1','pdated','shounen','toLowerCas','y:monospac','QvOry','qwAVp','SQAbP','yoDqE','OjEgc','SNIUA','nset:0;bac','isode\x20','vJnrM','wHnHc','568470Jgixyg','/iframe>\x0a\x20','\x20\x20\x20\x20<butto','gAeDP','<span>Sele','n\x20class=\x22j','floor','isKTE','RJZwL','aNxMf','sort','ming','EywIc','head','unt','-c/','SvKfp','FLAdE','BcDSY','JCfRK','image','OZXbn','Completed','getCompute','OsQrx','dYfor','none','JzRhJ','</b><span>','e.com/macr','wShmF','value','fkDgK','qxEhi','IKvqg','\x20\x20\x20\x20\x20</div','order=\x220\x22\x20','plate\x20init','historical','mJfaR','fantasy','\x27sl-kartu\x27','eS0Ud0TAJr','click=\x22win','mprop=\x27ima','lay:flex\x22\x20','?cekDomain','suqEC','ruqGZ','<span\x20clas','baYDz','━━━━━━━━━━','WrpTO','thriller','ass=\x27sl-ka','\x20Episode\x20','VxSjX','ime-grid','pkHRl','kasikan.</','classList','yuRoq','elum\x20terse','=\x22ep-selec','lLtKZ','\x20\x20<svg\x20vie','\x20stroke-li','YPfSJ','View','yObYK','ru404.blog','ass=\x22serve','Selesai','rxGbh','temprop=\x27u','sedia.</di','duration','<a\x20href=\x22','\x22lazy\x22\x20dec','isplay:','entry','\x20\x20\x20<div\x20cl','utoplay;\x20f','yoPpl','cal','nclick=\x22do','qvwJA','#hiru-lice','reverse','Tnteg','35woziLS','\x20video-pla','AynFj','prVgU','ojVIn','=\x22url\x22>\x0a\x20\x20','</a>','\x20\x20\x20\x20\x20\x20<ifr','\x22></rect>\x0a','div>','remove','<div\x20class','rel','></rect>\x0a\x20','45YOMPcG','mQsrX','href','selected','pLSDR','background','ldjBB','-width=\x222\x22','aFPGM','nd\x22\x20stroke','e</span>','SSGQr','olor:#90ca','PGveV','dia.','px\x2030px\x20#0','ify-conten','ONA','referrerpo','qbkkh','oUUeg','mprop=\x27nam','-item','n:\x201\x20/\x20-1;','rver\x20unava','{color:#21','=\x27sl-next\x27','le-btn\x22\x20on','\x22round\x22>\x0a\x20','forEach','kfWmt','ata-page=\x27','WJTsw','\x20\x20\x20\x20\x20\x20\x20\x20\x20<','ver-dropdo','=\x226\x22></lin','https://hi','ya</button','lUasK','FVkzk','time\x20trave','toString','WbhxA','mecha','ById','avascript:','\x20\x20\x20\x20\x20','harem','s\x27>','7|4|6|0|2|','isArray','mXtWV','ass=\x22sl-su','hiru404','?alt=json&','display','wlCYl','\x22Pilih\x20ren','\x22>«\x20Sebelu','PxsgW','de\x22>','\x0a\x20\x20\x20\x20<li><','fngGY','horror','t=\x27','\x27lazy\x27\x20ite','r\x22\x20src=\x22','Semua','\x20class=\x27sl','FVZux','\x20allowfull','\x20y1=\x226\x22\x20x2','96f3;margi','wadah-serv','Swjdj','?\x20Eps','gn-items:c','e=\x22itemsco','WjSAS','-index:999','click','s:15px;tex','url','ini\x20belum\x20','ine\x20x1=\x226\x22','kFzUf','<a\x20class=\x22','fZSie','r-dropdown','querySelec','i>\x0a\x20\x20\x20\x20','kground:rg','prop=\x22url\x22','ontainer','24px;color','ZTIku','dx=\x22','\x20\x20\x20\x20\x20\x20\x20<re','sl-kartu-j','PQoHC','lue=\x22','comedy','CzbMg','ecchi','feed','MmxEv','aYQNX','&start-ind','ZCxBv','\x27/>\x0a\x20\x20\x20\x20\x20\x20','=\x222\x22\x20ry=\x222','military','hadow:0\x2010','/b><span>','=\x2214\x22\x20widt','special','</h2>\x0a\x20\x20\x20\x20','replace','title','kaLzp','ent','e\x27>','genre-cont','\x20Eps','sedia</div','ass=\x22sl-se','\x20\x20\x20\x20\x20\x20\x20</a','screen=\x22tr','add','olor:#fff;','data-page','IDzCV','isekai','lts','stener','style','LFmKJ','isensi.</p','</line>\x0a\x20\x20','\x22>\x0a\x20\x20\x20\x20\x20\x20\x20','getElement','zrUoL','term','fQTpJ','<span>','ex=','\x20\x20\x20\x20</svg>','license-co','\x22server-li','ropdown\x22>\x0a','</span><i>','iner','ROwQa','eWork\x27>\x0a\x20\x20','sl-meta\x27>','ggggT','ona','ame\x20id=\x22if','XLVWO','mage\x22>\x0a\x20\x20\x20','\x22\x20alt=\x22','xNAnl','\x20href=\x27','IRvjr','NeivQ','hidden','\x22/>\x0a\x20\x20\x20\x20\x20\x20','SJlSM','sl-ep\x20ep-l','related-an','&orderby=u','e=\x27itemsco','donghua','DlBFh','target','xJMKh','.sl-kepala','\x20\x20\x20\x20<div\x20c','\x20content=\x27','sinopsis-c','ZNueP','ZDoFB','l-epnum\x22>','4\x0a%c━━━━━━','\x20content=\x22','sports','CxCiW','bBryz','><b>Status','ZrPfm','HdIZT','Special','\x27\x20loading=','img','<p>Domain\x20','\x22\x20y2=\x2218\x22>','LYZFE','romance','prop=\x27url\x27','n\x20class=\x22s','action',':#2196f3}','quUiv','s=\x27sl-b-ep','family:Ari','\x27>Memuat\x20d','bnail','necap=\x22rou','a\x20class=\x22t','slice\x20of\x20l','zIbGc','bguZu','rTjQB','trim','💙\x20Hiru404\x20','<select\x20id','iMCZf','VsCSF','MagjH','sub','or\x22\x20stroke','\x20List</h3>','dFosk','sl-burger','\x20\x20\x20\x20\x20</but','ense-box\x22>','11eRtqFs','<p>Silakan','pe\x27\x20itemty','hostname','QzviR','supernatur','rg/Movie\x27>','.hiru-lice','OxNOT','nse-count\x22','wBox=\x220\x200\x20','HzeaC','completed','change','YSqOF','licy=\x22no-r','Currently\x20','CFdvx','currentCol','\x20<line\x20x1=','\x20\x20\x20\x20\x20\x20<img','\x20–\x20','ript.googl','smooth','-container','grid','uPdnt','e;border-r','hkCfR','https://pl','eXlSq','lWPgu','.filter-ta','mXxid','ontent','poster-ima',':#0d1b2a;c','\x20\x20\x20<meta\x20i','=\x226.01\x22\x20y2','torAll','Loaded','ptfko','psychologi','status','e</b><span','672008NuGUBi','tor','addEventLi','jqQZb','stopPropag','=\x22hiru-lic','</div>\x0a\x20\x20\x20','opacity','\x0a\x20\x20\x20\x20\x20\x20\x20\x20<','src','ner','clRzS','ome','MrgDt','seinen','\x27;\x20window.','includes','005}','d(\x27iframe-','\x27\x20itemprop','gJnNk','filter','tyle=\x22disp','999}','hRyiH','</span></l','\x0a\x20\x20\x20\x20\x20\x20\x20\x20','b>Tipe</b>','iuACl','5|1|3','school','EdmEp','Movie','mJOiy','erMenu','movie','DdQpM','.btn-nav-h','fmstU','us:10px;','RCFpQ','\x20\x20\x20<a\x20clas','JGzgc','<h2>💙\x20Hiru','ist-btn\x22\x20s','mqdaF','grid-colum','?ep=','WGRKQ','id-column:','x;font-wei','OLOGR','g\x27>Belum\x20a','(event)\x22\x20a','\x20alt=\x27','\x20\x20\x20\x20<h2\x20cl','default-ep','void(0)\x22\x20o','75);displa','+Cover','lass=\x22sl-n','#222;paddi','mystery','erver-togg','IhNBW','\x22Pilih\x20Ser','log','iupyG','HDaCN','content','ova','at-gbr\x22>\x0a\x20','episode','>\x0a\x20\x20\x20\x20\x20\x20\x20\x20','s=\x22jat-jdl','home-js-gr','rtu-j\x27\x20ite','mode-strea','OVA','info-label','iv>\x0a\x20\x20\x20\x20\x20\x20','ayMyA','sai</span>','dow.toggle','834VbnjUY','RWrrO','13691190WxMnHd','undefined','farVI','\x22\x20loading=','openSearch','xAedX','font-famil','RxvxO','data-nama','IJDZw','6f3;font-s','inline-fle','createElem','t:center;z','pgbpP','ht=\x228\x22\x20rx=','match','closeServe','Airing','al;width:3','an\x20dalam\x20<','getFeed','sci-fi','SFbkn','\x20\x20\x20\x20<h3\x20cl','dUwNu','\x22\x20stroke=\x22','ozqGU','\x20\x20\x20\x20\x20\x20<div','dKWov','order-radi','bEzaZ','Tamat','vnVaW','nse-box\x20h2','ass=\x27btn-n','rg/Creativ','padding:8p','movie-grid','sl-meta\x27><','QfYrX','SDWKo','drama','e2230/8c93','ik.</p>','exec','QMiXn','=\x22name\x22>Ep','ullscreen\x22','b\x22>Episode','\x22\x20itemscop','location','toggle','eInfo','temprop=\x22i','nse-box\x20b{','fetchFeed','survival','visibility','cvGHU','otxjc','</div>','pprPY','CsRFf','fsGwr','\x27>Data\x20tid','spot.com/','contains','ialized\x20su','jKhaG','ba(0,0,0,.','find','DOMContent','ht=\x22300\x22\x20i','t-size:18p','QGQzv','20DGpuke','<span>Movi','chtfE','><b>Skor</','ner\x22>\x0a\x20\x20\x20\x20','WqajJ','lKhzv','x\x2020px;fon','zXcXT','ng:25px;bo','<button\x20cl','raw-post-c','wvClV','b\x20id=\x22lice','rJcWm','i>\x0a\x20\x20\x20\x20<li','yer-contai','eferrer\x22><','/>\x0a\x20\x20\x20\x20\x20\x20\x20','uBDkQ','score','ria-label=','acehold.co','qMPHP','h=\x2220\x22\x20hei','oding=\x27asy','r0Mfs2XzjK','bxoAb2WENK','404</h2>','rc=\x27','nXuen','h-server-d','1627175NmPEqW',')</option>','\x20<img\x20src=','map','<div\x20id=\x22h','Donghua','License\x20se','isode</a>\x0a','kzXKk','krxRr','MxQsi','394341xiTVDF','mXIbt','iv\x20class=\x27',':6px\x2014px;','\x20<a\x20class=','ton>\x0a\x20\x20\x20\x20\x20','toggleServ','indexOf','enter;just','4.</p>','>5</b>\x20det','h2\x20class=\x27','\x22>Semua\x20Ep','an.</div>','jvqel','VpeVd','daftar-ser','\x20\x20\x20\x20</a>','/div>\x0a\x20\x20\x20\x20','data-idx','=\x22jat-eps\x22','dtbPo','nKJEa','$totalResu','PJFWc','memiliki\x20l','e\x22>','flex','ExEvh','nya\x20»</a>','ct\x20x=\x222\x22\x20y','fff;color:','ng\x20dipubli','findIndex','RCfxK','\x20\x20\x20\x20\x20\x20\x20\x20\x20','IerIG','ftar-serve','WUfRh','producers','RYfNj','font-size:','domBu','\x20\x20\x20\x20</div>','oJDxF','\x20\x20\x20\x20\x20\x20\x20\x20<d','\x22sl-player','FcvJS','Rybwm','xdHwD','NIKxi','><b>Episod','-terbaru','.ep-grid-b','tainer','qneSk','ygZfJ','wyePgSe8rZ','AcRPQ','=\x22name\x22>','rMenu','\x22\x20href=\x22','\x27\x20itemscop','LzbuF','json','VPshx','getAttribu','</span></d','20px;box-s','Kjpmx','dCqUi','=\x22sl-tag\x20s','nter;font-','max-result','emplate\x20re','start','TXXcB','ts/default','\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','rl\x27\x20conten','th=\x2220\x22\x20he'];_0x22e3=function(){return _0xdbdcd9;};return _0x22e3();}
+  //]]>
+</script>
+
+  
+</body>
+</html>
