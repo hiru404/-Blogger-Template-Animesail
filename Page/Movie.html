@@ -1,0 +1,22 @@
+<style>
+   .movie-wrap { margin-bottom: 20px; font-family: Nunito, sans-serif; }
+    .movie-header { text-align: center; font-size: 18px; font-weight: bold; color: var(--sl-tx2); padding: 15px 0; border-bottom: 1px solid var(--sl-bd); margin-bottom: 20px; }
+</style>
+
+<div class="movie-wrap">
+    <div class="movie-header">Daftar Anime Movie</div>
+    
+    <!-- Wadah Grid Kartu -->
+    <div id="movie-grid" class="sl-grid">
+        <div class="sl-kosong" style="grid-column: 1 / -1; text-align: center; padding: 30px; color: var(--sl-tx3);">Memuat daftar movie...</div>
+    </div>
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+  
+  
+document.addEventListener("DOMContentLoaded",function(){const e=document.getElementById("movie-grid"),t="/feeds/posts/default/-/"+encodeURIComponent("Movie")+"?alt=json&max-results=100&orderby=updated";fetch(t).then(e=>e.json()).then(t=>{if(t.feed&&t.feed.entry){let n="";t.feed.entry.forEach(e=>{let t=e.title.$t,a="";e.link.forEach(e=>{"alternate"===e.rel&&(a=e.href)});let l="https://placehold.co/300x400/1e2230/8c93a8?text=No+Cover";if(e.media$thumbnail)l=e.media$thumbnail.url.replace(/\/s72\-c\//,"/w300-h400-c/");else if(e.content&&e.content.$t){let t=e.content.$t.match(/<img[^>]+src="([^">]+)"/i);t&&t[1]&&(l=t[1])}let s="Movie";if(e.category){let t=e.category.find(e=>/^(eps|episode)/i.test(e.term));t&&(s=t.term)}n+=`\n                <a class="sl-kartu" href="${a}">\n                    <div class="sl-kartu-gb">\n                        <img alt="${t}" src="${l}" loading="lazy"/>\n                        <span class="sl-b-eps">${s}</span>\n                    </div>\n                    <h2 class="sl-kartu-j">${t}</h2>\n                    <div class="sl-meta"><span>Movie</span></div>\n                </a>`}),e.innerHTML=n}else e.innerHTML="<div class='sl-kosong' style='grid-column: 1 / -1; text-align: center; color: var(--sl-tx3);'>Belum ada movie tersedia.</div>"}).catch(t=>{e.innerHTML="<div class='sl-kosong' style='grid-column: 1 / -1; text-align: center; color: var(--sl-tx3);'>Gagal memuat data.</div>"})});
+  
+  //]]>
+</script>
